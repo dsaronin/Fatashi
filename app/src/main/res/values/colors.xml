@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#512DA8</color>
+    <color name="colorPrimaryDark">#140078</color>
+    <color name="colorAccent">#FF6F00</color>
+
+    <color name="colorPrimaryAccent700">#6200EA</color>
+    <color name="colorPrimaryAccent400">#651FFF</color>
+    <color name="colorPrimaryAccent200">#7C4DFF</color>
+    <color name="colorPrimaryAccent100">#03DAC5</color>
+
+
+    <color name="colorPrimary900">#311B92</color>
+    <color name="colorPrimary800">#4527A0</color>
+    <color name="colorPrimary700">#512DA8</color>
+    <color name="colorPrimary600">#5E35B1</color>
+    <color name="colorPrimary500">#673AB7</color>
+    <color name="colorPrimary400">#7E57C2</color>
+    <color name="colorPrimary300">#9575CD</color>
+    <color name="colorPrimary200">#B39DDB</color>
+    <color name="colorPrimary100">#D1C4E9</color>
+    <color name="colorPrimary050">#EDE7F6</color>
+
+    <color name="colorSecondary900">#FF6F00</color>
+    <color name="colorSecondary800">#FF8F00</color>
+    <color name="colorSecondary700">#FFA000</color>
+    <color name="colorSecondary600">#FFB300</color>
+    <color name="colorSecondary500">#FFC107</color>
+    <color name="colorSecondary400">#FFCA28</color>
+    <color name="colorSecondary300">#FFD54F</color>
+    <color name="colorSecondary200">#FFE082</color>
+    <color name="colorSecondary100">#FFECB3</color>
+    <color name="colorSecondary050">#FFF8E1</color>
+
+    <color name="colorSecondaryAccent700">#FFAB00</color>
+    <color name="colorSecondaryAccent400">#FFC400</color>
+    <color name="colorSecondaryAccent200">#FFD740</color>
+    <color name="colorSecondaryAccent100">#FFE57F</color>
+
+    <color name="colorBGray900">#263238</color>
+    <color name="colorBGray800">#37474F</color>
+    <color name="colorBGray700">#455A64</color>
+    <color name="colorBGray600">#546E7A</color>
+    <color name="colorBGray500">#607D8B</color>
+    <color name="colorBGray400">#78909C</color>
+    <color name="colorBGray300">#90A4AE</color>
+    <color name="colorBGray200">#B0BEC5</color>
+    <color name="colorBGray100">#CFD8DC</color>
+    <color name="colorBGray050">#ECEFF1</color>
+
+    <color name="colorDeepOrange900">#BF360C</color>
+    <color name="colorDeepOrange800">#DE4315</color>
+    <color name="colorDeepOrange700">#E64A19</color>
+    <color name="colorDeepOrange600">#F4511E</color>
+    <color name="colorDeepOrange500">#FF5722</color>
+    <color name="colorDeepOrange400">#FF7043</color>
+    <color name="colorDeepOrange300">#FF8A65</color>
+    <color name="colorDeepOrange200">#FFAB92</color>
+    <color name="colorDeepOrange100">#FFCCBC</color>
+    <color name="colorDeepOrange050">#FBE9E7</color>
+
+</resources>
