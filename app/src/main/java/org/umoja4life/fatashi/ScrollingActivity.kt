@@ -7,6 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 
 class ScrollingActivity : AppCompatActivity() {
 
@@ -15,10 +16,15 @@ class ScrollingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scrolling)
         setSupportActionBar(findViewById(R.id.toolbar))
         findViewById<CollapsingToolbarLayout>(R.id.toolbar_layout).title = title
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+        // Get the Intent that started this activity and extract the string
+        val message = intent.getStringExtra(TAFUTA_MAULIZO)
+
+        // Capture the layout's TextView and set the string as its text
+        val textView = findViewById<TextView>(R.id.editTextTextPersonName2).apply {
+            text = message
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
