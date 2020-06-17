@@ -55,6 +55,8 @@ local.properties
 
 # Android Studio
 .gradle
+.idea/modules/app/app.iml
+.idea/caches/build_file_checksums.ser
 
 #NDK
 obj/
