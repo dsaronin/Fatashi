@@ -34,9 +34,12 @@ class MainActivity : AppCompatActivity() {
         //
         val editText = findViewById<EditText>(R.id.editTextTextPersonName)
         val maulizo = editText.text.toString()
+
+        /**
         val intent = Intent(this, ScrollingActivity::class.java).apply {
             putExtra(TAFUTA_MAULIZO, maulizo)
         }
         startActivity(intent)
+        **/
     }
 }
