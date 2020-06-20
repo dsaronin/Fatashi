@@ -63,11 +63,13 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    <include
+    <fragment
+        android:name="org.umoja4life.fatashi.KamusiItemFragment"
         android:id="@+id/list_fragment"
-        layout="@layout/fragment_item_list"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
