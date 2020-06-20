@@ -64,9 +64,10 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <include
+        android:id="@+id/list_fragment"
         layout="@layout/fragment_item_list"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

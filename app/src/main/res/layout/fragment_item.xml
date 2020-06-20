@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
+    <!-- layout for each field column is below for LayoutInflater -->
+
     <TextView
         android:id="@+id/item_number"
         android:layout_width="wrap_content"

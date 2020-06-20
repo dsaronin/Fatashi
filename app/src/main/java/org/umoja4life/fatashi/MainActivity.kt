@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().run {
-                replace(R.id.sample_content_fragment, RecyclerViewFragment())
+                replace(R.id.list_fragment, KamusiItemFragment())
                 commit()
             }
         }

@@ -11,9 +11,9 @@ import android.view.ViewGroup
 import org.umoja4life.fatashi.dummy.DummyContent
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Kamusi Items.
  */
-class ItemFragment : Fragment() {
+class KamusiItemFragment : Fragment() {
 
     private var columnCount = 1
 
@@ -38,7 +38,7 @@ class ItemFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyItemRecyclerViewAdapter(DummyContent.ITEMS)
+                adapter = KamusiItemRecyclerViewAdapter(DummyContent.ITEMS)
             }
         }
         return view
@@ -52,7 +52,7 @@ class ItemFragment : Fragment() {
         // TODO: Customize parameter initialization
         @JvmStatic
         fun newInstance(columnCount: Int) =
-            ItemFragment().apply {
+            KamusiItemFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_COLUMN_COUNT, columnCount)
                 }
