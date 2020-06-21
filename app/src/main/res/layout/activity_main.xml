@@ -31,7 +31,7 @@
                 android:layout_height="51dp"
                 android:layout_marginStart="4dp"
                 android:ems="10"
-                android:hint="@string/edit_tafuta"
+                android:hint= "@string/edit_tafuta"
                 android:inputType="textPersonName"
                 app:layout_constraintEnd_toStartOf="@+id/button"
                 app:layout_constraintHorizontal_bias="0.5"

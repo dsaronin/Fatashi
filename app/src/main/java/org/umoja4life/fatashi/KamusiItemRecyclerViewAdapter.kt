@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-import org.umoja4life.fatashi.dummy.DummyContent.DummyItem
+import org.umoja4life.fatashi.dummy.ResultsContent.ResultItem
 
 /**
- * [RecyclerView.Adapter] that can display a [DummyItem].
+ * [RecyclerView.Adapter] that can display a [ResultItem].
  * TODO: Replace the implementation with code for your data type.
  */
 class KamusiItemRecyclerViewAdapter(
-    private val values: List<DummyItem>
+    private val values: List<ResultItem>
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

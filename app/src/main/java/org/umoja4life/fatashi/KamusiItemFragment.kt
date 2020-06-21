@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.umoja4life.fatashi.dummy.DummyContent
+import org.umoja4life.fatashi.dummy.ResultsContent
 
 /**
  * A fragment representing a list of Kamusi Items.
@@ -38,7 +38,7 @@ class KamusiItemFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = KamusiItemRecyclerViewAdapter(DummyContent.ITEMS)
+                adapter = KamusiItemRecyclerViewAdapter(ResultsContent.RESULT_ITEMS)
             }
         }
         return view
