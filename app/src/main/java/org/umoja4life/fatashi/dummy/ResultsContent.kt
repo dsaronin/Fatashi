@@ -1,6 +1,5 @@
 package org.umoja4life.fatashi.dummy
 
-
 object ResultsContent {
 // helper class for content
 
@@ -23,23 +22,4 @@ object ResultsContent {
         override fun toString(): String = content
     }
 }
-
-/*******************************************
- * archived from DummyClass
- *         val builder = StringBuilder()
- * builder.append("Details about Item: ").append(position)
- * for (i in 0..position - 1) {
- * builder.append("\nMore details information here.")
- * }
- * return builder.toString()
- *
- * archived from init block
- *   A map of sample (dummy) items, by ID.
-
- *   val ITEM_MAP: MutableMap<String, ResultItem> = HashMap()
-
- *   private val COUNT = 25
-
-
- ********************/
 

@@ -10,9 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import org.umoja4life.fatashi.dummy.ResultsContent
 
-/**
- * A fragment representing a list of Kamusi Items.
- */
+// KamusiItemFragment representing a list of Kamusi Items
+
 class KamusiItemFragment : Fragment() {
 
     private var columnCount = 1

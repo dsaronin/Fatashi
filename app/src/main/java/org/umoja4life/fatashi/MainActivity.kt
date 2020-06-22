@@ -17,18 +17,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        /**************
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+        ***************/
     }
     /** Called when the user taps the search button
-     * Android requirements:
-     * - public access
-     * - implicit unit return value
-     * - View as only parameter (the view object)
+     * Android requirements: public access, implicit unit return value,
+     * View as only parameter (the view object)
      * */
-
     fun searchRequest(view: View) {
         // todo: read contents of search field and deliver to another activity
         //
