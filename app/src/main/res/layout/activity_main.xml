@@ -26,7 +26,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <EditText
-                android:id="@+id/editTextTextPersonName"
+                android:id="@+id/search_request_input"
                 android:layout_width="0dp"
                 android:layout_height="51dp"
                 android:layout_marginStart="4dp"
@@ -48,12 +48,21 @@
                 android:drawableTint="@color/colorSecondary300"
                 android:onClick="searchRequest"
                 android:tooltipText="@string/button_tafuta"
-                app:layout_constraintBaseline_toBaselineOf="@+id/editTextTextPersonName"
+                app:layout_constraintBaseline_toBaselineOf="@+id/search_request_input"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName" />
+                app:layout_constraintStart_toEndOf="@+id/search_request_input" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
+
+    <fragment
+        android:name="org.umoja4life.fatashi.KamusiItemFragment"
+        android:id="@+id/list_fragment"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
     <!-- Floating Action Button, unused
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -65,14 +74,5 @@
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     -->
-
-    <fragment
-        android:name="org.umoja4life.fatashi.KamusiItemFragment"
-        android:id="@+id/list_fragment"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -43,6 +43,10 @@ class KamusiItemFragment : Fragment() {
         return view
     }
 
+    fun updateFragmentResults( ) {
+        ResultsContent.shuffleList()    // shuffle list to show changed display
+    }
+
     companion object {
 
         // TODO: Customize parameter argument names
