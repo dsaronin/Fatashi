@@ -1,10 +1,13 @@
 package org.umoja4life.fatashi
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+
 
 private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
@@ -23,6 +26,14 @@ class MainActivity : AppCompatActivity()  {
         setSupportActionBar(findViewById(R.id.toolbar))
     }
 
+    // hideKeyboard  -- make the soft keyboard disappear onClick
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager: InputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     // searchRequest -- invoked when the user taps the search button
     // read contents of search field and replace Fragment to display
     // >>>>>> onClick response from the search icon: activity_main.xml <<<<<<<<<<<\
@@ -39,6 +50,7 @@ class MainActivity : AppCompatActivity()  {
 
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${R.id.list_fragment.toString()} ${myfragment != null}: $maulizo");
 
+        hideKeyboard(view)  // vanish keyboard from the screen
         myfragment?.updateFragmentResults(maulizo)  // send query to fragment to update results
     }
 }
