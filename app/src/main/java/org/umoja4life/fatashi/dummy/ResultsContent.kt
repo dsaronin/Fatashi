@@ -1,5 +1,8 @@
 package org.umoja4life.fatashi.dummy
 
+private const val DEBUG = true
+private const val LOG_TAG = "ResultsContent"
+
 object ResultsContent {
 // helper class for content
 

@@ -32,3 +32,44 @@ val LOG_TAG = "RecyclerViewAdapter";
         Log.d(LOG_TAG, "onCreateViewHolder (" + ++counterOnCreateViewHolder + ")");
 
         Log.d(LOG_TAG, "onBindViewHolder (" + ++counterOnBindViewHolder + ")");
+
+// from ItemFragment.kt :: onCreateView
+        arguments?.let {
+            columnCount = it.getInt(ARG_COLUMN_COUNT)
+        }
+
+        // Set the adapter
+        if (view is RecyclerView) {
+            with(view) {
+                layoutManager = when {
+                    columnCount <= 1 -> LinearLayoutManager(context)
+                    else -> GridLayoutManager(context, columnCount)
+                }
+                adapter = KamusiItemRecyclerViewAdapter(ResultsContent.RESULT_ITEMS)
+            }
+        }
+    companion object {
+
+        // TODO: Customize parameter argument names
+        const val ARG_COLUMN_COUNT = "column-count"
+
+        // TODO: Customize parameter initialization
+        @JvmStatic
+        fun newInstance(columnCount: Int) =
+            KamusiItemFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_COLUMN_COUNT, columnCount)
+                }
+            }
+    }
+
+=============================
+how to replace a fragment
+
+        supportFragmentManager.beginTransaction()
+            .setTransition( FragmentTransaction.TRANSIT_NONE )
+            .replace(R.id.list_fragment, KamusiItemFragment() )
+            .addToBackStack( maulizo )
+            .commit()
+
+

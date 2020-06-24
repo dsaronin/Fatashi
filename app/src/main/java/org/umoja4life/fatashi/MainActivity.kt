@@ -8,17 +8,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import org.umoja4life.fatashi.dummy.ResultsContent
 
-class MainActivity : AppCompatActivity() {
+private const val DEBUG = true
+private const val LOG_TAG = "MainActivity"
+
+
+class MainActivity : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
     }
-
-    private val LOG_TAG = "searchRequest";
-
-
 
     // searchRequest -- invoked when the user taps the search button
     // read contents of search field and replace Fragment to display
@@ -27,14 +27,9 @@ class MainActivity : AppCompatActivity() {
         val editText = findViewById<EditText>(R.id.search_request_input)
         val maulizo  = editText.text.toString()
 
-        ResultsContent.newQuery( maulizo )
+        val myfragment: KamusiItemFragment? = supportFragmentManager.findFragmentById(R.id.list_fragment) as KamusiItemFragment?
 
-        Log.d(LOG_TAG, "${R.id.list_fragment.toString()}: $maulizo");
-
-        supportFragmentManager.beginTransaction()
-            .setTransition( FragmentTransaction.TRANSIT_NONE )
-            .replace(R.id.list_fragment, KamusiItemFragment() )
-            .addToBackStack( maulizo )
-            .commit()
+        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${R.id.list_fragment.toString()} ${myfragment != null}: $maulizo");
+        myfragment?.updateFragmentResults(maulizo)
     }
 }

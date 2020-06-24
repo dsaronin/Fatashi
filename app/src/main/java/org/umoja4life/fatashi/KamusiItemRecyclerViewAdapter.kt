@@ -9,6 +9,9 @@ import android.widget.TextView
 
 import org.umoja4life.fatashi.dummy.ResultsContent.ResultItem
 
+private const val DEBUG = true
+private const val LOG_TAG = "KamusiItemRecyclerView"
+
 /**
  * [RecyclerView.Adapter] that can display a [ResultItem]
  */
