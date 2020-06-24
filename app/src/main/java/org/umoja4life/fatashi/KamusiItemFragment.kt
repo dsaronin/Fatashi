@@ -3,27 +3,28 @@ package org.umoja4life.fatashi
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import org.umoja4life.fatashi.dummy.ResultsContent
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
 
-// KamusiItemFragment representing a list of Kamusi Items
+// KamusiItemFragment -- representing a list of Kamusi Items
 
 class KamusiItemFragment : Fragment() {
 
     var myAdapter : KamusiItemRecyclerViewAdapter? = null
 
+    // onCreate callback -- for when fragment is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+    // onCreateView callback -- for when view is created
+    // tasks are to remember the RV.Adapter for later usage to refresh screen with new data
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +32,8 @@ class KamusiItemFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_item_list, container, false)
 
-        // Set the adapter
+        // Set the adapter for only a LinearLayout (not Grid) Manager
+        // establish the KamusiItem RV.Adapter (handles scrolling)
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
@@ -42,15 +44,21 @@ class KamusiItemFragment : Fragment() {
         return view
     }
 
+    // updateFragmentResults  -- get a new search query, then update & refresh display
+    // >>>>> THIS IS THE KEY POINT TO ACCESS THE KAMUSI BACKEND SEARCH ENGINE <<<<<<<<
+    // publically accessible, specifically from MainActivity at onClick for search
+
     fun updateFragmentResults( maulizo: String ) {
         if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo");
 
-        ResultsContent.newQuery( maulizo )
-        myAdapter?.notifyDataSetChanged( )
+        ResultsContent.newQuery( maulizo )  // have ResultsContent get us some new items to display
+        myAdapter?.notifyDataSetChanged( )  // then tell the RV.Adapter that we need a refresh
 
-        // ResultsContent.shuffleList()    // shuffle list to show changed display
     }
 
+    //**********************************************************************************
+    //**********************************************************************************
+    //**********************************************************************************
     companion object {
 
         // TODO: Customize parameter initialization
@@ -62,4 +70,8 @@ class KamusiItemFragment : Fragment() {
                 // }
             }
     }
+    //**********************************************************************************
+    //**********************************************************************************
+    //**********************************************************************************
+
 }

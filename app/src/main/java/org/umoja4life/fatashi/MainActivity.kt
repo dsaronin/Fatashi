@@ -5,14 +5,17 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
-import org.umoja4life.fatashi.dummy.ResultsContent
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
+// MainActivity -- APP starting point
 
 class MainActivity : AppCompatActivity()  {
+
+    // onCreate callback -- when Activity is first created
+    // Inflate the contentView
+    // Inflate the ActionBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,14 +25,20 @@ class MainActivity : AppCompatActivity()  {
 
     // searchRequest -- invoked when the user taps the search button
     // read contents of search field and replace Fragment to display
+    // >>>>>> onClick response from the search icon: activity_main.xml <<<<<<<<<<<\
+    // our job here is to grab the search-field-input text string, then
+    // pass it on to the Fragment handling it.
+
     fun searchRequest(view: View) {
 
-        val editText = findViewById<EditText>(R.id.search_request_input)
-        val maulizo  = editText.text.toString()
+        val maulizo  = findViewById<EditText>(R.id.search_request_input).text.toString()
 
-        val myfragment: KamusiItemFragment? = supportFragmentManager.findFragmentById(R.id.list_fragment) as KamusiItemFragment?
+        val myfragment: KamusiItemFragment?
+                = supportFragmentManager
+                  .findFragmentById(R.id.list_fragment) as KamusiItemFragment?
 
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${R.id.list_fragment.toString()} ${myfragment != null}: $maulizo");
-        myfragment?.updateFragmentResults(maulizo)
+
+        myfragment?.updateFragmentResults(maulizo)  // send query to fragment to update results
     }
 }

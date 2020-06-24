@@ -1,4 +1,4 @@
-package org.umoja4life.fatashi.dummy
+package org.umoja4life.fatashi
 
 private const val DEBUG = true
 private const val LOG_TAG = "ResultsContent"
@@ -16,7 +16,10 @@ object ResultsContent {
     private val indexList: List<Int> = sampleResult.indices.toList()
 
     init {
-        buildResultItems(empty_query, sampleResult)
+        buildResultItems(
+            empty_query,
+            sampleResult
+        )
    }
 
     // shuffleList is for debugging & testing purposes
@@ -28,13 +31,26 @@ object ResultsContent {
     }
 
     fun newQuery( s: String ) {
-        buildResultItems(s, shuffleList() )
+        buildResultItems(
+            s,
+            shuffleList()
+        )
     }
 
     fun buildResultItems(query: String, resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
-        RESULT_ITEMS.add( ResultItem( "0", query ) )
-        for ( i in resultList.indices ) RESULT_ITEMS.add( ResultItem((i+1).toString(), resultList[i]) )
+        RESULT_ITEMS.add(
+            ResultItem(
+                "0",
+                query
+            )
+        )
+        for ( i in resultList.indices ) RESULT_ITEMS.add(
+            ResultItem(
+                (i + 1).toString(),
+                resultList[i]
+            )
+        )
     }
 
     /**
