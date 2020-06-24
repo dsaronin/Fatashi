@@ -46,7 +46,7 @@ class KamusiItemFragment : Fragment() {
         if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo");
 
         ResultsContent.newQuery( maulizo )
-        myAdapter?.notifyItemChanged( 0 )
+        myAdapter?.notifyDataSetChanged( )
 
         // ResultsContent.shuffleList()    // shuffle list to show changed display
     }
