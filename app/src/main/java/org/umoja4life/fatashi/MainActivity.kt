@@ -4,10 +4,12 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 
 private const val DEBUG = false
@@ -25,6 +27,19 @@ class MainActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
+
+        // setup a listener for keyboard-based SEARCH submit button
+
+        val view: TextInputLayout = findViewById( R.id.search_request_layout )
+        if (DEBUG) Log.d(LOG_TAG, ">>> kbd listen <<< (${view.editText != null})" )
+            view.editText?.setOnEditorActionListener { _, actionId, _ ->
+                if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId" )
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchRequest(view)  // treat same as onClick button
+            }
+            true
+        }
     }
 
     // hideKeyboard  -- make the soft keyboard disappear onClick
