@@ -39,17 +39,9 @@ object ResultsContent {
 
     fun buildResultItems(query: String, resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
-        RESULT_ITEMS.add(
-            ResultItem(
-                "0",
-                query
-            )
-        )
+//        RESULT_ITEMS.add(ResultItem("0", query))
         for ( i in resultList.indices ) RESULT_ITEMS.add(
-            ResultItem(
-                (i + 1).toString(),
-                resultList[i]
-            )
+            ResultItem(i.toString(), resultList[i])
         )
     }
 
