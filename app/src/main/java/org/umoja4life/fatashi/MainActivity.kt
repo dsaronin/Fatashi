@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputEditText
 
 
 private const val DEBUG = false
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity()  {
 
     fun searchRequest(view: View) {
 
-        val maulizo  = findViewById<EditText>(R.id.search_request_input).text.toString()
+        val maulizo  = findViewById<TextInputEditText>(R.id.search_request_input).text.toString()
 
         val myfragment: KamusiItemFragment?
                 = supportFragmentManager
