@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import kotlinx.android.synthetic.main.*
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -37,7 +39,9 @@ class KamusiItemFragment : Fragment() {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                myAdapter = KamusiItemRecyclerViewAdapter( ResultsContent.RESULT_ITEMS )
+                myAdapter = KamusiItemRecyclerViewAdapter(
+                    ResultsContent.RESULT_ITEMS
+                ) { searchItem : String -> searchItemClicked(searchItem) }
                 adapter = myAdapter     // remember for later update usage
             }
         }
@@ -49,12 +53,17 @@ class KamusiItemFragment : Fragment() {
     // publically accessible, specifically from MainActivity at onClick for search
 
     fun updateFragmentResults( maulizo: String ) {
-        if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo");
+        if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo")
 
         ResultsContent.newQuery( maulizo )  // have ResultsContent get us some new items to display
         myAdapter?.notifyDataSetChanged( )  // then tell the RV.Adapter that we need a refresh
 
     }
+
+    private fun searchItemClicked(searchItem : String) {
+        Toast.makeText(getActivity()?.getApplicationContext(), "Clicked: $searchItem", Toast.LENGTH_LONG).show()
+    }
+
 
     //**********************************************************************************
     //**********************************************************************************

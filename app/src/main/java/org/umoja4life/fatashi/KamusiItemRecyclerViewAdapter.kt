@@ -15,7 +15,8 @@ private const val LOG_TAG = "KamusiItemRecyclerView"
 
 class KamusiItemRecyclerViewAdapter(
 
-    private val values: List<ResultItem>
+    private val resultList: List<ResultItem>,
+    private val clickListener: (String) -> Unit
 
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -27,22 +28,24 @@ class KamusiItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.col1View.text = values[position].content
+        holder.bind( resultList[position].content, clickListener )
     }
 
-    override fun getItemCount(): Int = values.size
+    override fun getItemCount(): Int = resultList.size
 
     //**********************************************************************************
     //**********************************************************************************
     //**********************************************************************************
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val col1View: TextView = view.findViewById(R.id.col1_content)
+        val col1View: TextView = itemView.findViewById(R.id.col1_content)
 
-        // content is now in first column
-        override fun toString(): String {
-            return super.toString() + " '" + col1View.text + "'"
+        fun bind(resultItem: String, myListener: (String) -> Unit) = with(itemView) {
+            col1View.text = resultItem
+            setOnClickListener { myListener(resultItem) }
         }
+
+        override fun toString(): String = super.toString() + " '" + col1View.text + "'"
     }
     //**********************************************************************************
     //**********************************************************************************
