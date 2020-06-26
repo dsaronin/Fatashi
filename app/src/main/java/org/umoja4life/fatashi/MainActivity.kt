@@ -20,24 +20,26 @@ private const val LOG_TAG = "MainActivity"
 class MainActivity : AppCompatActivity()  {
 
     // onCreate callback -- when Activity is first created
-    // Inflate the contentView
-    // Inflate the ActionBar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
 
-        // setup a listener for keyboard-based SEARCH submit button
+        setContentView(R.layout.activity_main)  // Inflate the contentView
+        setSupportActionBar(findViewById(R.id.toolbar))  // Inflate the ActionBar
+        handleKeyboardSubmit( findViewById( R.id.search_request_layout ) )
+    }
 
-        val view: TextInputLayout = findViewById( R.id.search_request_layout )
+    // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
+    // setup a listener for keyboard-based SEARCH submit button
+
+    private fun handleKeyboardSubmit( view: TextInputLayout )  {
         if (DEBUG) Log.d(LOG_TAG, ">>> kbd listen <<< (${view.editText != null})" )
-            view.editText?.setOnEditorActionListener { _, actionId, _ ->
-                if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId" )
 
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchRequest(view)  // treat same as onClick button
-            }
+        view.editText?.setOnEditorActionListener { _, actionId, _ ->
+
+            if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId" )
+
+            // treat same as onClick button
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) searchRequest(view)
             true
         }
     }

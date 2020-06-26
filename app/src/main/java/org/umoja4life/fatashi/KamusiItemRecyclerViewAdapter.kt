@@ -38,7 +38,6 @@ class KamusiItemRecyclerViewAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         val col1View: TextView = view.findViewById(R.id.col1_content)
-        val col2View: TextView = view.findViewById(R.id.col2_content)
 
         // content is now in first column
         override fun toString(): String {
@@ -47,5 +46,6 @@ class KamusiItemRecyclerViewAdapter(
     }
     //**********************************************************************************
     //**********************************************************************************
+    // val col2View: TextView = view.findViewById(R.id.col2_content)
     //**********************************************************************************
 }
