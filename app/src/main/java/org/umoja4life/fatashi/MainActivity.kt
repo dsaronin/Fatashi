@@ -6,10 +6,9 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 private const val DEBUG = false
@@ -24,8 +23,8 @@ class MainActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
-        setSupportActionBar(findViewById(R.id.toolbar))  // Inflate the ActionBar
-        handleKeyboardSubmit( findViewById( R.id.search_request_layout ) )
+        setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
+        handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
     }
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
@@ -47,9 +46,8 @@ class MainActivity : AppCompatActivity()  {
     // hideKeyboard  -- make the soft keyboard disappear onClick
 
     private fun hideKeyboard(view: View) {
-        val inputMethodManager: InputMethodManager =
-            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+        (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager)
+        .hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     // searchRequest -- invoked when the user taps the search button
@@ -60,13 +58,12 @@ class MainActivity : AppCompatActivity()  {
 
     fun searchRequest(view: View) {
 
-        val maulizo  = findViewById<TextInputEditText>(R.id.search_request_input).text.toString()
+        val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
 
-        val myfragment: KamusiItemFragment?
-                = supportFragmentManager
+        val myfragment: KamusiItemFragment? = supportFragmentManager
                   .findFragmentById(R.id.list_fragment) as KamusiItemFragment?
 
-        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${R.id.list_fragment.toString()} ${myfragment != null}: $maulizo");
+        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${myfragment != null}: $maulizo");
 
         hideKeyboard(view)  // vanish keyboard from the screen
         myfragment?.updateFragmentResults(maulizo)  // send query to fragment to update results

@@ -38,7 +38,7 @@ class KamusiItemRecyclerViewAdapter(
     //**********************************************************************************
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val col1View: TextView = itemView.findViewById(R.id.col1_content)
+        private val col1View: TextView = itemView.findViewById(R.id.col1_content)
 
         fun bind(resultItem: String, myListener: (String) -> Unit) = with(itemView) {
             col1View.text = resultItem
