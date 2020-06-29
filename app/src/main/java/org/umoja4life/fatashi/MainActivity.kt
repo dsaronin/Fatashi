@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity()  {
         setContentView(R.layout.activity_main)  // Inflate the contentView
         setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
+
+        supportFragmentManager
+            .beginTransaction()
+            .add(R.id.list_fragment, KamusiItemFragment())
+            .commit()
     }
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
