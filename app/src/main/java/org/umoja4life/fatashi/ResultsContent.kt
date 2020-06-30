@@ -13,11 +13,17 @@ object ResultsContent {
      */
     val RESULT_ITEMS: MutableList<ResultItem> = mutableListOf()
 
-    private val sampleResult = listOf("aali  -- excellent\t__", "abadani  -- never\t__ kijana huyu hanywi pombe abadani.", "abiria aliyeketi ubavuni pangu  -- the passenger sitting at my side", "abiria  -- passenger", "-abiri  -- learn from experience\t__ kutokana na kifo cha wazee wake, ameabiri kwamba maisha ni magumu.", "-abiri  -- predict, foresee\t__ aliabiri kwamba mvua itanyesha leo.", "-abiri  -- travel, navigate, sail\t__ aliabiri kwenye mashua.", "-abudu  -- worship, idolize; heshimu, ogopa omba, nyenyekea, tumikia\t__ mila na itikadi pamoja na hayo imani ya kuabudu mizimu.", "abwe!  -- wow! (expl)\t__", "-acha  -- abandon, neglect\t__ kuku aliwaacha watoto wake.", "-acha  -- allow, permit, let sby do sth; ruhusu mtu afanye jambo\t__ wacha nitumie hadi jumatatu. alimwacha mtoto wake afanye atakavyo.", "-acha  -- avoid, cease, stop doing sth\t__ acha kucheza kamari.", "-acha  -- divorce, separation; tengana na mtu, kitu, jambo au hali\t__ amemwacha mkewe. kuku amewaacha watoto wake.", "-acha  -- give instructions, leave a message to sby while away; toa masharti au maagizo ya kutekelezwa na mtu mwingine wakati umeondoka\t__ aliacha maagizo kwa jirani zake.", "-acha  -- leave sth behind; bakiza kitu, mtu, mali\t__ aliacha mali nyingi aliipokufa. amekiacha chakula nusu sahani. nilimwacha fulani posta.", "-achama  -- gape, stare, gawk\t__ mbona unaachama?", "-acha mavanga", "-- acha udanganyifu au uongo (idm)\t__", "-acha mkono  -- die (idiom)\t__ alituacha mkono zamani.", "-achana  -- be separated\t__ kuachana naye", "-achana nasi  -- depart/leave us; die\t_", "acha!  -- neno la kuonyesha mshangao na furaha\t__ acha wee!", "-acha  -- pardon, release, let go\t__ nilimkamata mwizi wa mifuko na kisha nikamwachilia.", "-acha  -- pass by sth [directions]; pita kitu fulani\t__ acha nyumba ili mkono wa kushoto kisha uende moja kwa mjoa mpaka kwa hilo jengo. acha hoteli mkono wa kulia uende kama mitamia hivi.", "-acha  -- resign from sth; kutoendelea kujihusisha na kitu, shughuli, shirika fulani\t__ ameacha kazi.  achari  -- pickles\t__", "-achia  -- leave to sby\t__ aliniachia simu yake nimsajili katika mtandao wa duo.", "-achilia  -- acquit, discharge\t__ mahakama ilimwachilia huru mshtakiwa.", "-achisha  -- stop sby from doing sth\t__ achisha ziwa [wean a child]. achisha kazi [fire terminate sby employment].", "adabu  -- respect, good manners\t__", "ada  -- custom, tradition; habit\t__ ada za harusi. ana ada ya kuchelewa kazini kila siku. ada ya mja hunena, muungwana ni kitendo", "~a daima  -- lasting\t__ upendo wa daima; asipojua kusema daima hataelewana na wenzake.  adapta  -- adapter  (tech)", "ada ya pango  -- rent\t__ analipa shilingi ngapi ada ya pango?", "ada ya pango  -- rent (n)", "ada ya uhamisho  -- transfer fee\t__", "~a dayo  -- dial-up (adj)  (tech)", "adhabu  -- punishment, penalty; persecution\t__ mwanafunzi atapata adhabu kali. kibarua cha kuchuma majani chai ni adhabu.", "adha  -- inconvenience, nuisance, annoyance\t__ mbona hakunizaa katika ulimwengu usiokuwa na adha na ubaya?", "~a dhati  -- genuine, true\t__ mapenzi ya dhati kwa sana", "-adhibiwa  -- be punished\t__ ni haki mtu kuadhibiwa kwa jambo ambalo hakufanya?", "-adhibu  -- punish, harass\t__ serikali itawaadhibu wale wanavunja sheria. akiniadhibu basi mimi nitaripoti kwa wazee wake.", "-adhimisha  -- commemorate, celebrate, glorify, honor; sherekea jambo au siku kwa kuitukuza, ipa heshima\t__ nchi yetu iliadhimisha miaka thelathini ya kkupatikana kwa uhuru.", "adhimisho  (ma)  -- commemoration, celebration, observance\t__", "adhimu  -- bountiful, much\t__ alikuwa na mali adhimu", "adhimu  -- exalted, glory, prestigious, honorable\t__ kulikuwa na sherehe adhimu mtaani hivi karibuni.", "-adhiri, -aziri  -- disgrace, slander\t__ aliniaziri kwa kunidai pesa zake hadharani (in public).", "adhuhuri  -- noontime\t__ habari za adhuhuri?", "-adibu  -- teach good manners; fundisha mwenendo mwema au tabia njema; kuwa adabu\t__ mzee alimwadibu binti yake jinsi ya kuwashughulikia wageni.", "~adilifu  -- just and good; righteous\t__ kiongozi mwadilifu. daktari Nozi alikuwa kijana mwadilifu.", "adilifu  -- just and good; righteousness\t__ yote yalikuwa chini ya usimamizi mzuri na adilifu wa dada yake", "-adili  -- judge impartially; be impartial, be just\t__ mkuu wa wilaya anasifika sana katika kuadili shughuli mbalimbali za wilaya.")
+    private val sampleResult = listOf("aali\texcellent\t", "abadani\tnever\tkijana huyu hanywi pombe abadani.", "abiria aliyeketi ubavuni pangu\tthe passenger sitting at my side", "abiria\tpassenger", "-abiri\tlearn from experience\tkutokana na kifo cha wazee wake, ameabiri kwamba maisha ni magumu.", "-abiri\tpredict, foresee\taliabiri kwamba mvua itanyesha leo.", "-abiri\ttravel, navigate, sail\taliabiri kwenye mashua.", "-abudu\tworship, idolize; heshimu, ogopa omba, nyenyekea, tumikia\tmila na itikadi pamoja na hayo imani ya kuabudu mizimu.", "abwe!\twow! (expl)\t", "-acha\tabandon, neglect\tkuku aliwaacha watoto wake.", "-acha\tallow, permit, let sby do sth; ruhusu mtu afanye jambo\twacha nitumie hadi jumatatu. alimwacha mtoto wake afanye atakavyo.", "-acha\tavoid, cease, stop doing sth\tacha kucheza kamari.", "-acha\tdivorce, separation; tengana na mtu, kitu, jambo au hali\tamemwacha mkewe. kuku amewaacha watoto wake.", "-acha\tgive instructions, leave a message to sby while away; toa masharti au maagizo ya kutekelezwa na mtu mwingine wakati umeondoka\taliacha maagizo kwa jirani zake.", "-acha\tleave sth behind; bakiza kitu, mtu, mali\taliacha mali nyingi aliipokufa. amekiacha chakula nusu sahani. nilimwacha fulani posta.", "-achama\tgape, stare, gawk\tmbona unaachama?", "-acha mavanga", "-- acha udanganyifu au uongo (idm)\t", "-acha mkono\tdie (idiom)\talituacha mkono zamani.", "-achana\tbe separated\tkuachana naye", "-achana nasi\tdepart/leave us; die\t_", "acha!\tneno la kuonyesha mshangao na furaha\tacha wee!", "-acha\tpardon, release, let go\tnilimkamata mwizi wa mifuko na kisha nikamwachilia.", "-acha\tpass by sth [directions]; pita kitu fulani\tacha nyumba ili mkono wa kushoto kisha uende moja kwa mjoa mpaka kwa hilo jengo. acha hoteli mkono wa kulia uende kama mitamia hivi.", "-acha\tresign from sth; kutoendelea kujihusisha na kitu, shughuli, shirika fulani\tameacha kazi.  achari\tpickles\t", "-achia\tleave to sby\taliniachia simu yake nimsajili katika mtandao wa duo.", "-achilia\tacquit, discharge\tmahakama ilimwachilia huru mshtakiwa.", "-achisha\tstop sby from doing sth\tachisha ziwa [wean a child]. achisha kazi [fire terminate sby employment].", "adabu\trespect, good manners\t", "ada\tcustom, tradition; habit\tada za harusi. ana ada ya kuchelewa kazini kila siku. ada ya mja hunena, muungwana ni kitendo", "~a daima\tlasting\tupendo wa daima; asipojua kusema daima hataelewana na wenzake.  adapta\tadapter  (tech)", "ada ya pango\trent\tanalipa shilingi ngapi ada ya pango?", "ada ya pango\trent (n)", "ada ya uhamisho\ttransfer fee\t", "~a dayo\tdial-up (adj)  (tech)", "adhabu\tpunishment, penalty; persecution\tmwanafunzi atapata adhabu kali. kibarua cha kuchuma majani chai ni adhabu.", "adha\tinconvenience, nuisance, annoyance\tmbona hakunizaa katika ulimwengu usiokuwa na adha na ubaya?", "~a dhati\tgenuine, true\tmapenzi ya dhati kwa sana", "-adhibiwa\tbe punished\tni haki mtu kuadhibiwa kwa jambo ambalo hakufanya?", "-adhibu\tpunish, harass\tserikali itawaadhibu wale wanavunja sheria. akiniadhibu basi mimi nitaripoti kwa wazee wake.", "-adhimisha\tcommemorate, celebrate, glorify, honor; sherekea jambo au siku kwa kuitukuza, ipa heshima\tnchi yetu iliadhimisha miaka thelathini ya kkupatikana kwa uhuru.", "adhimisho  (ma)\tcommemoration, celebration, observance\t", "adhimu\tbountiful, much\talikuwa na mali adhimu", "adhimu\texalted, glory, prestigious, honorable\tkulikuwa na sherehe adhimu mtaani hivi karibuni.", "-adhiri, -aziri\tdisgrace, slander\taliniaziri kwa kunidai pesa zake hadharani (in public).", "adhuhuri\tnoontime\thabari za adhuhuri?", "-adibu\tteach good manners; fundisha mwenendo mwema au tabia njema; kuwa adabu\tmzee alimwadibu binti yake jinsi ya kuwashughulikia wageni.", "~adilifu\tjust and good; righteous\tkiongozi mwadilifu. daktari Nozi alikuwa kijana mwadilifu.", "adilifu\tjust and good; righteousness\tyote yalikuwa chini ya usimamizi mzuri na adilifu wa dada yake", "-adili\tjudge impartially; be impartial, be just\tmkuu wa wilaya anasifika sana katika kuadili shughuli mbalimbali za wilaya.")
     private val empty_query = "Enter a search query..."
     private val indexList: List<Int> = sampleResult.indices.toList()
 
     init {
+
+        // TODO: remove these before production
+        // fieldDelimiters.replace( rawContent, internalFields )
+        // private const val fieldDelimiters = "(\\s+--\\s+)|(\\t__[ \\t\\x0B\\f]+)".toRegex()
+        // private const val internalFields = "\t"
+
         buildResultItems(
             empty_query,
             sampleResult
@@ -42,25 +48,44 @@ object ResultsContent {
     fun buildResultItems(query: String, resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
 //        RESULT_ITEMS.add(ResultItem("0", query))
-        for ( i in resultList.indices ) RESULT_ITEMS.add(
-            ResultItem(i.toString(), resultList[i])
-        )
+        for ( i in resultList.indices ) {
+            val (entry, definition, usage) = parseFields(resultList[i])
+            RESULT_ITEMS.add(
+                ResultItem(i, resultList[i], entry,  definition, usage)
+            )
+        }
     }
 
-    fun parseFields(position: Int) : ItemDetail {
-        var entry = ""
-        var def = ""
-        var usage = ""
+    // TODO: move this into the project configuration file
+    private val itemRegex = "^([^\\t]+)\\t([^\\t]+)\\t?([^\\t]*)\$"
 
-        return ItemDetail(entry, def, usage)
+    // parseFields  -- split a search result line into three fields
+
+    fun parseFields(rawItem: String) : ItemDetail {
+        val keyfrag = itemRegex.toRegex().find(rawItem)
+
+            // if there was an issue matching/splitting to fields, at least
+            // return the entire search result line as the entry default!
+        return ItemDetail(
+            keyfrag?.groupValues?.get(1) ?: rawItem,
+            keyfrag?.groupValues?.get(2) ?: "",
+            keyfrag?.groupValues?.get(3) ?: ""
+        )
     }
 
     fun itemsCount() = RESULT_ITEMS.size
 
     /**
-     * An item representing a piece of content.
+     * An item representing a piece of content. 
      */
-    data class ResultItem(val id: String, val content: String) {
+    data class ResultItem(
+        val position: Int,
+        val content: String,
+        val entry: String,
+        val definition: String,
+        val usage: String
+    ) {
+        
         override fun toString(): String = content
     }
 }

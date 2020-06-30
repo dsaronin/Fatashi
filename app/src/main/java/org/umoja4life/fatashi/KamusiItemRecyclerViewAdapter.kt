@@ -38,14 +38,16 @@ class KamusiItemRecyclerViewAdapter(
     //**********************************************************************************
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val resultItemView: TextView = itemView.findViewById(R.id.result_item_content)
+        private val itemEntryView: TextView = itemView.findViewById(R.id.result_item_content_entry)
+        private val itemDefinitionView: TextView = itemView.findViewById(R.id.result_item_content_definition)
+        private val itemUsageView: TextView = itemView.findViewById(R.id.result_item_content_usage)
 
         fun bind(resultItem: String, myListener: (String) -> Unit) = with(itemView) {
-            resultItemView.text = resultItem
+            itemEntryView.text = resultItem
             setOnClickListener { myListener(resultItem) }
         }
 
-        override fun toString(): String = super.toString() + " '" + resultItemView.text + "'"
+        override fun toString(): String = super.toString() + " '" + itemEntryView.text + "'"
     }
     //**********************************************************************************
     //**********************************************************************************

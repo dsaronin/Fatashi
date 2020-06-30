@@ -49,7 +49,7 @@ class KamusiItemFragment : Fragment() {
 
     // updateFragmentResults  -- get a new search query, then update & refresh display
     // >>>>> THIS IS THE KEY POINT TO ACCESS THE KAMUSI BACKEND SEARCH ENGINE <<<<<<<<
-    // publically accessible, specifically from MainActivity at onClick for search
+    // publicly accessible, specifically from MainActivity at onClick for search
 
     fun updateFragmentResults( maulizo: String ) {
         if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo")
