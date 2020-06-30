@@ -61,6 +61,14 @@ class KamusiItemFragment : Fragment() {
 
     private fun searchItemClicked(searchItem : String) {
         Toast.makeText(getActivity()?.getApplicationContext(), "Clicked: $searchItem", Toast.LENGTH_LONG).show()
+        return
+
+        // TODO: save position
+        getActivity()?.supportFragmentManager
+            ?.beginTransaction()
+            ?.replace(R.id.fragment_container, DetailPagerFragment(), DetailPagerFragment::class.java.simpleName )
+            ?.addToBackStack(null)
+            ?.commit()
     }
 
 

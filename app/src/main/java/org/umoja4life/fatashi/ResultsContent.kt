@@ -3,6 +3,8 @@ package org.umoja4life.fatashi
 private const val DEBUG = true
 private const val LOG_TAG = "ResultsContent"
 
+data class ItemDetail(var entry: String, var def: String, var usage: String)
+
 object ResultsContent {
 // helper class for content
 
@@ -44,6 +46,16 @@ object ResultsContent {
             ResultItem(i.toString(), resultList[i])
         )
     }
+
+    fun parseFields(position: Int) : ItemDetail {
+        var entry = ""
+        var def = ""
+        var usage = ""
+
+        return ItemDetail(entry, def, usage)
+    }
+
+    fun itemsCount() = RESULT_ITEMS.size
 
     /**
      * An item representing a piece of content.
