@@ -7,7 +7,7 @@
     <!-- layout for each field column is below for LayoutInflater -->
 
     <TextView
-        android:id="@+id/col1_content"
+        android:id="@+id/result_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
@@ -16,6 +16,7 @@
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceListItem" />
 
+    <!--
     <TextView
         android:id="@+id/col2_content"
         android:layout_width="wrap_content"
@@ -25,4 +26,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAppearance="?attr/textAppearanceListItem" />
+-->
+
 </LinearLayout>

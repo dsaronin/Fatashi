@@ -23,7 +23,7 @@ class KamusiItemRecyclerViewAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater
                     .from(parent.context)
-                   .inflate(R.layout.fragment_item, parent, false)
+                   .inflate(R.layout.result_list_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -38,17 +38,16 @@ class KamusiItemRecyclerViewAdapter(
     //**********************************************************************************
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val col1View: TextView = itemView.findViewById(R.id.col1_content)
+        private val resultItemView: TextView = itemView.findViewById(R.id.result_item_content)
 
         fun bind(resultItem: String, myListener: (String) -> Unit) = with(itemView) {
-            col1View.text = resultItem
+            resultItemView.text = resultItem
             setOnClickListener { myListener(resultItem) }
         }
 
-        override fun toString(): String = super.toString() + " '" + col1View.text + "'"
+        override fun toString(): String = super.toString() + " '" + resultItemView.text + "'"
     }
     //**********************************************************************************
     //**********************************************************************************
-    // val col2View: TextView = view.findViewById(R.id.col2_content)
     //**********************************************************************************
 }

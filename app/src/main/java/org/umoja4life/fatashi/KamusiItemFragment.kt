@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.*
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -32,7 +31,7 @@ class KamusiItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_item_list, container, false)
+        val view = inflater.inflate(R.layout.search_result_list, container, false)
 
         // Set the adapter for only a LinearLayout (not Grid) Manager
         // establish the KamusiItem RV.Adapter (handles scrolling)

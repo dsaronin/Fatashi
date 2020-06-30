@@ -26,9 +26,10 @@ class MainActivity : AppCompatActivity()  {
         setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
 
+        // initiate KamusiItemFragment
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.list_fragment, KamusiItemFragment())
+            .add(R.id.fragment_container, KamusiItemFragment())
             .commit()
     }
 
@@ -66,7 +67,7 @@ class MainActivity : AppCompatActivity()  {
         val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
 
         val myfragment: KamusiItemFragment? = supportFragmentManager
-                  .findFragmentById(R.id.list_fragment) as KamusiItemFragment?
+                  .findFragmentById(R.id.fragment_container) as KamusiItemFragment?
 
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${myfragment != null}: $maulizo");
 

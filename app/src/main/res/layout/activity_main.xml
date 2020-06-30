@@ -28,7 +28,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_request_layout"
-                android:layout_width="350dp"
+                android:layout_width="355dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginStart="4dp"
@@ -51,7 +51,7 @@
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="58dp"
+                android:layout_width="47dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:layout_marginEnd="4dp"
@@ -70,11 +70,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
-        android:id="@+id/list_fragment"
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="615dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <!--
 
