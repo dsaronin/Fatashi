@@ -28,7 +28,7 @@ class KamusiItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind( resultList[position].content, clickListener )
+        holder.bind( resultList[position], clickListener )
     }
 
     override fun getItemCount(): Int = resultList.size
@@ -42,9 +42,13 @@ class KamusiItemRecyclerViewAdapter(
         private val itemDefinitionView: TextView = itemView.findViewById(R.id.result_item_content_definition)
         private val itemUsageView: TextView = itemView.findViewById(R.id.result_item_content_usage)
 
-        fun bind(resultItem: String, myListener: (String) -> Unit) = with(itemView) {
-            itemEntryView.text = resultItem
-            setOnClickListener { myListener(resultItem) }
+        // bind -- binds data to display view for an item
+
+        fun bind(resultItem: ResultItem, myListener: (String) -> Unit) = with(itemView) {
+            itemEntryView.text = resultItem.entry
+            itemDefinitionView.text = resultItem.definition
+            itemUsageView.text = resultItem.usage
+            setOnClickListener { myListener( resultItem.content ) }
         }
 
         override fun toString(): String = super.toString() + " '" + itemEntryView.text + "'"

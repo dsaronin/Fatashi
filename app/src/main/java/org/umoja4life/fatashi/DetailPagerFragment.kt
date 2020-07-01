@@ -51,6 +51,7 @@ class DetailPagerFragment : Fragment() {
 
     }
 
+    // TODO: saving/restoring current position information
 
     // bind result item fields to TextView fields in layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
