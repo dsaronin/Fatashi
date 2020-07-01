@@ -60,8 +60,8 @@ class KamusiItemFragment : Fragment() {
     }
 
     private fun searchItemClicked(searchItem : String) {
-        Toast.makeText(getActivity()?.getApplicationContext(), "Clicked: $searchItem", Toast.LENGTH_LONG).show()
-        return
+        Toast.makeText(getActivity()?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
+//        return
 
         // TODO: save position
         getActivity()?.supportFragmentManager

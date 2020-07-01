@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -36,7 +37,7 @@ class DetailPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
+        viewPager = inflater.inflate(R.layout.result_item_detail, container, false) as ViewPager2
         viewPager?.adapter = ResultItemDetailAdapter(activity as AppCompatActivity, ResultsContent.itemsCount() )
         viewPager?.currentItem = 0 // MainActivity.currentPosition
 
@@ -55,11 +56,13 @@ class DetailPagerFragment : Fragment() {
 
     // bind result item fields to TextView fields in layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val position = requireArguments().getInt(ARG_POSITION)
-
-        itemEntry.text = ResultsContent.RESULT_ITEMS[position].entry
-        itemDefinition.text = ResultsContent.RESULT_ITEMS[position].definition
-        itemUsage.text = ResultsContent.RESULT_ITEMS[position].usage
+        val position = 1 // TODO: requireArguments().getInt(ARG_POSITION)
+        val myDataItem = ResultsContent.RESULT_ITEMS[position]
+        with(view) {
+            findViewById<TextView>(R.id.itemEntry).text = myDataItem.entry
+            findViewById<TextView>(R.id.itemDefinition).text = myDataItem.definition
+            findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage
+        }
     }
 
 }
