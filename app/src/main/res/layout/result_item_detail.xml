@@ -12,15 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/itemDefinition"
-        android:layout_marginTop="4sp"
-        android:layout_marginBottom="4sp"
         android:background="@color/colorSecondary200"
         android:fontFamily="sans-serif-black"
-        android:lineSpacingExtra="8sp"
-        android:paddingHorizontal="2sp"
+        android:paddingHorizontal="4sp"
+        android:paddingVertical="10sp"
         android:text="TextView"
         android:textColor="@color/colorPrimary"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold" />
 
     <TextView
@@ -30,14 +28,21 @@
         android:layout_marginBottom="4sp"
         android:background="@color/colorBGray100"
         android:fontFamily="sans-serif-medium"
-        android:paddingHorizontal="2sp"
+        android:paddingHorizontal="4sp"
+        android:paddingVertical="8sp"
         android:text="TextView"
-        android:textSize="18sp" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/itemUsage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="4sp"
+        android:paddingVertical="2sp"
+        android:textSize="16sp"
+        android:textColor="@color/colorBGray800"
         android:text="TextView" />
 
 </LinearLayout>
