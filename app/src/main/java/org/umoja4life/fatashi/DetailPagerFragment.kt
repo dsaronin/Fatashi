@@ -42,7 +42,7 @@ class DetailPagerFragment : Fragment() {
 
     // bind result item fields to TextView fields in layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val position = 1 // TODO: requireArguments().getInt(ARG_POSITION)
+        val position = requireArguments().getInt(ARG_POSITION)
         val myDataItem = ResultsContent.RESULT_ITEMS[position]
         with(view) {
             findViewById<TextView>(R.id.itemEntry).text = myDataItem.entry

@@ -23,13 +23,13 @@ class VPShellFragment : Fragment() {
     ): View? {
         viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
         viewPager?.adapter = ResultItemDetailAdapter(activity as AppCompatActivity, ResultsContent.itemsCount() )
-        viewPager?.currentItem = 0 // MainActivity.currentPosition
+        viewPager?.currentItem = MainActivity.currentPosition
         viewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
 
         /*
         viewPager?.addOnPageChangeListener( object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected( position: Int) {
-                // MainActivity.currentPosition = position
+                MainActivity.currentPosition = position
             }
         })*/
 

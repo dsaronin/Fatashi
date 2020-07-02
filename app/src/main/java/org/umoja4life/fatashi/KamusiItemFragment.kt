@@ -40,7 +40,7 @@ class KamusiItemFragment : Fragment() {
                 layoutManager = LinearLayoutManager(context)
                 myAdapter = KamusiItemRecyclerViewAdapter(
                     ResultsContent.RESULT_ITEMS
-                ) { searchItem : String -> searchItemClicked(searchItem) }
+                ) { searchItem : ResultsContent.ResultItem -> searchItemClicked(searchItem) }
                 adapter = myAdapter     // remember for later update usage
             }
         }
@@ -59,11 +59,11 @@ class KamusiItemFragment : Fragment() {
 
     }
 
-    private fun searchItemClicked(searchItem : String) {
+    private fun searchItemClicked(searchItem : ResultsContent.ResultItem) {
         Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
-//        return
 
-        // TODO: save position
+        MainActivity.currentPosition = searchItem.position
+
         getActivity()?.supportFragmentManager
             ?.beginTransaction()
             ?.replace(R.id.fragment_container, VPShellFragment(), VPShellFragment::class.java.simpleName )

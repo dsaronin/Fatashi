@@ -16,7 +16,7 @@ private const val LOG_TAG = "KamusiItemRecyclerView"
 class KamusiItemRecyclerViewAdapter(
 
     private val resultList: List<ResultItem>,
-    private val clickListener: (String) -> Unit
+    private val clickListener: (ResultItem) -> Unit
 
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.ViewHolder>() {
 
@@ -44,11 +44,11 @@ class KamusiItemRecyclerViewAdapter(
 
         // bind -- binds data to display view for an item
 
-        fun bind(resultItem: ResultItem, myListener: (String) -> Unit) = with(itemView) {
+        fun bind(resultItem: ResultItem, myListener: (ResultItem) -> Unit) = with(itemView) {
             itemEntryView.text = resultItem.entry
             itemDefinitionView.text = resultItem.definition
             itemUsageView.text = resultItem.usage
-            setOnClickListener { myListener( resultItem.content ) }
+            setOnClickListener { myListener( resultItem ) }
         }
 
         override fun toString(): String = super.toString() + " '" + itemEntryView.text + "'"
