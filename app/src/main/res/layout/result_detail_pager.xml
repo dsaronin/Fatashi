@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailPagerFragment"
-    tools:listitem="@layout/result_item_detail"
     >
 
 </androidx.viewpager2.widget.ViewPager2>

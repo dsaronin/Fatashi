@@ -15,7 +15,6 @@ private const val LOG_TAG = "DetailPagerFragment"
 const val ARG_POSITION = "org.umoja4life.fatashi.item_position"
 
 class DetailPagerFragment : Fragment() {
-    private var viewPager: ViewPager2? = null
 
     // class-level to getInstance, prep the state arguments & return the Fragment
     companion object {
@@ -36,20 +35,7 @@ class DetailPagerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        viewPager = inflater.inflate(R.layout.result_item_detail, container, false) as ViewPager2
-        viewPager?.adapter = ResultItemDetailAdapter(activity as AppCompatActivity, ResultsContent.itemsCount() )
-        viewPager?.currentItem = 0 // MainActivity.currentPosition
-
-        /*
-        viewPager?.addOnPageChangeListener( object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected( position: Int) {
-                // MainActivity.currentPosition = position
-            }
-        })*/
-
-        return viewPager
-
+        return inflater.inflate(R.layout.result_item_detail, container, false)
     }
 
     // TODO: saving/restoring current position information

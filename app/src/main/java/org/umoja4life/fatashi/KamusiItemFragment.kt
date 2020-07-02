@@ -60,13 +60,13 @@ class KamusiItemFragment : Fragment() {
     }
 
     private fun searchItemClicked(searchItem : String) {
-        Toast.makeText(getActivity()?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
 //        return
 
         // TODO: save position
         getActivity()?.supportFragmentManager
             ?.beginTransaction()
-            ?.replace(R.id.fragment_container, DetailPagerFragment(), DetailPagerFragment::class.java.simpleName )
+            ?.replace(R.id.fragment_container, VPShellFragment(), VPShellFragment::class.java.simpleName )
             ?.addToBackStack(null)
             ?.commit()
     }
