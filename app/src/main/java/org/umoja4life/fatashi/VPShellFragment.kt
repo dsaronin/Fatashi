@@ -11,6 +11,11 @@ import androidx.viewpager2.widget.ViewPager2
 class VPShellFragment : Fragment() {
 
     private var viewPager: ViewPager2? = null
+    private var detailPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            MainActivity.currentPosition = position
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,16 +30,9 @@ class VPShellFragment : Fragment() {
         viewPager?.adapter = ResultItemDetailAdapter(activity as AppCompatActivity, ResultsContent.itemsCount() )
         viewPager?.currentItem = MainActivity.currentPosition
         viewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
-
-        /*
-        viewPager?.addOnPageChangeListener( object : ViewPager.SimpleOnPageChangeListener() {
-            override fun onPageSelected( position: Int) {
-                MainActivity.currentPosition = position
-            }
-        })*/
+        viewPager?.registerOnPageChangeCallback(( detailPageChangeCallback ))
 
         return viewPager
-
     }
 
 }
