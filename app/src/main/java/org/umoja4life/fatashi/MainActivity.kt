@@ -75,17 +75,24 @@ class MainActivity : AppCompatActivity()  {
     // pass it on to the Fragment handling it.
 
     fun searchRequest(view: View) {
+            // housekeeping stuff before refreshing search results
+        hideKeyboard(view)  // vanish keyboard from the screen
+        currentPosition = DEFAULT_POSITION      // reset current position
 
         val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
 
-        val myfragment: KamusiItemFragment? = supportFragmentManager
-                  .findFragmentById(R.id.fragment_container) as KamusiItemFragment?
-
+        var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${myfragment != null}: $maulizo");
 
-        hideKeyboard(view)  // vanish keyboard from the screen
-        currentPosition = DEFAULT_POSITION      // reset current position
-        myfragment?.updateFragmentResults(maulizo)  // send query to fragment to update results
+        if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
+            supportFragmentManager.popBackStackImmediate()  // pop back to KamusiItemFragment
+                // now get the fragment supporting that view
+            myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        }
+
+            // TODO: Model has to do the actual search on maulizo query
+            // send query to fragment to update results
+        (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
     }
 
     // ************************************************************************
