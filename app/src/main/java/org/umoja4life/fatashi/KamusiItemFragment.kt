@@ -9,6 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.transition.TransitionInflater
+import android.view.View.OnLayoutChangeListener
+import android.widget.TextView
+import androidx.core.app.SharedElementCallback
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -18,10 +22,13 @@ private const val LOG_TAG = "KamusiItemFragment"
 class KamusiItemFragment : Fragment() {
 
     var myAdapter : KamusiItemRecyclerViewAdapter? = null
+    private var recyclerView: RecyclerView? = null
+
 
     // onCreate callback -- for when fragment is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     // onCreateView callback -- for when view is created
@@ -31,20 +38,16 @@ class KamusiItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.search_result_list, container, false)
+        recyclerView = inflater.inflate(R.layout.search_result_list, container, false) as RecyclerView
+        recyclerView?.layoutManager = LinearLayoutManager(context)
+        myAdapter = KamusiItemRecyclerViewAdapter(
+            ResultsContent.RESULT_ITEMS
+        ) { searchItem : ResultsContent.ResultItem -> searchItemClicked(searchItem) }
+        recyclerView?.adapter = myAdapter     // remember for later update usage
+        prepareTransitions()
+        postponeEnterTransition()
 
-        // Set the adapter for only a LinearLayout (not Grid) Manager
-        // establish the KamusiItem RV.Adapter (handles scrolling)
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = LinearLayoutManager(context)
-                myAdapter = KamusiItemRecyclerViewAdapter(
-                    ResultsContent.RESULT_ITEMS
-                ) { searchItem : ResultsContent.ResultItem -> searchItemClicked(searchItem) }
-                adapter = myAdapter     // remember for later update usage
-            }
-        }
-        return view
+        return recyclerView
     }
 
     // updateFragmentResults  -- get a new search query, then update & refresh display
@@ -63,14 +66,67 @@ class KamusiItemFragment : Fragment() {
         Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
 
         MainActivity.currentPosition = searchItem.position
+        val transitioningView = view.findViewbyId<TextView>(R.id.itemEntry)
 
         getActivity()?.supportFragmentManager
             ?.beginTransaction()
+            ?.setReorderingAllowed(true)
+            ?.addSharedElement( transitioningView, transitioningView.transitionName )
             ?.replace(R.id.fragment_container, VPShellFragment(), VPShellFragment::class.java.simpleName )
             ?.addToBackStack(null)
             ?.commit()
     }
 
+    /**
+     * Scrolls the recycler view to show the last viewed item in the grid.
+     * Important when navigating back from the grid.
+     */
+    private fun scrollToPosition() {
+
+        recyclerView?.addOnLayoutChangeListener(object : OnLayoutChangeListener {
+
+            override fun onLayoutChange(
+                v: View, left: Int, top: Int, right: Int, bottom: Int,
+                oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int
+            ) {
+                recyclerView?.removeOnLayoutChangeListener(this)
+
+                val layoutManager = recyclerView?.layoutManager
+                val viewAtPosition = layoutManager?.findViewByPosition(MainActivity.currentPosition)
+
+                // Scroll to position if the view for the current position is null (not currently part of
+                // layout manager children), or it's not completely visible.
+                if (viewAtPosition == null ||
+                    layoutManager.isViewPartiallyVisible(
+                        viewAtPosition, false, true
+                    )) {
+                    recyclerView?.post { layoutManager?.scrollToPosition(MainActivity.currentPosition) }
+                }
+            }
+        })
+    }
+    /**
+     * Prepares the shared element transition to the pager fragment, as well as the other transitions
+     * that affect the flow.
+     */
+    private fun prepareTransitions() {
+        exitTransition = TransitionInflater.from(context)
+            .inflateTransition(R.transition.list_exit_transition)
+
+        // A similar mapping is set at the ImagePagerFragment with a setEnterSharedElementCallback.
+        setExitSharedElementCallback(
+            object : SharedElementCallback() {
+                override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
+                    // Locate the ViewHolder for the clicked position.
+                    val selectedViewHolder =
+                        recyclerView?.findViewHolderForAdapterPosition(MainActivity.currentPosition)
+                            ?: return
+
+                    // Map the first shared element name to the child ImageView.
+                    sharedElements[names[0]] = selectedViewHolder.itemView.findViewById(R.id.itemEntry)
+                }
+            })
+    }
 
     //**********************************************************************************
     //**********************************************************************************
