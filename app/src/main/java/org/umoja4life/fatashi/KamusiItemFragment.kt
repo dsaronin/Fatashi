@@ -25,12 +25,6 @@ class KamusiItemFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
 
 
-    // onCreate callback -- for when fragment is first created
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     // onCreateView callback -- for when view is created
     // tasks are to remember the RV.Adapter for later usage to refresh screen with new data
     override fun onCreateView(
@@ -41,6 +35,7 @@ class KamusiItemFragment : Fragment() {
         recyclerView = inflater.inflate(R.layout.search_result_list, container, false) as RecyclerView
         recyclerView?.layoutManager = LinearLayoutManager(context)
         myAdapter = KamusiItemRecyclerViewAdapter(
+            this,
             ResultsContent.RESULT_ITEMS
         ) { searchItem : ResultsContent.ResultItem -> searchItemClicked(searchItem) }
         recyclerView?.adapter = myAdapter     // remember for later update usage

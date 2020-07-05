@@ -15,14 +15,13 @@ import 	androidx.viewpager.widget.PagerAdapter
 class VPShellFragment : Fragment() {
 
     private var viewPager: ViewPager2? = null
-    private var detailPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            MainActivity.currentPosition = position
-        }
-    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private var detailPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+         // CALLBACK: onPageSelected, entered eachtime a page changes
+        override fun onPageSelected(position: Int) {
+            MainActivity.currentPosition = position  // update currentPosition
+            if (nextOnLoadCompleted != null) nextOnLoadCompleted(lastFragment, targetPosition)
+        }
     }
 
     override fun onCreateView(
@@ -37,6 +36,7 @@ class VPShellFragment : Fragment() {
         viewPager?.registerOnPageChangeCallback(( detailPageChangeCallback ))
 
         prepareSharedElementTransition()
+
         // Avoid a postponeEnterTransition on orientation change, and postpone only of first creation.
         if (savedInstanceState == null) postponeEnterTransition()
 
@@ -71,4 +71,19 @@ class VPShellFragment : Fragment() {
             })
     }
 
-}
+    // ***********************************************************************************
+    // ***********************************************************************************
+    // CLASS_LEVEL: to control callback for Fragment transitioning from LIST to DETAIL views
+    companion object {
+
+        lateinit var nextOnLoadCompleted : (Fragment, Int) -> Unit
+        lateinit var lastFragment : Fragment
+        var targetPosition : Int = 0
+
+        fun setNextOnLoadCompleted( prevFragment: Fragment, nextPosition: Int, anOnLoadCompletedFunction: (Fragment, Int) -> Unit ) {
+            nextOnLoadCompleted = anOnLoadCompletedFunction
+            lastFragment = prevFragment
+            targetPosition = nextPosition
+        }
+    }  // companion object
+} // class VPShellFragment
