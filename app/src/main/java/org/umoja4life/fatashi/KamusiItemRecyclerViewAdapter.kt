@@ -25,14 +25,23 @@ class KamusiItemRecyclerViewAdapter(
         // used as semaphore to control starting a view transition
     private val enterTransitionStarted = AtomicBoolean( false )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater
                     .from(parent.context)
                    .inflate(R.layout.result_list_item, parent, false)
-        return RecyclerView.ViewHolder(view)
+        val myHolder = ViewHolder(view)
+
+            // setup a callback to check item load completion after clicked
+        myHolder.onLoadCompleted = {fragment, position ->
+            if (MainActivity.currentPosition == position  &&
+                !enterTransitionStarted.getAndSet(true)) {
+                fragment.startPostponedEnterTransition()
+            }
+        }
+        return myHolder
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(resultList[position], clickListener)
     }
 
@@ -41,10 +50,7 @@ class KamusiItemRecyclerViewAdapter(
     //**********************************************************************************
     //**********************************************************************************
     //**********************************************************************************
-    inner class ViewHolder(
-        itemView: View,
-        private val onLoadCompleted: (Fragment, Int) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder( itemView: View ) : RecyclerView.ViewHolder(itemView) {
 
         private val itemEntryView: TextView =
             itemView.findViewById(R.id.result_item_content_entry)
@@ -52,6 +58,8 @@ class KamusiItemRecyclerViewAdapter(
             itemView.findViewById(R.id.result_item_content_definition)
         private val itemUsageView: TextView =
             itemView.findViewById(R.id.result_item_content_usage)
+
+        lateinit var onLoadCompleted: (Fragment, Int) -> Unit
 
         // bind -- binds data to display view for an item
 
@@ -62,11 +70,7 @@ class KamusiItemRecyclerViewAdapter(
                 itemUsageView.text = resultItem.usage
                 setOnClickListener {
                     myListener(resultItem)
-                    VPShellFragment.setNextOnLoadCompleted(
-                        fragment,
-                        resultItem.position,
-                        onLoadCompleted
-                    )
+                    VPShellFragment.setNextOnLoadCompleted(fragment, resultItem.position, onLoadCompleted)
                 }
             }
 
