@@ -24,7 +24,6 @@ class KamusiItemFragment : Fragment() {
     var myAdapter : KamusiItemRecyclerViewAdapter? = null
     private var recyclerView: RecyclerView? = null
 
-
     // onCreateView callback -- for when view is created
     // tasks are to remember the RV.Adapter for later usage to refresh screen with new data
     override fun onCreateView(
@@ -37,7 +36,7 @@ class KamusiItemFragment : Fragment() {
         myAdapter = KamusiItemRecyclerViewAdapter(
             this,
             ResultsContent.RESULT_ITEMS
-        ) { searchItem : ResultsContent.ResultItem -> searchItemClicked(searchItem) }
+        ) { searchItem : ResultsContent.ResultItem, itemEntryView: TextView -> searchItemClicked(searchItem,itemEntryView) }
         recyclerView?.adapter = myAdapter     // remember for later update usage
         prepareTransitions()
         postponeEnterTransition()
@@ -57,11 +56,11 @@ class KamusiItemFragment : Fragment() {
 
     }
 
-    private fun searchItemClicked(searchItem : ResultsContent.ResultItem) {
+    private fun searchItemClicked(searchItem: ResultsContent.ResultItem, itemEntryView: TextView) {
         Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
 
         MainActivity.currentPosition = searchItem.position
-        val transitioningView = view.findViewbyId<TextView>(R.id.itemEntry)
+        val transitioningView = itemEntryView
 
         getActivity()?.supportFragmentManager
             ?.beginTransaction()
@@ -72,10 +71,8 @@ class KamusiItemFragment : Fragment() {
             ?.commit()
     }
 
-    /**
-     * Scrolls the recycler view to show the last viewed item in the grid.
-     * Important when navigating back from the grid.
-     */
+    // Scroll recyclerview to show clicked item from list; Important when navigating from the grid.
+
     private fun scrollToPosition() {
 
         recyclerView?.addOnLayoutChangeListener(object : OnLayoutChangeListener {
@@ -99,20 +96,19 @@ class KamusiItemFragment : Fragment() {
                 }
             }
         })
-    }
-    /**
-     * Prepares the shared element transition to the pager fragment, as well as the other transitions
-     * that affect the flow.
-     */
+    } // fun
+
+    // Prepare shared element transition to ViewPager2Shellfragment
     private fun prepareTransitions() {
         exitTransition = TransitionInflater.from(context)
             .inflateTransition(R.transition.list_exit_transition)
+
 
         // A similar mapping is set at the ImagePagerFragment with a setEnterSharedElementCallback.
         setExitSharedElementCallback(
             object : SharedElementCallback() {
                 override fun onMapSharedElements(names: List<String>, sharedElements: MutableMap<String, View>) {
-                    // Locate the ViewHolder for the clicked position.
+                    // Locate the KIViewHolder for the clicked position.
                     val selectedViewHolder =
                         recyclerView?.findViewHolderForAdapterPosition(MainActivity.currentPosition)
                             ?: return
@@ -121,26 +117,5 @@ class KamusiItemFragment : Fragment() {
                     sharedElements[names[0]] = selectedViewHolder.itemView.findViewById(R.id.itemEntry)
                 }
             })
-    }
-
-    //**********************************************************************************
-    //**********************************************************************************
-    //**********************************************************************************
-/********
-    companion object {
-
-        // Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            KamusiItemFragment().apply {
-                // arguments = Bundle().apply {
-                //    putInt(ARG_COLUMN_COUNT, columnCount)
-                // }
-            }
-    }
-********/
-    //**********************************************************************************
-    //**********************************************************************************
-    //**********************************************************************************
-
-}
+    } // fun
+}  // class KamusiItemFragment

@@ -18,18 +18,18 @@ class KamusiItemRecyclerViewAdapter(
 
     private val fragment: KamusiItemFragment,
     private val resultList: List<ResultItem>,
-    private val clickListener: (ResultItem) -> Unit
+    private val clickListener: (ResultItem, TextView) -> Unit
 
-) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.KIViewHolder>() {
 
         // used as semaphore to control starting a view transition
     private val enterTransitionStarted = AtomicBoolean( false )
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KIViewHolder {
         val view = LayoutInflater
                     .from(parent.context)
                    .inflate(R.layout.result_list_item, parent, false)
-        val myHolder = ViewHolder(view)
+        val myHolder = KIViewHolder(view)
 
             // setup a callback to check item load completion after clicked
         myHolder.onLoadCompleted = {fragment, position ->
@@ -41,7 +41,7 @@ class KamusiItemRecyclerViewAdapter(
         return myHolder
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: KIViewHolder, position: Int) {
         holder.bind(resultList[position], clickListener)
     }
 
@@ -50,7 +50,7 @@ class KamusiItemRecyclerViewAdapter(
     //**********************************************************************************
     //**********************************************************************************
     //**********************************************************************************
-    inner class ViewHolder( itemView: View ) : RecyclerView.ViewHolder(itemView) {
+    inner class KIViewHolder(itemView: View ) : RecyclerView.ViewHolder(itemView) {
 
         private val itemEntryView: TextView =
             itemView.findViewById(R.id.result_item_content_entry)
@@ -63,17 +63,18 @@ class KamusiItemRecyclerViewAdapter(
 
         // bind -- binds data to display view for an item
 
-        fun bind(resultItem: ResultItem, myListener: (ResultItem) -> Unit) =
+        fun bind(resultItem: ResultItem, myListener: (ResultItem, TextView) -> Unit) =
             with(itemView) {
                 itemEntryView.text = resultItem.entry
                 itemDefinitionView.text = resultItem.definition
                 itemUsageView.text = resultItem.usage
                 setOnClickListener {
-                    myListener(resultItem)
+                        // register the onLoadCompleted callback first
                     VPShellFragment.setNextOnLoadCompleted(fragment, resultItem.position, onLoadCompleted)
+                    myListener(resultItem, itemEntryView)  // then handle the click
                 }
             }
 
         override fun toString(): String = super.toString() + " '" + itemEntryView.text + "'"
-    }  // class ViewHolder
+    }  // class KIViewHolder
 } // class KamusiItemRecyclerViewAdapter
