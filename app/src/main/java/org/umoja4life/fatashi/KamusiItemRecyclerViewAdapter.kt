@@ -66,6 +66,7 @@ class KamusiItemRecyclerViewAdapter(
         fun bind(resultItem: ResultItem, myListener: (ResultItem, TextView) -> Unit) =
             with(itemView) {
                 itemEntryView.text = resultItem.entry
+                itemEntryView.transitionName = "transition$resultItem.position"
                 itemDefinitionView.text = resultItem.definition
                 itemUsageView.text = resultItem.usage
                 setOnClickListener {

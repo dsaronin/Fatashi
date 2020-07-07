@@ -1,18 +1,20 @@
 package org.umoja4life.fatashi
 
+
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnLayoutChangeListener
+import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import android.transition.TransitionInflater
-import android.view.View.OnLayoutChangeListener
-import android.widget.TextView
-import androidx.core.app.SharedElementCallback
+
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -60,17 +62,16 @@ class KamusiItemFragment : Fragment() {
         Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
 
         MainActivity.currentPosition = searchItem.position
-        val transitioningView = itemEntryView
 
         getActivity()?.supportFragmentManager
             ?.beginTransaction()
             ?.setReorderingAllowed(true)
-            ?.addSharedElement( transitioningView, transitioningView.transitionName )
+            ?.addSharedElement( itemEntryView, "transition$searchItem.position" )
             ?.replace(R.id.fragment_container, VPShellFragment(), VPShellFragment::class.java.simpleName )
             ?.addToBackStack(null)
             ?.commit()
     }
-
+//  transitioningView.transitionName
     // Scroll recyclerview to show clicked item from list; Important when navigating from the grid.
 
     private fun scrollToPosition() {
@@ -119,3 +120,4 @@ class KamusiItemFragment : Fragment() {
             })
     } // fun
 }  // class KamusiItemFragment
+
