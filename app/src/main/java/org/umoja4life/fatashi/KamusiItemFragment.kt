@@ -87,7 +87,7 @@ class KamusiItemFragment : Fragment() {
 
     // CALLBACK -- when list item is clicked
     private fun searchItemClicked(searchItem: ResultsContent.ResultItem, itemEntryView: TextView) {
-        Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
+        if (DEBUG) Toast.makeText(activity?.applicationContext, "$searchItem", Toast.LENGTH_SHORT).show()
 
         val vp2Fragment = VPShellFragment()
         prepareTransitions(vp2Fragment, searchItem.position)

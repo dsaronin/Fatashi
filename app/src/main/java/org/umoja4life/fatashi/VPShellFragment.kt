@@ -31,7 +31,8 @@ class VPShellFragment : Fragment() {
     ): View? {
         viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
         viewPager?.adapter = ResultItemDetailAdapter(activity as AppCompatActivity, ResultsContent.itemsCount() )
-        viewPager?.currentItem = MainActivity.currentPosition
+          // turn off smooth scroll to jump to desired page
+        viewPager?.setCurrentItem(MainActivity.currentPosition, false)
         viewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
         viewPager?.registerOnPageChangeCallback(( detailPageChangeCallback ))
 
