@@ -56,19 +56,28 @@ class KamusiItemFragment : Fragment() {
 
     // Prepare shared element transition to ViewPager2Shellfragment
     private fun prepareTransitions(newFragment: Fragment, position: Int) {
+            // set starting fragment transition
         sharedElementReturnTransition =
             TransitionInflater
-            .from(context)
-            .inflateTransition(R.transition.list_exit_transition)
+                .from(context)
+                .inflateTransition(R.transition.list_shared_element_transition)
 
-        exitTransition = Fade()
-
-        newFragment.sharedElementEnterTransition =
+        exitTransition =
             TransitionInflater
                 .from(context)
                 .inflateTransition(R.transition.list_exit_transition)
 
-        newFragment.enterTransition = Fade()
+
+        // set destination Fragment transitions
+        newFragment.sharedElementEnterTransition =
+            TransitionInflater
+                .from(context)
+                .inflateTransition(R.transition.list_shared_element_transition)
+
+        newFragment.enterTransition =
+            TransitionInflater
+                .from(context)
+                .inflateTransition(R.transition.list_exit_transition)
 
         val bundle = Bundle()
         bundle.putInt("FATASHI_TARGET", position)
