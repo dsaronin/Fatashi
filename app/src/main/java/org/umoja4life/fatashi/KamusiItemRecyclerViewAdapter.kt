@@ -22,23 +22,12 @@ class KamusiItemRecyclerViewAdapter(
 
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.KIViewHolder>() {
 
-        // used as semaphore to control starting a view transition
-    private val enterTransitionStarted = AtomicBoolean( false )
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KIViewHolder {
         val view = LayoutInflater
                     .from(parent.context)
                    .inflate(R.layout.result_list_item, parent, false)
-        val myHolder = KIViewHolder(view)
 
-            // setup a callback to check item load completion after clicked
-        myHolder.onLoadCompleted = {fragment, position ->
-            if (MainActivity.currentPosition == position  &&
-                !enterTransitionStarted.getAndSet(true)) {
-                fragment.startPostponedEnterTransition()
-            }
-        }
-        return myHolder
+       return KIViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: KIViewHolder, position: Int) {
@@ -59,8 +48,6 @@ class KamusiItemRecyclerViewAdapter(
         private val itemUsageView: TextView =
             itemView.findViewById(R.id.result_item_content_usage)
 
-        lateinit var onLoadCompleted: (Fragment, Int) -> Unit
-
         // bind -- binds data to display view for an item
 
         fun bind(resultItem: ResultItem, myListener: (ResultItem, TextView) -> Unit) =
@@ -69,11 +56,7 @@ class KamusiItemRecyclerViewAdapter(
                 itemEntryView.transitionName = "transition$resultItem.position"
                 itemDefinitionView.text = resultItem.definition
                 itemUsageView.text = resultItem.usage
-                setOnClickListener {
-                        // register the onLoadCompleted callback first
-                    VPShellFragment.setNextOnLoadCompleted(fragment, resultItem.position, onLoadCompleted)
-                    myListener(resultItem, itemEntryView)  // then handle the click
-                }
+                setOnClickListener { myListener(resultItem, itemEntryView) }
             }
 
         override fun toString(): String = super.toString() + " '" + itemEntryView.text + "'"
