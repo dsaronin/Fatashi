@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: FatashiLinux.FatashiLinux">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/FatashiLinux/FatashiLinux.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

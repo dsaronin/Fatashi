@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Fatashi.iml" filepath="$PROJECT_DIR$/.idea/modules/Fatashi.iml" group="Fatashi" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FatashiLinux/FatashiLinux.iml" filepath="$PROJECT_DIR$/.idea/modules/FatashiLinux/FatashiLinux.iml" group="Fatashi/FatashiLinux" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Fatashi/app" />
     </modules>
   </component>
