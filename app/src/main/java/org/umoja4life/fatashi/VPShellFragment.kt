@@ -15,7 +15,7 @@ import 	androidx.viewpager.widget.PagerAdapter
 class VPShellFragment : Fragment() {
 
     private var viewPager: ViewPager2? = null
-    private var targetPosition: Int = 0
+    private var targetPosition: Int = DEFAULT_POSITION
 
     private var detailPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
          // CALLBACK: onPageSelected, entered each time a page changes
@@ -36,7 +36,7 @@ class VPShellFragment : Fragment() {
         viewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
         viewPager?.registerOnPageChangeCallback(( detailPageChangeCallback ))
 
-        targetPosition = arguments?.getInt("FATASHI_TARGET") ?: 0
+        targetPosition = arguments?.getInt("FATASHI_TARGET") ?: DEFAULT_POSITION
 
         return viewPager
     }

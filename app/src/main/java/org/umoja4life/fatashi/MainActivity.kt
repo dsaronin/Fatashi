@@ -7,16 +7,13 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
-private const val DEFAULT_POSITION = 0
+        const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
 
 // MainActivity -- APP starting point
 
@@ -109,4 +106,5 @@ class MainActivity : AppCompatActivity()  {
 
         private const val KEY_POSITION = "org.umoja4life.fatashi.key.currentPosition"
     }
+    
 } // class MainActivity
