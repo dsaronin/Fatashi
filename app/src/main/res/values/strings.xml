@@ -7,4 +7,6 @@
     <string name="empty_result">Enter a search query...</string>
     <string name="edit_tafuta">Ingiza maneno uyatafutayo</string>
     <string name="button_tafuta">tafuta</string>
+    <string name="read_permission_granted">read permission granted</string>
+    <string name="read_permission_denied">read permission denied</string>
 </resources>

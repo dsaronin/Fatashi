@@ -3,49 +3,52 @@ package org.umoja4life.basicio
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+const val READ_PERMISSION_CODE  =  9     // permission request code
+const val WRITE_PERMISSION_CODE = 10     // permission request code
+
+
 class FileServices {
 
-    private val mREAD = 9     // permission request code
-    private val mWRITE = 10   // permission request code
     private var readPermission: Boolean = false
     private var writePermission: Boolean = false
 
     fun hasReadPermission(ctx: Context, atividade: AppCompatActivity): Boolean {
-        if (Build.VERSION.SDK_INT < 23) {
-            readPermission = true
+        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // shouldShowRequestPermissionRationale() ?
+            ActivityCompat.requestPermissions(
+                atividade, 
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 
+                READ_PERMISSION_CODE
+            )
         } else {
-            if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                // shouldShowRequestPermissionRationale() ?
-                ActivityCompat.requestPermissions(atividade, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), mREAD)
-            } else {
-                readPermission = true
-            }
+            readPermission = true
         }
         return readPermission
     }
 
     fun hasWritePermission(ctx: Context, atividade: AppCompatActivity): Boolean {
-        if (Build.VERSION.SDK_INT < 23) {
-            writePermission = true
+        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            // shouldShowRequestPermissionRationale() ?
+            ActivityCompat.requestPermissions(
+                atividade, 
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                WRITE_PERMISSION_CODE
+            )
         } else {
-            if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(atividade, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), mWRITE)
-            } else {
-                writePermission = true
-            }
+            writePermission = true
         }
         return writePermission
     }
 
-
-
+    
 }  // class FileServices
 
 /*
@@ -65,4 +68,12 @@ which to reject. Hence, you should be prepared that your activity may be paused 
 Further, granting some permissions may require a restart of you application. In such a case,
 the system will recreate the activity stack before delivering the result to your
 ActivityCompat.OnRequestPermissionsResultCallback.onRequestPermissionsResult(int, String[], int[]).
+ */
+/*
+Android docs say this check is no longer needed:
+    if (Build.VERSION.SDK_INT < 23) {
+        readPermission = true
+    } else {
+    }
+
  */

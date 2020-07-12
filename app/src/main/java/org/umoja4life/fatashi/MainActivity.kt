@@ -1,6 +1,7 @@
 package org.umoja4life.fatashi
 
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -8,8 +9,13 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import org.umoja4life.basicio.*
+import org.umoja4life.util.showSnackbar
+
 
 private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
@@ -19,13 +25,25 @@ private const val LOG_TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity()  {
 
+    private lateinit var myLayout: View
+
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
+        myLayout = fragment_container   // id for the main layout section
+
         setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
+
+            // Floating Action Button Usage
+        findViewById<FloatingActionButton>(R.id.fab_read).setOnClickListener { view ->
+            val perm = hasReadPermission(ctx: Context, atividade: AppCompatActivity)
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
+
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
@@ -43,6 +61,24 @@ class MainActivity : AppCompatActivity()  {
         super.onSaveInstanceState(outState, outPersistentState)
 
         outState.putInt( KEY_POSITION, currentPosition )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == READ_PERMISSION_CODE) {
+            // Request for read file storage permission.
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted. Start to do something
+                myLayout.showSnackbar(R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
+                // ok to do something
+            } else {
+                // Permission request was denied.
+                myLayout.showSnackbar(R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
+            }
+        }
     }
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
