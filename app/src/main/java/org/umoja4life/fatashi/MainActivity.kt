@@ -9,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -17,13 +18,13 @@ import org.umoja4life.basicio.*
 import org.umoja4life.util.showSnackbar
 
 
-private const val DEBUG = false
+private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
 
 // MainActivity -- APP starting point
 
-class MainActivity : AppCompatActivity()  {
+class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private lateinit var myLayout: View
 
@@ -38,12 +39,8 @@ class MainActivity : AppCompatActivity()  {
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
 
             // Floating Action Button Usage
-        findViewById<FloatingActionButton>(R.id.fab_read).setOnClickListener { view ->
-            val perm = hasReadPermission(ctx: Context, atividade: AppCompatActivity)
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
-
+        findViewById<FloatingActionButton>(R.id.fab_read)
+            .setOnClickListener { view -> doSomeInput(view) }
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
@@ -68,6 +65,8 @@ class MainActivity : AppCompatActivity()  {
         permissions: Array<String>,
         grantResults: IntArray
     ) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRequestPermissionsResult <<< ")
+
         if (requestCode == READ_PERMISSION_CODE) {
             // Request for read file storage permission.
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -129,6 +128,14 @@ class MainActivity : AppCompatActivity()  {
             // TODO: Model has to do the actual search on maulizo query
             // send query to fragment to update results
         (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
+    }
+
+    private fun doSomeInput(view: View) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
+        val perm = FileServices.hasReadPermission(this)
+        Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
+
     }
 
     // ************************************************************************

@@ -1,11 +1,9 @@
 package org.umoja4life.basicio
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 const val READ_PERMISSION_CODE  =  9     // permission request code
 const val WRITE_PERMISSION_CODE = 10     // permission request code
@@ -13,42 +11,47 @@ const val WRITE_PERMISSION_CODE = 10     // permission request code
 
 class FileServices {
 
-    private var readPermission: Boolean = false
-    private var writePermission: Boolean = false
+    companion object {  // singleton to handle permissions
 
-    fun hasReadPermission(ctx: Context, atividade: AppCompatActivity): Boolean {
-        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
+        private var readPermission: Boolean = false
+        private var writePermission: Boolean = false
 
-            // shouldShowRequestPermissionRationale() ?
-            ActivityCompat.requestPermissions(
-                atividade, 
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 
-                READ_PERMISSION_CODE
-            )
-        } else {
-            readPermission = true
+        fun hasReadPermission(compatActivity: AppCompatActivity): Boolean {
+            if ( !readPermission &&
+                compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+                // shouldShowRequestPermissionRationale() ?
+                ActivityCompat.requestPermissions(
+                    compatActivity,
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                    READ_PERMISSION_CODE
+                )
+            } else {
+                readPermission = true
+            }
+            return readPermission
         }
-        return readPermission
-    }
 
-    fun hasWritePermission(ctx: Context, atividade: AppCompatActivity): Boolean {
-        if (ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
+        fun hasWritePermission(compatActivity: AppCompatActivity): Boolean {
+            if ( !writePermission &&
+                compatActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-            // shouldShowRequestPermissionRationale() ?
-            ActivityCompat.requestPermissions(
-                atividade, 
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                WRITE_PERMISSION_CODE
-            )
-        } else {
-            writePermission = true
+                // shouldShowRequestPermissionRationale() ?
+                ActivityCompat.requestPermissions(
+                    compatActivity,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    WRITE_PERMISSION_CODE
+                )
+            } else {
+                writePermission = true
+            }
+            return writePermission
         }
-        return writePermission
-    }
 
-    
+    }  // companion object
+
 }  // class FileServices
 
 /*
