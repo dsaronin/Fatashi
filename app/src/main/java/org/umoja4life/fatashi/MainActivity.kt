@@ -72,10 +72,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted. Start to do something
                 myLayout.showSnackbar(R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
-                // ok to do something
+                // ok to do something here <<<<<<<<<<<<<<<<<<<<
             } else {
                 // Permission request was denied.
                 myLayout.showSnackbar(R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
+                // exit app?? <<<<<<<<<<<<<
+                // only enable built-in test data?
             }
         }
     }

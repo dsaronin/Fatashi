@@ -9,4 +9,9 @@
     <string name="button_tafuta">tafuta</string>
     <string name="read_permission_granted">read permission granted</string>
     <string name="read_permission_denied">read permission denied</string>
+    <string name="permission_rationale">Permission Rationale</string>
+    <string name="permission_reason">Permission needed to read local dictionary database files (click back to deny).</string>
+    <string name="yes_proceed">Yes, proceed</string>
+    <string name="no">no</string>
+
 </resources>
