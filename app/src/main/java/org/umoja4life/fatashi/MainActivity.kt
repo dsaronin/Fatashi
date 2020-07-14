@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -15,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.*
+import org.umoja4life.kamusimodel.KamusiViewModel
 import org.umoja4life.util.showSnackbar
 
 
@@ -27,6 +29,7 @@ private const val LOG_TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private lateinit var myLayout: View
+    val myViewModel = KamusiViewModel()
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,6 +140,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         val perm = FileServices.hasReadPermission(this)
         Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show()
+
+        // (getActivity() as MainActivity).
+        if (perm) myViewModel.needJson("tempdict.json") {result ->
+            Toast.makeText(applicationContext, result, Toast.LENGTH_LONG).show()
+        }
+
 
     }
 
