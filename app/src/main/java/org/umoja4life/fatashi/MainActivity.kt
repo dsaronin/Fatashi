@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         // (getActivity() as MainActivity).
         if (perm) myViewModel.needJson("tempdict.json") {result ->
-            Toast.makeText(applicationContext, result, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
         }
 
 
