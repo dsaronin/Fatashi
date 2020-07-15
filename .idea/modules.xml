@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/BackendModule/BackendModule.iml" filepath="$PROJECT_DIR$/.idea/modules/BackendModule/BackendModule.iml" group="Fatashi/BackendModule" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Fatashi.iml" filepath="$PROJECT_DIR$/.idea/modules/Fatashi.iml" group="Fatashi" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FatashiBackend/FatashiBackend.iml" filepath="$PROJECT_DIR$/.idea/modules/FatashiBackend/FatashiBackend.iml" group="Fatashi/FatashiBackend" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Fatashi/app" />
     </modules>
   </component>

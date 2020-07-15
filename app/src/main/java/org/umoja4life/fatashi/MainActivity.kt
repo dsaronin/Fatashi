@@ -142,8 +142,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         //    .setAction("Action", null).show()
 
         // (getActivity() as MainActivity).
-        if (perm) myViewModel.needJson("tempdict.json") {result ->
-            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+        if (perm) {
+            val myKF = myViewModel.tryKFJson("tempdict.json")
+
+            Toast.makeText(this, "Kamusi file: ${myKF.filename}", Toast.LENGTH_LONG).show()
+
         }
 
 

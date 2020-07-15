@@ -3,6 +3,9 @@ package org.umoja4life.kamusimodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -18,6 +21,19 @@ const val filepath = "/sdcard/Download/"
 class KamusiViewModel: ViewModel() {
 
     fun tryKFJson(f: String) : KamusiFormat {
+        var kamusiFormat = KamusiFormat()
+        val kamusiFormatType = object : TypeToken<KamusiFormat>() {}.type
+        val gson = Gson()
+
+        try {
+            needJson(f) {text -> kamusiFormat = gson.fromJson(text, kamusiFormatType)}
+        }  // try
+        catch(ex: JsonSyntaxException) {
+            Log.e(LOG_TAG, ex.toString())
+            Log.e(LOG_TAG, "file: $f: there's a JSON formatting error")
+        } // catch
+
+        return kamusiFormat
 
     }
 

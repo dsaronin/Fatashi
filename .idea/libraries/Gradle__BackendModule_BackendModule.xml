@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: BackendModule.BackendModule">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/BackendModule/BackendModule.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
