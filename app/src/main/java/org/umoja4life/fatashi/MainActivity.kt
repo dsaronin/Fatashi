@@ -138,8 +138,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private fun doSomeInput(view: View) {
         if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
         val perm = FileServices.hasReadPermission(this)
-        Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
+        // Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
+        //    .setAction("Action", null).show()
 
         // (getActivity() as MainActivity).
         if (perm) myViewModel.needJson("tempdict.json") {result ->
