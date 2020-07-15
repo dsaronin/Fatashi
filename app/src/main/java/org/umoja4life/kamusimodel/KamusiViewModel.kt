@@ -6,9 +6,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.umoja4life.fatashibackend.KamusiFormat
 import java.io.File
 import java.io.IOException
-// import org.umoja4life.kamusibackend.*
 
 private const val DEBUG = true
 private const val LOG_TAG = "KamusiViewModel"
@@ -17,7 +17,7 @@ const val filepath = "/sdcard/Download/"
 
 class KamusiViewModel: ViewModel() {
 
-    fun tryKFJson(f: String)  {
+    fun tryKFJson(f: String) : KamusiFormat {
 
     }
 
