@@ -23,5 +23,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+<<<<<<< HEAD:.idea/modules/FatashiBackend/FatashiBackend.iml
+=======
+    <orderEntry type="library" exported="" name="Gradle: FatashiBackend.FatashiBackend" level="project" />
+>>>>>>> 2f103b8d67939909b2a72433c83390ad23b76f38:.idea/modules/FatashiBackend/FatashiBackend.iml
   </component>
 </module>

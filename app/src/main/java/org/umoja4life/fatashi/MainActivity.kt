@@ -1,31 +1,49 @@
 package org.umoja4life.fatashi
 
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import org.umoja4life.basicio.*
+import org.umoja4life.kamusimodel.KamusiViewModel
+import org.umoja4life.util.showSnackbar
 
-private const val DEBUG = false
+
+private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
 
 // MainActivity -- APP starting point
 
-class MainActivity : AppCompatActivity()  {
+class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback  {
+
+    private lateinit var myLayout: View
+    val myViewModel = KamusiViewModel()
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
+        myLayout = fragment_container   // id for the main layout section
+
         setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
+
+            // Floating Action Button Usage
+        findViewById<FloatingActionButton>(R.id.fab_read)
+            .setOnClickListener { view -> doSomeInput(view) }
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
@@ -43,6 +61,28 @@ class MainActivity : AppCompatActivity()  {
         super.onSaveInstanceState(outState, outPersistentState)
 
         outState.putInt( KEY_POSITION, currentPosition )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRequestPermissionsResult <<< ")
+
+        if (requestCode == READ_PERMISSION_CODE) {
+            // Request for read file storage permission.
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted. Start to do something
+                myLayout.showSnackbar(R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
+                // ok to do something here <<<<<<<<<<<<<<<<<<<<
+            } else {
+                // Permission request was denied.
+                myLayout.showSnackbar(R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
+                // exit app?? <<<<<<<<<<<<<
+                // only enable built-in test data?
+            }
+        }
     }
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
@@ -93,6 +133,20 @@ class MainActivity : AppCompatActivity()  {
             // TODO: Model has to do the actual search on maulizo query
             // send query to fragment to update results
         (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
+    }
+
+    private fun doSomeInput(view: View) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
+        val perm = FileServices.hasReadPermission(this)
+        Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
+            .setAction("Action", null).show()
+
+        // (getActivity() as MainActivity).
+        if (perm) myViewModel.needJson("tempdict.json") {result ->
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show()
+        }
+
+
     }
 
     // ************************************************************************
