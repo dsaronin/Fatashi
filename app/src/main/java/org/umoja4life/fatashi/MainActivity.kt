@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.*
+import org.umoja4life.fatashibackend.KamusiFormat
 import org.umoja4life.kamusimodel.KamusiViewModel
 import org.umoja4life.util.showSnackbar
 
@@ -143,11 +144,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         // (getActivity() as MainActivity).
         if (perm) {
-            val myKF = myViewModel.tryKFJson("tempdict.json")
-
-            Toast.makeText(this, "Kamusi file: ${myKF.filename}", Toast.LENGTH_LONG).show()
-
-        }
+            myViewModel.getKamusiFormatJson(
+                "tempdict.json",
+                onSuccess = {kf ->
+                    Toast.makeText(this, kf.filename, Toast.LENGTH_LONG).show()
+                    kf
+                },
+                onFail = {err -> Toast.makeText(this, err, Toast.LENGTH_LONG).show()}
+            )
+        }  // fi perm
 
 
     }

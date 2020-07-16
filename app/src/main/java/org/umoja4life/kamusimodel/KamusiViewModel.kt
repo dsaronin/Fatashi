@@ -20,44 +20,43 @@ const val filepath = "/sdcard/Download/"
 
 class KamusiViewModel: ViewModel() {
 
-    fun tryKFJson(f: String) : KamusiFormat {
-        var kamusiFormat = KamusiFormat()
+    fun getKamusiFormatJson(
+        f: String,
+        onSuccess: (KamusiFormat) -> KamusiFormat,
+        onFail: (String) -> Unit
+    ) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> getKFJson <<< f: $f")
+
         val kamusiFormatType = object : TypeToken<KamusiFormat>() {}.type
-        val gson = Gson()
-
-        try {
-            needJson(f) {text -> kamusiFormat = gson.fromJson(text, kamusiFormatType)}
-        }  // try
-        catch(ex: JsonSyntaxException) {
-            Log.e(LOG_TAG, ex.toString())
-            Log.e(LOG_TAG, "file: $f: there's a JSON formatting error")
-        } // catch
-
-        return kamusiFormat
-
-    }
-
-    fun needJson(f:String, useme: (String) -> Unit  ) {
-        if (DEBUG) Log.d(LOG_TAG, ">>> needJson <<< f: $f")
 
         // wrap fileread in a scope
         viewModelScope.launch {
-            useme( simpleGetFile(f) as String )
-        }
+            try {
+                onSuccess(
+                    Gson().fromJson((getFile(f) as String), kamusiFormatType)
+                )
+            }  // try
+            catch(ex: JsonSyntaxException) {
+                Log.e(LOG_TAG, ex.toString())
+                onFail(ex.toString())
+            } // catch
+
+        } // scope
     }
 
-        // simpleGetFile  -- inputs a textfile in Dispatchers.IO space
-    suspend fun simpleGetFile(f: String) : String {
+        // getFile  -- inputs a textfile in Dispatchers.IO space
+    suspend fun getFile(f: String) : String {
             var result = ""
 
         withContext(Dispatchers.IO) {
             try {
                 result = File(filepath + f).readText()
             } catch (ex: IOException) {
-                Log.e(LOG_TAG, ex.toString())
-                Log.e(LOG_TAG, "file: $f: caused an I/O Exception Error")
+                Log.e(LOG_TAG, "file: $f ex: $ex")
             } // catch
         }
+        if (DEBUG) Log.d(LOG_TAG, ">>> getFile <<< f: $f \njson: $result")
+
         return result
     }
 

@@ -2,6 +2,8 @@ package org.umoja4life.util
 
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 fun View.showSnackbar(msgId: Int, length: Int) {
     showSnackbar(context.getString(msgId), length)
@@ -50,3 +52,14 @@ fun View.showSnackbar(
 *
 * TAKEN FROM Google Permissions Examples at github
 */
+
+// **************************************************************8
+
+object Utils {
+
+    // fromJson -- used to make a generic TYPE call to fromJson
+    // where the type specification is deferred to compile time
+    inline fun <reified T> fromJson(json: String): T {
+        return Gson().fromJson(json, object: TypeToken<T>(){}.type)
+    }
+}
