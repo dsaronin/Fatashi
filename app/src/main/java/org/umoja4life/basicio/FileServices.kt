@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.umoja4life.fatashi.R
 
 
@@ -53,18 +54,15 @@ class FileServices {
         // stops to ask permission if user wants to proceed
         private fun showWhyGetPermission(compatActivity: AppCompatActivity, pType: String, pCode: Int) {
             if (shouldShowRequestPermissionRationale( compatActivity,pType )) {
-                AlertDialog.Builder(compatActivity).create().apply {
-                    setTitle(compatActivity.getString(R.string.permission_rationale))
-                    setMessage(compatActivity.getString(R.string.permission_reason))
-                    setButton(AlertDialog.BUTTON_POSITIVE,compatActivity.getString(R.string.yes_proceed)
-                    ) { dialog, which ->
+
+                MaterialAlertDialogBuilder(compatActivity)
+                    .setTitle( compatActivity.getString(R.string.permission_rationale) )
+                    .setMessage( compatActivity.getString(R.string.permission_reason) )
+                    .setPositiveButton(compatActivity.getString(R.string.yes_proceed)) { dialog, which ->
                         dialog.dismiss()
-                        if (which == AlertDialog.BUTTON_POSITIVE) {
-                            getPermission(compatActivity, pType, pCode)  // request permissions
-                        }
-                    }  // lambda callback AlertDialog
-                    show()
-                }  // apply
+                        getPermission(compatActivity, pType, pCode)  // request permissions
+                    }
+                    .show()
             }
             else {
                 getPermission(compatActivity, pType, pCode)  // request permissions

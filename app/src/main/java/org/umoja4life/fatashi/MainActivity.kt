@@ -15,14 +15,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
-import org.umoja4life.basicio.*
-import org.umoja4life.fatashibackend.KamusiFormat
+import org.umoja4life.basicio.FileServices
+import org.umoja4life.basicio.READ_PERMISSION_CODE
 import org.umoja4life.kamusimodel.KamusiViewModel
-import org.umoja4life.util.showSnackbar
 
 
 private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
+
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
 
 // MainActivity -- APP starting point
@@ -75,11 +75,13 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // Request for read file storage permission.
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted. Start to do something
-                myLayout.showSnackbar(R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
+                Snackbar.make(myLayout, R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
+                    .show()
                 // ok to do something here <<<<<<<<<<<<<<<<<<<<
             } else {
                 // Permission request was denied.
-                myLayout.showSnackbar(R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
+                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
+                    .show()
                 // exit app?? <<<<<<<<<<<<<
                 // only enable built-in test data?
             }
@@ -156,37 +158,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
 
     }
-
-    // The view used to make the snackbar.
-    // This should be contained within the view hierarchy you want to display the
-    // snackbar. Generally it can be the view that was interacted with to trigger
-    // the snackbar, such as a button that was clicked, or a card that was swiped.
-    /*
-        val contextView = findViewById<View>(R.id.context_view)
-
-        Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_SHORT)
-        .show()
-
-        ***************
-    //    To add an action, use the setAction method on the object returned from make.
-    //    Snackbars are automatically dismissed when the action is clicked.
-    // To show a snackbar with a message and an action:
-
-        Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_LONG)
-        .setAction(R.string.action_text) {
-            // Responds to click on the action
-        }
-        .show()
-
-
-        AlertDialog.Builder(myContext).create().apply {
-            setTitle(myContext.getString(R.string.app_alert))
-            setMessage(s)
-            show()
-        }  // apply
-
-
-     */
 
     // ************************************************************************
     // ************************************************************************
