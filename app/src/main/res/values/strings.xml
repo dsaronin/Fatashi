@@ -12,6 +12,9 @@
     <string name="permission_rationale">Permission Rationale</string>
     <string name="permission_reason">Permission needed to read local dictionary database files (click back to deny).</string>
     <string name="yes_proceed">Yes, proceed</string>
+    <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="okay">okay</string>
+    <string name="app_alert">Status Alert</string>
 
 </resources>
