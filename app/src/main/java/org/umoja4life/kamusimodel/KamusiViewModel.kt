@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.fatashi.DEFAULT_PATH
+import org.umoja4life.fatashi.MainActivity
 import org.umoja4life.fatashibackend.FatashiWork
 import org.umoja4life.fatashibackend.KamusiFormat
 import org.umoja4life.fatashibackend.MyEnvironment
@@ -26,21 +27,32 @@ class KamusiViewModel: ViewModel() {
 
     // initializeBackend  -- wrapped coroutine to setup MyEnvironment
     // ASSUMPTION: caller has already checked READ_PERMISSIONS
+    // Three different places in MainActivity can call us, so recheck whether we've tried to
+    // start or not already.
     fun initializeBackend(myPlatform : AndroidPlatform) {
         viewModelScope.launch {
-            MyEnvironment.setup(MYARGS, myPlatform)
-        }
+            if (!MainActivity.startedBackend) {  // try to initialize unless already tried
+                MyEnvironment.setup(MYARGS, myPlatform)
+                MainActivity.startedBackend = true  // show that backend is ready for action!
+                // ASSUMPTION: No Kamusi/JSON file read errors!
+                // If errors do occur, we'll still come here and think the Backend is setup.
+                // FUTURE: if those errors occur, maybe put backend into TEST mode
+            }
+        }  // launch
     }
 
     fun parseCommand(cmdline: String) {
         // parse & handle command wrapped in coroutine
         viewModelScope.launch {
             FatashiWork.parseCommands( cmdline.trim().split(' ') )
-        }
+        }  // launch
     }
 
-    // ***************************************************
+    // ***************************************************************************************
+    // ***************************************************************************************
     // functions below are test/debugging only.
+    // ***************************************************************************************
+    // ***************************************************************************************
 
     fun getKamusiFormatJson(
         f: String,

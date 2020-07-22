@@ -65,6 +65,14 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    /*
+    A lambda expression or anonymous function
+    (as well as a local function and an object expression)
+    can access its closure, i.e. the variables declared in the outer scope.
+    The variables captured in the closure can be modified in the lambda
+    */
+    // displayLambda  -- will be used within AndroidPlatform.listOut() to process the results
+    // list and display it view RecyclerViewAdapter.
     val displayLambda : (List<String>) -> Unit = { listResults ->
         var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
@@ -152,17 +160,28 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo");
 
-            // TODO: FatashiBackend does the actual search on maulizo query
+            // skip unless the backend has been authorized and started
         if (startedBackend)  {
             myViewModel.parseCommand( maulizo )
             // asynch return here possibly BEFORE backend has processed!
-
-            // DEBUGGING ONLY:
         }
+        else {  // tell the user we can't do anything without read permissions
+            Snackbar.make(myLayout, R.string.cannot_search, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.retry) {
+                    // Responds to click on the action ==>
+                    // try again to get read permission, initializeBackEnd, then parseCommand
+                    if (FileServices.hasReadPermission(this)) {
+                        initializeFatashiBackend()
+                        myViewModel.parseCommand( maulizo )
+                    }
+                }  // onClick RETRY
+                .show()
+        }  // fi startedBackend ; else
     }
 
-    // doSomeInput was for testing purposes
+    // DEBUG USAGE ONLY: doSomeInput was for testing purposes
     private fun doSomeInput(view: View) {
+        TODO("DEBUGGING vestige only in doSomeInput()")
         if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
         val perm = FileServices.hasReadPermission(this)
         // Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG).show()

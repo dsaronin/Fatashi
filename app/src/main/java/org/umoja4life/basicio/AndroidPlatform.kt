@@ -71,7 +71,7 @@ class AndroidPlatform(
     // *********************************************************************************
     // primary dictionary results interface
     override fun listout(l: List<String>) {
-        displayLambda(l)
+        displayLambda(l)  // will display view KamusiItemFragment & RecyclerViewHandler
     }
 
     // *********************************************************************************

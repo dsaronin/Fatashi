@@ -22,7 +22,7 @@ object ResultsContent {
     val RESULT_ITEMS: MutableList<ResultItem> = mutableListOf()
 
     init {
-        buildResultItems( sampleResult)
+        buildResultItems( sampleResult)  // REEVALUATE and maybe remove from initial showing
    }
 
     // shuffleList is for debugging & testing purposes
@@ -37,6 +37,8 @@ object ResultsContent {
 
     fun itemsCount() = RESULT_ITEMS.size
 
+    // buildResultItems -- main entry point for displaying a new list of results
+    // which have come from the backend, via AndroidPlatform.listOut()
     fun buildResultItems(resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
 
@@ -52,6 +54,7 @@ object ResultsContent {
     private val itemRegex = "^([^\\t]+)\\t([^\\t]+)\\t?([^\\t]*)\$"
 
     // parseFields  -- split a search result line into three fields
+    // TODO: needs to be taken over by Kamusi Class functions
 
     fun parseFields(rawItem: String) : ItemDetail {
         val keyfrag = itemRegex.toRegex().find(rawItem)

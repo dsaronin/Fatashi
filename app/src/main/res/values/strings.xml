@@ -17,5 +17,7 @@
     <string name="okay">okay</string>
     <string name="app_alert">Status Alert</string>
     <string name="forced_exit">Without READ permission; Fatashi exits.</string>
+    <string name="cannot_search">Kamusi not initialized yet; Cannot search without READ PERMISSION Click RETRY to try to get read permission again.</string>
+    <string name="retry">retry</string>
 
 </resources>
