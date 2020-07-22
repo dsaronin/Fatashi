@@ -3,6 +3,7 @@ package org.umoja4life.fatashi
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
@@ -15,8 +16,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
+import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.basicio.FileServices
 import org.umoja4life.basicio.READ_PERMISSION_CODE
+import org.umoja4life.fatashibackend.MyEnvironment
 import org.umoja4life.kamusimodel.KamusiViewModel
 
 
@@ -24,6 +27,7 @@ private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
+        const val DEFAULT_PATH = "/sdcard/Download/"
 
 // MainActivity -- APP starting point
 
@@ -43,25 +47,35 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
 
             // Floating Action Button Usage
-        findViewById<FloatingActionButton>(R.id.fab_read)
-            .setOnClickListener { view -> doSomeInput(view) }
+        // findViewById<FloatingActionButton>(R.id.fab_read)
+        //    .setOnClickListener { view -> doSomeInput(view) }
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
         }
-        else {  // initiate KamusiItemFragment
-            supportFragmentManager
+        else {
+            // If have read permission, kicks off backend setup, asynchronously
+            if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
+            // else we might be continuing here without read permission!
+
+            supportFragmentManager    // initiate KamusiItemFragment
                 .beginTransaction()
                 .add(R.id.fragment_container, KamusiItemFragment())
                 .commit()
         }
     }
 
-    // onSaveInstanceState callback -- when activity is being put on hold; save currentPosition
-    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-        super.onSaveInstanceState(outState, outPersistentState)
+    // initializeFatashiBackend -- convenience function to hold backend initialization
+    // kicks off Backend initialization but doesn't wait for completion
+    // DEPENDING UPON where Read Permission is detected/granted, this can be called
+    // from onCreate() above, or onRequestPermissionResult (click action)
+    private fun initializeFatashiBackend() {
+        // val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
+        val myPath = DEFAULT_PATH
 
-        outState.putInt( KEY_POSITION, currentPosition )
+        if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
+
+        myViewModel.initializeBackend(AndroidPlatform(myPath,myLayout,this))
     }
 
     override fun onRequestPermissionsResult(
@@ -75,15 +89,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // Request for read file storage permission.
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted. Start to do something
-                Snackbar.make(myLayout, R.string.read_permission_granted, Snackbar.LENGTH_SHORT)
-                    .show()
-                // ok to do something here <<<<<<<<<<<<<<<<<<<<
-            } else {
+                initializeFatashiBackend()  // asynchronously initialize backend
+                // returns here before completion of backend setup
+            }
+            else {
                 // Permission request was denied.
-                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_SHORT)
-                    .show()
-                // exit app?? <<<<<<<<<<<<<
+                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_SHORT).show()
                 // only enable built-in test data?
+                // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
+                // finishAndRemoveTask()
             }
         }
     }
@@ -133,21 +147,24 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         }
 
-            // TODO: Model has to do the actual search on maulizo query
+            // TODO: FatashiBackend does the actual search on maulizo query
+        if (startedBackend)  {
+            TODO("parsecommand" )
             // send query to fragment to update results
-        (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
+            (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
+        }
     }
 
+    // doSomeInput was for testing purposes
     private fun doSomeInput(view: View) {
         if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
         val perm = FileServices.hasReadPermission(this)
-        // Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG)
-        //    .setAction("Action", null).show()
+        // Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG).show()
 
         // (getActivity() as MainActivity).
         if (perm) {
             myViewModel.getKamusiFormatJson(
-                "tempdict.json",
+                "config_properties.json",
                 onSuccess = {kf ->
                     Toast.makeText(this, kf.filename, Toast.LENGTH_LONG).show()
                     kf
@@ -155,20 +172,26 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 onFail = {err -> Toast.makeText(this, err, Toast.LENGTH_LONG).show()}
             )
         }  // fi perm
+    }
 
+    // onSaveInstanceState callback -- when activity is being put on hold; save currentPosition
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
 
+        outState.putInt( KEY_POSITION, currentPosition )
     }
 
     // ************************************************************************
     // ************************************************************************
     // ************************************************************************
     companion object {
+        private const val KEY_POSITION = "org.umoja4life.fatashi.key.currentPosition"
 
             // currentPosition remembers selected result item out of list of items
             // used to remember state throughout transitions
         var currentPosition = DEFAULT_POSITION
+        var startedBackend = false
 
-        private const val KEY_POSITION = "org.umoja4life.fatashi.key.currentPosition"
     }
     
 } // class MainActivity

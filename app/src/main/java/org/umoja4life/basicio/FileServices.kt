@@ -13,12 +13,14 @@ import org.umoja4life.fatashi.R
 const val READ_PERMISSION_CODE  =  9     // permission request code
 const val WRITE_PERMISSION_CODE = 10     // permission request code
 
+// /sdcard/Downloads/
+
 class FileServices {
 
     companion object {  // singleton to handle permissions
 
-        private var readPermission: Boolean = false
-        private var writePermission: Boolean = false
+        var readPermission: Boolean = false
+        var writePermission: Boolean = false
 
         // hasReadPermission -- returns TRUE if we have/got Read permission
         fun hasReadPermission(compatActivity: AppCompatActivity): Boolean {

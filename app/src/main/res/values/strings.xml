@@ -16,5 +16,6 @@
     <string name="no">no</string>
     <string name="okay">okay</string>
     <string name="app_alert">Status Alert</string>
+    <string name="forced_exit">Without READ permission; Fatashi exits.</string>
 
 </resources>

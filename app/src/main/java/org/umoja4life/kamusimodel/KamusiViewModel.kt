@@ -1,5 +1,6 @@
 package org.umoja4life.kamusimodel
 
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,16 +10,28 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.umoja4life.basicio.AndroidPlatform
+import org.umoja4life.fatashi.DEFAULT_PATH
 import org.umoja4life.fatashibackend.KamusiFormat
+import org.umoja4life.fatashibackend.MyEnvironment
 import java.io.File
 import java.io.IOException
 
 private const val DEBUG = true
 private const val LOG_TAG = "KamusiViewModel"
 
-const val filepath = "/sdcard/Download/"
-
 class KamusiViewModel: ViewModel() {
+    private val MYARGS =  arrayOf("-v", "-p", "-n", "20")
+
+    // initializeBackend  -- wrapped coroutine to setup MyEnvironment
+    // ASSUMPTION: caller has already checked READ_PERMISSIONS
+    fun initializeBackend(myPlatform : AndroidPlatform) {
+        viewModelScope.launch {
+            MyEnvironment.setup(MYARGS, myPlatform)
+        }
+    }
+
+    // functions below are test/debugging only.
 
     fun getKamusiFormatJson(
         f: String,
@@ -50,7 +63,7 @@ class KamusiViewModel: ViewModel() {
 
         withContext(Dispatchers.IO) {
             try {
-                result = File(filepath + f).readText()
+                result = File(DEFAULT_PATH + f).readText()
             } catch (ex: IOException) {
                 Log.e(LOG_TAG, "file: $f ex: $ex")
             } // catch
