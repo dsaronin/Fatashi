@@ -65,6 +65,17 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    val displayLambda : (List<String>) -> Unit = { listResults ->
+        var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
+
+        if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
+            supportFragmentManager.popBackStackImmediate()  // pop back to KamusiItemFragment
+            // now get the fragment supporting that view
+            myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        }
+        (myfragment as KamusiItemFragment).updateFragmentResults( listResults )
+    }
+
     // initializeFatashiBackend -- convenience function to hold backend initialization
     // kicks off Backend initialization but doesn't wait for completion
     // DEPENDING UPON where Read Permission is detected/granted, this can be called
@@ -75,7 +86,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
 
-        myViewModel.initializeBackend(AndroidPlatform(myPath,myLayout,this))
+        myViewModel.initializeBackend(
+            AndroidPlatform(myPath,myLayout,this, displayLambda)
+        )
     }
 
     override fun onRequestPermissionsResult(
@@ -137,21 +150,14 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         currentPosition = DEFAULT_POSITION      // reset current position
 
         val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
-
-        var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<< ${myfragment != null}: $maulizo");
-
-        if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
-            supportFragmentManager.popBackStackImmediate()  // pop back to KamusiItemFragment
-                // now get the fragment supporting that view
-            myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
-        }
+        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo");
 
             // TODO: FatashiBackend does the actual search on maulizo query
         if (startedBackend)  {
-            TODO("parsecommand" )
-            // send query to fragment to update results
-            (myfragment as KamusiItemFragment).updateFragmentResults(maulizo)
+            myViewModel.parseCommand( maulizo )
+            // asynch return here possibly BEFORE backend has processed!
+
+            // DEBUGGING ONLY:
         }
     }
 

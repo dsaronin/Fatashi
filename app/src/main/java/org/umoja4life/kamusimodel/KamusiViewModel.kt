@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.fatashi.DEFAULT_PATH
+import org.umoja4life.fatashibackend.FatashiWork
 import org.umoja4life.fatashibackend.KamusiFormat
 import org.umoja4life.fatashibackend.MyEnvironment
 import java.io.File
@@ -31,6 +32,14 @@ class KamusiViewModel: ViewModel() {
         }
     }
 
+    fun parseCommand(cmdline: String) {
+        // parse & handle command wrapped in coroutine
+        viewModelScope.launch {
+            FatashiWork.parseCommands( cmdline.trim().split(' ') )
+        }
+    }
+
+    // ***************************************************
     // functions below are test/debugging only.
 
     fun getKamusiFormatJson(

@@ -22,7 +22,7 @@ object ResultsContent {
     val RESULT_ITEMS: MutableList<ResultItem> = mutableListOf()
 
     init {
-        buildResultItems( empty_query, sampleResult)
+        buildResultItems( sampleResult)
    }
 
     // shuffleList is for debugging & testing purposes
@@ -33,12 +33,13 @@ object ResultsContent {
         return sampleResult.slice( idx1..idx2)
     }
 
-    fun newQuery( s: String ) = buildResultItems(s, shuffleList() )
+    fun newQuery( s: String ) = buildResultItems( shuffleList() )
+
     fun itemsCount() = RESULT_ITEMS.size
 
-    fun buildResultItems(query: String, resultList: List<String>)  {
+    fun buildResultItems(resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
-//        RESULT_ITEMS.add(ResultItem("0", query))
+
         for ( i in resultList.indices ) {
             val (entry, definition, usage) = parseFields(resultList[i])
             RESULT_ITEMS.add(

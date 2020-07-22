@@ -46,12 +46,11 @@ class KamusiItemFragment : Fragment() {
     // publicly accessible, specifically from MainActivity at onClick for search
     // updateFragmentResults  -- get a new search query, then update & refresh display
 
-    fun updateFragmentResults( maulizo: String ) {
+    fun updateFragmentResults( maulizo: List<String> ) {
         if (DEBUG) Log.d(LOG_TAG, ">>> updateFragmentResults <<< ${myAdapter != null}: $maulizo")
 
-        ResultsContent.newQuery( maulizo )  // have ResultsContent get us some new items to display
+        ResultsContent.buildResultItems( maulizo )  // have ResultsContent get us some new items to display
         myAdapter?.notifyDataSetChanged( )  // then tell the RV.Adapter that we need a refresh
-
     }
 
     // Prepare shared element transition to ViewPager2Shellfragment

@@ -20,7 +20,8 @@ private const val LOG_TAG = "AndroidPlatform"
 class AndroidPlatform(
     override val myPath: String,
     val myView : View,
-    val myContext : Context
+    val myContext : Context,
+    val displayLambda : (List<String>) -> Unit
 ) : PlatformIO {
 
     // *********************************************************************************
@@ -70,7 +71,7 @@ class AndroidPlatform(
     // *********************************************************************************
     // primary dictionary results interface
     override fun listout(l: List<String>) {
-        TODO("Not yet implemented")
+        displayLambda(l)
     }
 
     // *********************************************************************************
