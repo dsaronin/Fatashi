@@ -44,6 +44,8 @@ class AndroidPlatform(
     // *********************************************************************************
     // output to an Alert-style modal box some brief information/status
     override fun infoAlert(s: String) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> infoAlert <<< $s")
+
         MaterialAlertDialogBuilder(myContext)
             .setTitle( myContext.getString(R.string.app_alert) )
             .setMessage( s )
@@ -58,6 +60,8 @@ class AndroidPlatform(
     // *********************************************************************************
     // tell user about an error
     override fun lineoutError(s: String) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> lineoutError <<< $s")
+
         Log.e(LOG_TAG, ">>>>> $s")
         Snackbar.make(myView, s, Snackbar.LENGTH_LONG).show()
     }
@@ -65,12 +69,16 @@ class AndroidPlatform(
     // *********************************************************************************
     // simple brief info for user: handle as long toast
     override fun lineoutInfo(s: String) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> lineoutInfo <<<  $s")
+
         Toast.makeText(myContext, s, Toast.LENGTH_LONG).show()
     }
 
     // *********************************************************************************
     // primary dictionary results interface
     override fun listout(l: List<String>) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> listout <<< #items: ${l.size}")
+
         displayLambda(l)  // will display view KamusiItemFragment & RecyclerViewHandler
     }
 

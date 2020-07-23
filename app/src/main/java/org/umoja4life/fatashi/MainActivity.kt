@@ -3,7 +3,6 @@ package org.umoja4life.fatashi
 import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
@@ -12,14 +11,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.basicio.FileServices
 import org.umoja4life.basicio.READ_PERMISSION_CODE
-import org.umoja4life.fatashibackend.MyEnvironment
 import org.umoja4life.kamusimodel.KamusiViewModel
 
 
@@ -73,7 +70,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     */
     // displayLambda  -- will be used within AndroidPlatform.listOut() to process the results
     // list and display it view RecyclerViewAdapter.
-    val displayLambda : (List<String>) -> Unit = { listResults ->
+    private val displayLambda : (List<String>) -> Unit = { listResults ->
         var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
 
         if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
@@ -158,10 +155,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         currentPosition = DEFAULT_POSITION      // reset current position
 
         val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
-        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo");
+        if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo")
 
             // skip unless the backend has been authorized and started
         if (startedBackend)  {
+            if (DEBUG) Log.d(LOG_TAG, ">>> VM.parseCommand <<<  ")
             myViewModel.parseCommand( maulizo )
             // asynch return here possibly BEFORE backend has processed!
         }

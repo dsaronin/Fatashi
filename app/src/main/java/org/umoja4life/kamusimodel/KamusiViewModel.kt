@@ -23,7 +23,7 @@ private const val DEBUG = true
 private const val LOG_TAG = "KamusiViewModel"
 
 class KamusiViewModel: ViewModel() {
-    private val MYARGS =  arrayOf("-v", "-p", "-n", "20")
+    private val MYARGS =  arrayOf("-v", "-n", "20")
 
     // initializeBackend  -- wrapped coroutine to setup MyEnvironment
     // ASSUMPTION: caller has already checked READ_PERMISSIONS
@@ -32,11 +32,14 @@ class KamusiViewModel: ViewModel() {
     fun initializeBackend(myPlatform : AndroidPlatform) {
         viewModelScope.launch {
             if (!MainActivity.startedBackend) {  // try to initialize unless already tried
+                if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< STARTED ...")
+
                 MyEnvironment.setup(MYARGS, myPlatform)
                 MainActivity.startedBackend = true  // show that backend is ready for action!
                 // ASSUMPTION: No Kamusi/JSON file read errors!
                 // If errors do occur, we'll still come here and think the Backend is setup.
                 // FUTURE: if those errors occur, maybe put backend into TEST mode
+                if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< ...ENDED")
             }
         }  // launch
     }
@@ -44,7 +47,8 @@ class KamusiViewModel: ViewModel() {
     fun parseCommand(cmdline: String) {
         // parse & handle command wrapped in coroutine
         viewModelScope.launch {
-            FatashiWork.parseCommands( cmdline.trim().split(' ') )
+            val isReloop = FatashiWork.parseCommands( cmdline.trim().split(' ') )
+            if (DEBUG) Log.d(LOG_TAG, ">>> parseCommand <<< isReloop: $isReloop")
         }  // launch
     }
 
