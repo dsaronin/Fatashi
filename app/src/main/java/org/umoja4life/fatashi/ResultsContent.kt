@@ -1,7 +1,41 @@
 package org.umoja4life.fatashi
 
+import android.text.SpannableStringBuilder
+import androidx.core.text.bold
+import androidx.core.text.color
+import androidx.core.text.scale
+import org.umoja4life.fatashibackend.AnsiColor
+
 private const val DEBUG = true
 private const val LOG_TAG = "ResultsContent"
+
+    // stripANSI -- extension to strip ANSI codes & rewrap for Android
+    // unused: color( R.color.colorSecondary900 ) { }
+fun String.stripANSI() : SpannableStringBuilder {
+    val sb = SpannableStringBuilder()   // init the Spannable
+    val l = this.split(AnsiColor.ansiRegex)   // break into wrap/no-wrap segments
+    var wrapNext = false     // used to alternate between wrap/no-wrap segments
+    var s = ""               // holder for a segment
+    var i = 0               // index into list
+
+        // primary list processing loop
+    while (i in l.indices) {
+        s = l[i++]  // pop item
+        if ( i > l.size - 1  &&  s.isEmpty() ) break  // we hit the end of the list and a dud marker
+
+        if ( s.isEmpty()  ||  wrapNext ) { // wrap this section of text
+            if (s.isEmpty() ) s = l[i++]  // skip past blank formatting; get text segment
+            sb.bold { scale(1.12F) { append(s) } }
+            wrapNext = false
+        }
+        else {  // non-wrapped text
+            sb.append(s)       // append the unwrapped segment
+            wrapNext = true   // next segment will be wrapped
+        }
+    } // while
+
+    return sb
+}
 
 // TODO: remove these before production
 // fieldDelimiters.replace( rawContent, internalFields )
@@ -39,6 +73,8 @@ object ResultsContent {
 
     // buildResultItems -- main entry point for displaying a new list of results
     // which have come from the backend, via AndroidPlatform.listOut()
+    // current version strips out any ANSI color wrapping in the string
+    // alternate to strip ANSI wrappings:        .replace(AnsiColor.ansiRegex,"")
     fun buildResultItems(resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
 
@@ -51,7 +87,7 @@ object ResultsContent {
     }
 
     // TODO: move this into the project configuration file
-    private val itemRegex = "^([^\\t]+)\\t([^\\t]+)\\t?([^\\t]*)\$"
+    private val itemRegex = "^([^\\t]+)\\t-*([^\\t]+)\\t?-*([^\\t]*)\$"
 
     // parseFields  -- split a search result line into three fields
     // TODO: needs to be taken over by Kamusi Class functions
@@ -77,5 +113,6 @@ object ResultsContent {
         val usage: String
     ) {
         override fun toString(): String = content
-    }
-}
+    }  // class ResultItem
+
+} // object ResultsContent

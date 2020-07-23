@@ -46,10 +46,10 @@ class DetailPagerFragment : Fragment() {
         val myDataItem = ResultsContent.RESULT_ITEMS[position]
         with(view) {
             val itemViewText = findViewById<TextView>(R.id.itemEntry)
-            itemViewText.text = myDataItem.entry
+            itemViewText.text = myDataItem.entry.stripANSI()
             itemViewText.transitionName = "transition$position"
-            findViewById<TextView>(R.id.itemDefinition).text = myDataItem.definition
-            findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage
+            findViewById<TextView>(R.id.itemDefinition).text = myDataItem.definition.stripANSI()
+            findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.stripANSI()
         }
     }
 
