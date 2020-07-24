@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
-import kotlinx.android.synthetic.main.result_item_detail.*
 
 private const val DEBUG = false
 private const val LOG_TAG = "DetailPagerFragment"
@@ -48,7 +45,8 @@ class DetailPagerFragment : Fragment() {
             val itemViewText = findViewById<TextView>(R.id.itemEntry)
             itemViewText.text = myDataItem.entry.stripANSI()
             itemViewText.transitionName = "transition$position"
-            findViewById<TextView>(R.id.itemDefinition).text = myDataItem.definition.stripANSI()
+            findViewById<TextView>(R.id.itemDefinition).text =
+                myDataItem.definition.stripANSI().replace(";\\s*".toRegex(),System.getProperty("line.separator"))
             findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.stripANSI()
         }
     }

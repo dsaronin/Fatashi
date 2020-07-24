@@ -5,9 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import org.umoja4life.fatashi.ResultsContent.ResultItem
-import java.util.concurrent.atomic.AtomicBoolean
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemRecyclerView"
@@ -52,10 +50,10 @@ class KamusiItemRecyclerViewAdapter(
 
         fun bind(resultItem: ResultItem, myListener: (ResultItem, TextView) -> Unit) =
             with(itemView) {
-                itemEntryView.text = resultItem.entry.stripANSI()
+                itemEntryView.text = resultItem.entry.rewrapANSI()
                 itemEntryView.transitionName = "transition$resultItem.position"
-                itemDefinitionView.text = resultItem.definition.stripANSI()
-                itemUsageView.text = resultItem.usage.stripANSI()
+                itemDefinitionView.text = resultItem.definition.rewrapANSI()
+                itemUsageView.text = resultItem.usage.rewrapANSI()
                 setOnClickListener { myListener(resultItem, itemEntryView) }
             }
 

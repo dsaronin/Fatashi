@@ -49,6 +49,7 @@ class AndroidPlatform(
         MaterialAlertDialogBuilder(myContext)
             .setTitle( myContext.getString(R.string.app_alert) )
             .setMessage( s )
+            .setNeutralButton(myContext.getString(R.string.okay), null)
             .show()
     }
 

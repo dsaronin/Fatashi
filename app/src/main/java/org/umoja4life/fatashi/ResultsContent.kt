@@ -9,9 +9,14 @@ import org.umoja4life.fatashibackend.AnsiColor
 private const val DEBUG = true
 private const val LOG_TAG = "ResultsContent"
 
-    // stripANSI -- extension to strip ANSI codes & rewrap for Android
+    // stripANSI -- simply removes ANSI codes from a string
+fun String.stripANSI() : String {
+    return this.replace(AnsiColor.ansiRegex,"")
+}
+
+    // rewrapANSI -- extension to strip ANSI codes & rewrap for Android
     // unused: color( R.color.colorSecondary900 ) { }
-fun String.stripANSI() : SpannableStringBuilder {
+fun String.rewrapANSI() : SpannableStringBuilder {
     val sb = SpannableStringBuilder()   // init the Spannable
     val l = this.split(AnsiColor.ansiRegex)   // break into wrap/no-wrap segments
     var wrapNext = false     // used to alternate between wrap/no-wrap segments
@@ -74,7 +79,6 @@ object ResultsContent {
     // buildResultItems -- main entry point for displaying a new list of results
     // which have come from the backend, via AndroidPlatform.listOut()
     // current version strips out any ANSI color wrapping in the string
-    // alternate to strip ANSI wrappings:        .replace(AnsiColor.ansiRegex,"")
     fun buildResultItems(resultList: List<String>)  {
         if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
 
@@ -87,7 +91,7 @@ object ResultsContent {
     }
 
     // TODO: move this into the project configuration file
-    private val itemRegex = "^([^\\t]+)\\t-*([^\\t]+)\\t?-*([^\\t]*)\$"
+    private val itemRegex = "^([^\\t]+)\\t-* ?([^\\t]+)\\t?-* ?([^\\t]*)\$"
 
     // parseFields  -- split a search result line into three fields
     // TODO: needs to be taken over by Kamusi Class functions
