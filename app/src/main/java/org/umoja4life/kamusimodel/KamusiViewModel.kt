@@ -23,25 +23,32 @@ private const val DEBUG = true
 private const val LOG_TAG = "KamusiViewModel"
 
 class KamusiViewModel: ViewModel() {
-    private val MYARGS =  arrayOf("-v", "-n", "20")
+    private val MYARGS =  arrayOf("-v", "-p", "-n", "16")
 
     // initializeBackend  -- wrapped coroutine to setup MyEnvironment
     // ASSUMPTION: caller has already checked READ_PERMISSIONS
     // Three different places in MainActivity can call us, so recheck whether we've tried to
     // start or not already.
     fun initializeBackend(myPlatform : AndroidPlatform) {
-        viewModelScope.launch {
-            if (!MainActivity.startedBackend) {  // try to initialize unless already tried
+        if (!MainActivity.startedBackend.getAndSet(true)) {  // try to initialize unless already tried
                 if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< STARTED ...")
 
+            viewModelScope.launch {
                 MyEnvironment.setup(MYARGS, myPlatform)
-                MainActivity.startedBackend = true  // show that backend is ready for action!
                 // ASSUMPTION: No Kamusi/JSON file read errors!
                 // If errors do occur, we'll still come here and think the Backend is setup.
                 // FUTURE: if those errors occur, maybe put backend into TEST mode
                 if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< ...ENDED")
-            }
-        }  // launch
+            }  // launch
+        }
+        else replacePlatform( myPlatform )
+    }
+
+    // each Android Activity lifecycle requires a refreshed AndroidPlatform
+    // NEEDS to be done when other requests are not pending
+
+    fun replacePlatform(myPlatform : AndroidPlatform) {
+        MyEnvironment.replacePlatform( myPlatform )
     }
 
     fun parseCommand(cmdline: String) {

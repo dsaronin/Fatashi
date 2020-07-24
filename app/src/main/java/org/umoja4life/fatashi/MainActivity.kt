@@ -18,6 +18,7 @@ import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.basicio.FileServices
 import org.umoja4life.basicio.READ_PERMISSION_CODE
 import org.umoja4life.kamusimodel.KamusiViewModel
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 private const val DEBUG = true
@@ -32,20 +33,19 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     private lateinit var myLayout: View
     val myViewModel = KamusiViewModel()
+    val myPath = DEFAULT_PATH
+    val isRepeat = AtomicBoolean(false)  // true if onResume not first time
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ********************")
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
         myLayout = fragment_container   // id for the main layout section
 
         setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
         handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
-
-            // Floating Action Button Usage
-        // findViewById<FloatingActionButton>(R.id.fab_read)
-        //    .setOnClickListener { view -> doSomeInput(view) }
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
@@ -62,6 +62,31 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ********************")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ********************")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRestart <<< ********************")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
+    }
+
     /*
     A lambda expression or anonymous function
     (as well as a local function and an object expression)
@@ -72,6 +97,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // list and display it view RecyclerViewAdapter.
     private val displayLambda : (List<String>) -> Unit = { listResults ->
         var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
+        if (DEBUG) Log.d(LOG_TAG, ">>> displayLambda <<< $this, $myfragment")
 
         if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
             supportFragmentManager.popBackStackImmediate()  // pop back to KamusiItemFragment
@@ -87,13 +113,30 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // from onCreate() above, or onRequestPermissionResult (click action)
     private fun initializeFatashiBackend() {
         // val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
-        val myPath = DEFAULT_PATH
-
         if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
 
         myViewModel.initializeBackend(
             AndroidPlatform(myPath,myLayout,this, displayLambda)
         )
+    }
+
+    //  callback just before the activity starts interacting with the user.
+    //  At this point, the activity is at the top of the activity stack
+    override fun onResume() {
+        super.onResume()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< ********************")
+            // first time thru, AndroidPlatform & MyEnvironment have already
+            // been started in onCreate, so skip the refresh here
+        if (isRepeat.getAndSet(true)) {
+            myLayout = fragment_container   // id for the main layout section
+
+            if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< repeat")
+
+            myViewModel.replacePlatform(
+                AndroidPlatform(myPath, myLayout, this, displayLambda)
+            )
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -158,7 +201,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo")
 
             // skip unless the backend has been authorized and started
-        if (startedBackend)  {
+        if (startedBackend.get())  {
             if (DEBUG) Log.d(LOG_TAG, ">>> VM.parseCommand <<<  ")
             myViewModel.parseCommand( maulizo )
             // asynch return here possibly BEFORE backend has processed!
@@ -177,26 +220,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }  // fi startedBackend ; else
     }
 
-    // DEBUG USAGE ONLY: doSomeInput was for testing purposes
-    private fun doSomeInput(view: View) {
-        TODO("DEBUGGING vestige only in doSomeInput()")
-        if (DEBUG) Log.d(LOG_TAG, ">>> doSomeInput <<< ")
-        val perm = FileServices.hasReadPermission(this)
-        // Snackbar.make(view, "Permission state: $perm", Snackbar.LENGTH_LONG).show()
-
-        // (getActivity() as MainActivity).
-        if (perm) {
-            myViewModel.getKamusiFormatJson(
-                "config_properties.json",
-                onSuccess = {kf ->
-                    Toast.makeText(this, kf.filename, Toast.LENGTH_LONG).show()
-                    kf
-                },
-                onFail = {err -> Toast.makeText(this, err, Toast.LENGTH_LONG).show()}
-            )
-        }  // fi perm
-    }
-
     // onSaveInstanceState callback -- when activity is being put on hold; save currentPosition
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -213,7 +236,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // currentPosition remembers selected result item out of list of items
             // used to remember state throughout transitions
         var currentPosition = DEFAULT_POSITION
-        var startedBackend = false
+        var startedBackend = AtomicBoolean(false)
 
     }
     
