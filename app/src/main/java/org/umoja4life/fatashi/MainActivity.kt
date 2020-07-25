@@ -29,7 +29,7 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
@@ -71,6 +71,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
@@ -95,6 +96,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onDestroy()
         if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
     }
+    */
 
     /*
     A lambda expression or anonymous function
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     */
     // displayLambda  -- will be used within AndroidPlatform.listOut() to process the results
     // list and display it view RecyclerViewAdapter.
-    private val displayLambda : (List<String>) -> Unit = { listResults ->
+    private val displayLambda : (List<String>, Boolean) -> Unit = { listResults, clearBuffer ->
         var myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         if (DEBUG) Log.d(LOG_TAG, ">>> displayLambda <<< $this, $myfragment")
 
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // now get the fragment supporting that view
             myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         }
-        (myfragment as KamusiItemFragment).updateFragmentResults( listResults )
+        (myfragment as KamusiItemFragment).updateFragmentResults( listResults, clearBuffer )
     }
 
     // initializeFatashiBackend -- convenience function to hold backend initialization

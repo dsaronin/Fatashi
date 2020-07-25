@@ -14,7 +14,7 @@ import org.umoja4life.fatashibackend.PlatformIO
 import java.io.File
 import java.io.IOException
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "AndroidPlatform"
 
 
@@ -22,7 +22,7 @@ class AndroidPlatform(
     override val myPath: String,
     val myView : View,
     val myContext : Context,
-    val displayLambda : (List<String>) -> Unit
+    val displayLambda : (List<String>, Boolean) -> Unit
 ) : PlatformIO {
 
     // *********************************************************************************
@@ -78,10 +78,10 @@ class AndroidPlatform(
 
     // *********************************************************************************
     // primary dictionary results interface
-    override fun listout(l: List<String>) {
-        if (DEBUG) Log.d(LOG_TAG, ">>> listout <<< #items: ${l.size}")
+    override fun listout(l: List<String>, clearBuffer: Boolean) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> listout <<< #items: ${l.size}, clear: $clearBuffer")
 
-        displayLambda(l)  // will display view KamusiItemFragment & RecyclerViewHandler
+        displayLambda(l, clearBuffer)  // will display view KamusiItemFragment & RecyclerViewHandler
     }
 
     // *********************************************************************************

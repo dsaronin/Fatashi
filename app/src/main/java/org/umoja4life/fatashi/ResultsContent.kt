@@ -6,7 +6,7 @@ import androidx.core.text.color
 import androidx.core.text.scale
 import org.umoja4life.fatashibackend.AnsiColor
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "ResultsContent"
 
     // stripANSI -- simply removes ANSI codes from a string
@@ -79,15 +79,17 @@ object ResultsContent {
     // buildResultItems -- main entry point for displaying a new list of results
     // which have come from the backend, via AndroidPlatform.listOut()
     // current version strips out any ANSI color wrapping in the string
-    fun buildResultItems(resultList: List<String>)  {
-        if ( RESULT_ITEMS.isNotEmpty() ) RESULT_ITEMS.clear()
+    fun buildResultItems(resultList: List<String>, clearBuffer: Boolean = true) : Int  {
+        if ( RESULT_ITEMS.isNotEmpty() && clearBuffer ) RESULT_ITEMS.clear()
+        val index = RESULT_ITEMS.size  // updates added after this index
 
         for ( i in resultList.indices ) {
             val (entry, definition, usage) = parseFields(resultList[i])
             RESULT_ITEMS.add(
-                ResultItem(i, resultList[i], entry,  definition, usage)
+                ResultItem(i+index, resultList[i], entry,  definition, usage)
             )
         }
+        return index - 1  // additions were added after this index
     }
 
     // TODO: move this into the project configuration file

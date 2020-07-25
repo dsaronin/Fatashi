@@ -1,6 +1,5 @@
 package org.umoja4life.kamusimodel
 
-import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,7 +18,7 @@ import org.umoja4life.fatashibackend.MyEnvironment
 import java.io.File
 import java.io.IOException
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "KamusiViewModel"
 
 class KamusiViewModel: ViewModel() {
