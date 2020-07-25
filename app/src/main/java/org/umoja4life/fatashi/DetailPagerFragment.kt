@@ -47,7 +47,7 @@ class DetailPagerFragment : Fragment() {
             itemViewText.transitionName = "transition$position"
             findViewById<TextView>(R.id.itemDefinition).text =
                 myDataItem.definition.stripANSI().replace(";\\s*".toRegex(),System.getProperty("line.separator"))
-            findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.stripANSI()
+            findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.rewrapANSI()
         }
     }
 

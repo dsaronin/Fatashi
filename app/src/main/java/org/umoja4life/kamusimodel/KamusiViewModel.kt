@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.umoja4life.basicio.AndroidPlatform
-import org.umoja4life.fatashi.DEFAULT_PATH
+import org.umoja4life.basicio.DEFAULT_PATH
 import org.umoja4life.fatashi.MainActivity
 import org.umoja4life.fatashibackend.FatashiWork
 import org.umoja4life.fatashibackend.KamusiFormat

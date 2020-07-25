@@ -1,14 +1,18 @@
 package org.umoja4life.fatashi
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.os.PersistableBundle
+import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.material.snackbar.Snackbar
@@ -16,8 +20,12 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.basicio.FileServices
+import org.umoja4life.basicio.FileServices.Companion.dynamicExternalDownloadPath
+import org.umoja4life.basicio.FileServices.Companion.getMyFilePath
 import org.umoja4life.basicio.READ_PERMISSION_CODE
 import org.umoja4life.kamusimodel.KamusiViewModel
+import java.io.File
+import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -25,7 +33,8 @@ private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
-        const val DEFAULT_PATH = "/sdcard/Download/"
+        // Request code for selecting a PDF document.
+        const val PICK_PDF_FILE = 2
 
 // MainActivity -- APP starting point
 
@@ -33,13 +42,13 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     private lateinit var myLayout: View
     val myViewModel = KamusiViewModel()
-    val myPath = DEFAULT_PATH
+    var myPath = getMyFilePath(this)
     val isRepeat = AtomicBoolean(false)  // true if onResume not first time
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ********************")
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ******************** $myPath")
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
         myLayout = fragment_container   // id for the main layout section
@@ -225,6 +234,19 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onSaveInstanceState(outState, outPersistentState)
 
         outState.putInt( KEY_POSITION, currentPosition )
+    }
+
+    fun openFile(pickerInitialUri: URI) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+
+            // Optionally, specify a URI for the file that should appear in the
+            // system file picker when it loads.
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+
+        startActivityForResult(intent, PICK_PDF_FILE)
     }
 
     // ************************************************************************

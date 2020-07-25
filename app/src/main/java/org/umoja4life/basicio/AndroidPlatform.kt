@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.umoja4life.fatashi.R
+import org.umoja4life.fatashi.stripANSI
 import org.umoja4life.fatashibackend.PlatformIO
 import java.io.File
 import java.io.IOException

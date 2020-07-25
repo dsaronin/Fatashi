@@ -50,7 +50,13 @@ class KamusiItemRecyclerViewAdapter(
 
         fun bind(resultItem: ResultItem, myListener: (ResultItem, TextView) -> Unit) =
             with(itemView) {
-                itemEntryView.text = resultItem.entry.rewrapANSI()
+
+                // stripANSI from title divider lines
+                itemEntryView.text = if (""">+""".toRegex().containsMatchIn(resultItem.entry) ) {
+                    resultItem.entry.stripANSI()
+                }
+                else resultItem.entry.rewrapANSI()
+
                 itemEntryView.transitionName = "transition$resultItem.position"
                 itemDefinitionView.text = resultItem.definition.rewrapANSI()
                 itemUsageView.text = resultItem.usage.rewrapANSI()
