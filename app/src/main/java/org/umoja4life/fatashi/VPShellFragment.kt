@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager2.widget.ViewPager2
-
 
 private const val DEBUG = false
 private const val LOG_TAG = "VPShellFragment"
@@ -21,10 +18,6 @@ class VPShellFragment : Fragment(), LifecycleOwner {
     private var viewPager: ViewPager2? = null
     private var targetPosition: Int = DEFAULT_POSITION
 
-    init {
-        if (DEBUG) Log.d(LOG_TAG, ">>>>> init <<<<<  +++++++++++++ $this" )
-
-    }
     private var detailPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
          // CALLBACK: onPageSelected, entered each time a page changes
         override fun onPageSelected(position: Int) {
@@ -42,12 +35,10 @@ class VPShellFragment : Fragment(), LifecycleOwner {
                     if (DEBUG) Log.d(LOG_TAG, ">>>>> Fragment BackPressed <<<<<" )
 
                     // remove all FragmentStateAdapter zombie fragments
-                    if (childFragmentManager.fragments != null) {
-                        for (fragment in childFragmentManager.fragments) {
-                            childFragmentManager.beginTransaction()
-                                .remove(fragment)
-                                .commitAllowingStateLoss()
-                        }
+                    for (fragment in childFragmentManager.fragments) {
+                        childFragmentManager.beginTransaction()
+                            .remove(fragment)
+                            .commitAllowingStateLoss()
                     }
 
                     // if you want onBackPressed() to be called as normal afterwards
@@ -85,18 +76,6 @@ class VPShellFragment : Fragment(), LifecycleOwner {
 
         return viewPager
     }
-
-    /* might be necessary in future.... if zombie FragmentStateAdapter fragments remain
-    override fun onDestroyView() {
-        if (childFragmentManager.fragments != null) {
-            for (fragment in childFragmentManager.fragments) {
-                childFragmentManager.beginTransaction().remove(fragment)
-                    .commitAllowingStateLoss()
-            }
-        }
-        super.onDestroyView()
-    }
-    */
 
     // ***********************************************************************************
     // ***********************************************************************************

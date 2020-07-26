@@ -1,14 +1,9 @@
 package org.umoja4life.fatashi
 
 import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.PersistableBundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -20,14 +15,10 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.basicio.FileServices
-import org.umoja4life.basicio.FileServices.Companion.dynamicExternalDownloadPath
 import org.umoja4life.basicio.FileServices.Companion.getMyFilePath
 import org.umoja4life.basicio.READ_PERMISSION_CODE
 import org.umoja4life.kamusimodel.KamusiViewModel
-import java.io.File
-import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
-
 
 private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
@@ -75,34 +66,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 .commit()
         }
     }
-
-
-    override fun onStart() {
-        super.onStart()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ********************")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ********************")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onRestart <<< ********************")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
-    }
-
-
     /*
     A lambda expression or anonymous function
     (as well as a local function and an object expression)
@@ -249,6 +212,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         outState.putInt( KEY_POSITION, currentPosition )
     }
 
+/*  FUTURE HOOK FOR FILE PICKER
     fun openFile(pickerInitialUri: URI) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
@@ -261,6 +225,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         startActivityForResult(intent, PICK_PDF_FILE)
     }
+*/
 
     // ************************************************************************
     // ************************************************************************
@@ -276,3 +241,33 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
     
 } // class MainActivity
+
+/*
+
+    override fun onStart() {
+        super.onStart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ********************")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ********************")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRestart <<< ********************")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
+    }
+*/
+
+

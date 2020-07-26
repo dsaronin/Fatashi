@@ -1,6 +1,5 @@
 package org.umoja4life.fatashi
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,10 +13,6 @@ private const val LOG_TAG = "DetailPagerFragment"
 const val ARG_POSITION = "org.umoja4life.fatashi.item_position"
 
 class DetailPagerFragment : Fragment() {
-
-    init {
-        if (DEBUG) Log.d(LOG_TAG, ">>> DPF init <<< ---------- [${ResultsContent.RESULT_ITEMS.size}] ------- $this -------")
-    }
 
     // class-level to getInstance, prep the state arguments & return the Fragment
     companion object {
@@ -59,10 +54,11 @@ class DetailPagerFragment : Fragment() {
             itemViewText.text = myDataItem.entry.stripANSI()
             itemViewText.transitionName = "transition$position"
             findViewById<TextView>(R.id.itemDefinition).text =
-                myDataItem.definition.stripANSI().replace(";\\s*".toRegex(),System.getProperty("line.separator"))
+                myDataItem.definition.stripANSI().replace(";\\s*".toRegex(),System.getProperty("line.separator")!!)
             findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.rewrapANSI()
         }
     }
+/*
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -113,4 +109,5 @@ class DetailPagerFragment : Fragment() {
         super.onDestroy()
         if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
     }
+*/
 }

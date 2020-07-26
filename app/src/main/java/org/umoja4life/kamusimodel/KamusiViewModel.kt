@@ -76,12 +76,10 @@ class KamusiViewModel: ViewModel() {
         // wrap fileread in a scope
         viewModelScope.launch {
             try {
-                onSuccess(
-                    Gson().fromJson((getFile(f) as String), kamusiFormatType)
-                )
+                onSuccess( Gson().fromJson(getFile(f), kamusiFormatType) )
             }  // try
             catch(ex: JsonSyntaxException) {
-                Log.e(LOG_TAG, ex.toString())
+                if (DEBUG) Log.e(LOG_TAG, ex.toString())
                 onFail(ex.toString())
             } // catch
 
@@ -96,7 +94,7 @@ class KamusiViewModel: ViewModel() {
             try {
                 result = File(DEFAULT_PATH + f).readText()
             } catch (ex: IOException) {
-                Log.e(LOG_TAG, "file: $f ex: $ex")
+                if (DEBUG) Log.e(LOG_TAG, "file: $f ex: $ex")
             } // catch
         }
         if (DEBUG) Log.d(LOG_TAG, ">>> getFile <<< f: $f \njson: $result")

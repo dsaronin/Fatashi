@@ -20,7 +20,7 @@ fun String.rewrapANSI() : SpannableStringBuilder {
     val sb = SpannableStringBuilder()   // init the Spannable
     val l = this.split(AnsiColor.ansiRegex)   // break into wrap/no-wrap segments
     var wrapNext = false     // used to alternate between wrap/no-wrap segments
-    var s = ""               // holder for a segment
+    var s : String               // holder for a segment
     var i = 0               // index into list
 
         // primary list processing loop
@@ -72,7 +72,7 @@ object ResultsContent {
         return sampleResult.slice( idx1..idx2)
     }
 
-    fun newQuery( s: String ) = buildResultItems( shuffleList() )
+    fun newQuery(  ) = buildResultItems( shuffleList() )
 
     fun itemsCount() = RESULT_ITEMS.size
 

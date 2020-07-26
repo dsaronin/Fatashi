@@ -9,11 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Fade
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -24,8 +22,6 @@ class KamusiItemFragment : Fragment() {
 
     var myAdapter : KamusiItemRecyclerViewAdapter? = null
     private var recyclerView: RecyclerView? = null
-
-
 
     // onCreateView callback -- for when view is created
     // remember the RV.Adapter for later usage to refresh screen with new data

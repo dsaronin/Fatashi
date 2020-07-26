@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "org.umoja4life.fatashi"
-        minSdkVersion 29
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName 'v0.1.0  be-v0.0.67'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,6 +27,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        alpha {
+            dimension 'version'
+            applicationIdSuffix '.alpha'
+            versionNameSuffix '-alpha'
+            versionName 'alpha release'
+        }
+        full {
+            dimension 'version'
+        }
     }
 }
 
