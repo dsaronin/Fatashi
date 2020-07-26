@@ -29,7 +29,7 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results

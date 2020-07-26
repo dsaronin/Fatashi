@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "DetailPagerFragment"
 const val ARG_POSITION = "org.umoja4life.fatashi.item_position"
 
 class DetailPagerFragment : Fragment() {
 
     init {
-        if (DEBUG) Log.d(LOG_TAG, ">>> DPF init <<< ---------- [${ResultsContent.RESULT_ITEMS.size}] ------- $this")
+        if (DEBUG) Log.d(LOG_TAG, ">>> DPF init <<< ---------- [${ResultsContent.RESULT_ITEMS.size}] ------- $this -------")
     }
 
     // class-level to getInstance, prep the state arguments & return the Fragment
@@ -39,7 +39,7 @@ class DetailPagerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (DEBUG) Log.d(LOG_TAG, ">>> onCreateView <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreateView <<< ============ [${ResultsContent.RESULT_ITEMS.size}]===== $this ======== ")
 
         return inflater.inflate(R.layout.result_item_detail, container, false)
     }
