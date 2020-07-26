@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.umoja4life.fatashi.R
+import org.umoja4life.fatashi.stripANSI
 import org.umoja4life.fatashibackend.PlatformIO
 import java.io.File
 import java.io.IOException
@@ -33,7 +34,7 @@ class AndroidPlatform(
             try {
                 result = File(myPath + f).readText()
             } catch (ex: IOException) {
-                Log.e(LOG_TAG, "file: $f ex: $ex")
+                if (DEBUG) Log.e(LOG_TAG, "file: $f ex: $ex")
             } // catch
         }
         if (DEBUG) Log.d(LOG_TAG, ">>> getFile <<< f: $f, size: ${result.length}")
@@ -63,8 +64,8 @@ class AndroidPlatform(
     override fun lineoutError(s: String) {
         if (DEBUG) Log.d(LOG_TAG, ">>> lineoutError <<< $s")
 
-        Log.e(LOG_TAG, ">>>>> $s")
-        Snackbar.make(myView, s, Snackbar.LENGTH_LONG).show()
+        if (DEBUG) Log.e(LOG_TAG, ">>>>> $s")
+        Snackbar.make(myView, s.stripANSI(), Snackbar.LENGTH_LONG).show()
     }
 
     // *********************************************************************************
@@ -72,7 +73,7 @@ class AndroidPlatform(
     override fun lineoutInfo(s: String) {
         if (DEBUG) Log.d(LOG_TAG, ">>> lineoutInfo <<<  $s")
 
-        Toast.makeText(myContext, s, Toast.LENGTH_LONG).show()
+        Toast.makeText(myContext, s.stripANSI(), Toast.LENGTH_LONG).show()
     }
 
     // *********************************************************************************
