@@ -116,7 +116,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (DEBUG) Log.d(LOG_TAG, ">>> displayLambda <<< $this, $myfragment")
 
         if ( myfragment is VPShellFragment ) {  // oops, still on the detail view fragment
+            supportFragmentManager.beginTransaction()
+                .remove(myfragment)
+                .commit()
             supportFragmentManager.popBackStackImmediate()  // pop back to KamusiItemFragment
+
             // now get the fragment supporting that view
             myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         }

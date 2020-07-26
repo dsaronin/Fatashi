@@ -1,16 +1,18 @@
 package org.umoja4life.fatashi
 
 import android.os.Bundle
-import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.SharedElementCallback
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import 	androidx.viewpager.widget.PagerAdapter
 
+
+private const val DEBUG = true
+private const val LOG_TAG = "VPShellFragment"
 
 class VPShellFragment : Fragment() {
 
@@ -23,6 +25,35 @@ class VPShellFragment : Fragment() {
             MainActivity.currentPosition = position  // update currentPosition
         }
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    Log.d(LOG_TAG, ">>>>> Fragment BackPressed <<<<<" )
+
+                    // remove all FragmentStateAdapter zombie fragments
+                    if (childFragmentManager.fragments != null) {
+                        for (fragment in childFragmentManager.fragments) {
+                            childFragmentManager.beginTransaction()
+                                .remove(fragment)
+                                .commitAllowingStateLoss()
+                        }
+                    }
+
+                    // if you want onBackPressed() to be called as normal afterwards
+                    if (isEnabled) {
+                        isEnabled = false
+                        requireActivity().onBackPressed()
+                    }
+                }  // fun handleOnBackPressed
+            }  // lambda
+        )  // addCallBack
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +71,18 @@ class VPShellFragment : Fragment() {
 
         return viewPager
     }
+
+    /* might be necessary in future.... if zombie FragmentStateAdapter fragments remain
+    override fun onDestroyView() {
+        if (childFragmentManager.fragments != null) {
+            for (fragment in childFragmentManager.fragments) {
+                childFragmentManager.beginTransaction().remove(fragment)
+                    .commitAllowingStateLoss()
+            }
+        }
+        super.onDestroyView()
+    }
+    */
 
     // ***********************************************************************************
     // ***********************************************************************************

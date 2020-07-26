@@ -1,17 +1,23 @@
 package org.umoja4life.fatashi
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-private const val DEBUG = false
+private const val DEBUG = true
 private const val LOG_TAG = "DetailPagerFragment"
 const val ARG_POSITION = "org.umoja4life.fatashi.item_position"
 
 class DetailPagerFragment : Fragment() {
+
+    init {
+        if (DEBUG) Log.d(LOG_TAG, ">>> DPF init <<< ---------- [${ResultsContent.RESULT_ITEMS.size}] ------- $this")
+    }
 
     // class-level to getInstance, prep the state arguments & return the Fragment
     companion object {
@@ -21,6 +27,7 @@ class DetailPagerFragment : Fragment() {
 
             myBundle.putInt(ARG_POSITION, position)
             myDetailPagerFragment.arguments = myBundle
+            if (DEBUG) Log.d(LOG_TAG, ">>> getInstance <<< ---------- [${ResultsContent.RESULT_ITEMS.size}] ------ ($position) ------ $myDetailPagerFragment")
 
             return myDetailPagerFragment
         }
@@ -32,6 +39,8 @@ class DetailPagerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreateView <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+
         return inflater.inflate(R.layout.result_item_detail, container, false)
     }
 
@@ -39,7 +48,11 @@ class DetailPagerFragment : Fragment() {
 
     // bind result item fields to TextView fields in layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onViewCreated <<< ========================= [${ResultsContent.RESULT_ITEMS.size}] ========= $this")
         val position = requireArguments().getInt(ARG_POSITION)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onViewCreated <<< ============================= ($position) ===== $this")
+
         val myDataItem = ResultsContent.RESULT_ITEMS[position]
         with(view) {
             val itemViewText = findViewById<TextView>(R.id.itemEntry)
@@ -51,4 +64,53 @@ class DetailPagerFragment : Fragment() {
         }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onAttach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onActivityCreated <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDetach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroyView <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+    }
 }
