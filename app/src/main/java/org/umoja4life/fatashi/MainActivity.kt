@@ -29,7 +29,7 @@ import java.net.URI
 import java.util.concurrent.atomic.AtomicBoolean
 
 
-private const val DEBUG = false
+private const val DEBUG = true
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ******************** $myPath")
+        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ******************* $myPath")
 
         setContentView(R.layout.activity_main)  // Inflate the contentView
         myLayout = fragment_container   // id for the main layout section
@@ -59,11 +59,16 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
         }
-        else {
-            // If have read permission, kicks off backend setup, asynchronously
-            if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
-            // else we might be continuing here without read permission!
+       // If have read permission, kicks off backend setup, asynchronously
+        if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
+        // else we might be continuing here without read permission!
 
+        initiateKamusiItemFragment() // -- if it doesn't exist
+    }
+
+        // initiateKamusiItemFragment -- if it doesn't exist
+    private fun initiateKamusiItemFragment() {
+        if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
             supportFragmentManager    // initiate KamusiItemFragment
                 .beginTransaction()
                 .add(R.id.fragment_container, KamusiItemFragment())
@@ -71,7 +76,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
     }
 
-    /*
+
     override fun onStart() {
         super.onStart()
         if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
@@ -96,7 +101,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onDestroy()
         if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
     }
-    */
+
 
     /*
     A lambda expression or anonymous function
@@ -147,6 +152,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 AndroidPlatform(myPath, myLayout, this, displayLambda)
             )
         }
+
+        initiateKamusiItemFragment() // -- if it doesn't exist
 
     }
 
