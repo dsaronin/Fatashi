@@ -52,7 +52,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
        // If have read permission, kicks off backend setup, asynchronously
         if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
-        // else we might be continuing here without read permission!
+        else {  // initialize builtin kamusi for demo purposes
+            myViewModel.startNoFileBackend(
+                AndroidPlatform(myPath,myLayout,this, displayLambda)
+            )
+        }
 
         initiateKamusiItemFragment() // -- if it doesn't exist
     }
@@ -107,7 +111,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     //  At this point, the activity is at the top of the activity stack
     override fun onResume() {
         super.onResume()
+
         if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< ********************")
+
             // first time thru, AndroidPlatform & MyEnvironment have already
             // been started in onCreate, so skip the refresh here
         if (isRepeat.getAndSet(true)) {
@@ -119,9 +125,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 AndroidPlatform(myPath, myLayout, this, displayLambda)
             )
         }
-
-        initiateKamusiItemFragment() // -- if it doesn't exist
-
+        initiateKamusiItemFragment()
     }
 
     override fun onRequestPermissionsResult(
@@ -140,7 +144,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             }
             else {
                 // Permission request was denied.
-                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
                 // only enable built-in test data?
                 // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
                 // finishAndRemoveTask()
@@ -192,7 +196,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // asynch return here possibly BEFORE backend has processed!
         }
         else {  // tell the user we can't do anything without read permissions
-            Snackbar.make(myLayout, R.string.cannot_search, Snackbar.LENGTH_SHORT)
+            Snackbar.make(myLayout, R.string.cannot_search, Snackbar.LENGTH_LONG)
                 .setAction(R.string.retry) {
                     // Responds to click on the action ==>
                     // try again to get read permission, initializeBackEnd, then parseCommand

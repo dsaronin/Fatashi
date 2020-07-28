@@ -4,7 +4,7 @@
     <string name="title_activity_main">SearchActivity</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="empty_result">Enter a search query...</string>
+    <string name="enter_query">Enter a search query...</string>
     <string name="edit_tafuta">Ingiza maneno uyatafutayo</string>
     <string name="button_tafuta">tafuta</string>
     <string name="read_permission_granted">read permission granted</string>

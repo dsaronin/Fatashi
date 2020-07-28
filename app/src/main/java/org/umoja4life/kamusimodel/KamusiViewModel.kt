@@ -43,6 +43,14 @@ class KamusiViewModel: ViewModel() {
         else replacePlatform( myPlatform )
     }
 
+        // startNoFileBackend -- launch builtin sample kamusi since no-read permission
+    fun startNoFileBackend(myPlatform : AndroidPlatform) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> startNoFileBackend <<< ")
+
+        MyEnvironment.nofileSetup(MYARGS, myPlatform)
+        MainActivity.startedBackend.set(true)
+    }
+
     // each Android Activity lifecycle requires a refreshed AndroidPlatform
     // NEEDS to be done when other requests are not pending
 

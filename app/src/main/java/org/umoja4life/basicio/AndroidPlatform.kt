@@ -87,7 +87,8 @@ class AndroidPlatform(
     }
 
     override fun getFrontVersion(): String =
-        "\nAndroid: ${BuildConfig.VERSION_NAME} [${BuildConfig.VERSION_CODE}] @ ${BuildConfig.BUILD_TIME}"
+        "\nAndroid: ${BuildConfig.VERSION_NAME} [${BuildConfig.VERSION_CODE}] @ ${BuildConfig.BUILD_TIME}" +
+        "\n(c) 2020 David S. Anderson\nAll Rights Reserved"
 
     // *********************************************************************************
     // ******************** NOT IMPLEMENTED IN ANDROID *********************************
