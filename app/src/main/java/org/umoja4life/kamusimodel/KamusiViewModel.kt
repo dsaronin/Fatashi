@@ -28,14 +28,17 @@ class KamusiViewModel: ViewModel() {
     // ASSUMPTION: caller has already checked READ_PERMISSIONS
     // Three different places in MainActivity can call us, so recheck whether we've tried to
     // start or not already.
-    fun initializeBackend(myPlatform : AndroidPlatform) {
-        if (!MainActivity.startedBackend.getAndSet(true)) {  // try to initialize unless already tried
+    fun initializeBackend(myPlatform : AndroidPlatform, firstCmd: () -> Unit) {
+        // try to initialize unless already tried
+        if (!MainActivity.startedBackend.getAndSet(true)) {
                 if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< STARTED ...")
 
             viewModelScope.launch {
                 MyEnvironment.setup(MYARGS, myPlatform)
                     // if failed to get viable kasumi, run with internal default
                 if (MyEnvironment.isNotViable() ) MyEnvironment.nofileSetup(MYARGS, myPlatform)
+
+                firstCmd()   // do some command to kick off everything
 
                 if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< ...ENDED")
             }  // launch
@@ -44,11 +47,12 @@ class KamusiViewModel: ViewModel() {
     }
 
         // startNoFileBackend -- launch builtin sample kamusi since no-read permission
-    fun startNoFileBackend(myPlatform : AndroidPlatform) {
+    fun startNoFileBackend(myPlatform : AndroidPlatform, firstCmd: () -> Unit) {
         if (DEBUG) Log.d(LOG_TAG, ">>> startNoFileBackend <<< ")
 
         MyEnvironment.nofileSetup(MYARGS, myPlatform)
         MainActivity.startedBackend.set(true)
+        firstCmd()   // do some command to kick off everything
     }
 
     // each Android Activity lifecycle requires a refreshed AndroidPlatform

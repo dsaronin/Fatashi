@@ -89,6 +89,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         (myfragment as KamusiItemFragment).updateFragmentResults( listResults, clearBuffer )
     }
 
+        // startupLambda  -- callback for mock command as first display for user
+    private val startupLambda : ( ) -> Unit = {
+        myViewModel.parseCommand( "l" )  // does list command
+    }
+
     // initializeFatashiBackend -- convenience function to hold backend initialization
     // kicks off Backend initialization but doesn't wait for completion
     // DEPENDING UPON where Read Permission is detected/granted, this can be called
@@ -98,8 +103,22 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
 
         myViewModel.initializeBackend(
-            AndroidPlatform(myPath,myLayout,this, displayLambda)
+            AndroidPlatform(myPath,myLayout,this, displayLambda),
+            startupLambda
         )
+    }
+
+    // initializeFallbackBackend  -- fallback if can't get read permission or access files
+    // will use small built-in kamusi for demo purposes
+    private fun initializeFallbackBackend() {
+        // val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
+        if (DEBUG) Log.d(LOG_TAG, ">>> initBFallback <<< path: $myPath")
+
+        myViewModel.startNoFileBackend(
+            AndroidPlatform(myPath,myLayout,this, displayLambda),
+            startupLambda
+        )
+
     }
 
     //  callback just before the activity starts interacting with the user.
@@ -141,9 +160,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 // Permission request was denied.
                 Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
                  // initialize builtin kamusi for demo purposes
-                myViewModel.startNoFileBackend(
-                    AndroidPlatform(myPath,myLayout,this, displayLambda)
-                )
+                initializeFallbackBackend()
             }
         }
     }
