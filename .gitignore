@@ -42,6 +42,8 @@ tuki_kamusi.txt
 bin/
 gen/
 build/
+app/alpha/
+app/release/
 
 # local configuration file (for Android sdk path, etc)
 local.properties

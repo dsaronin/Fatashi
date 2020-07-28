@@ -26,6 +26,16 @@ android {
         release {
             minifyEnabled false
         }
+        alpha {
+            applicationIdSuffix ".alpha"
+            versionNameSuffix "-alpha"
+            minifyEnabled false
+        }
+        debug {
+            applicationIdSuffix ".debug"
+            debuggable true
+        }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
