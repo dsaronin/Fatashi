@@ -52,11 +52,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         }
        // If have read permission, kicks off backend setup, asynchronously
         if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
-        else {  // initialize builtin kamusi for demo purposes
-            myViewModel.startNoFileBackend(
-                AndroidPlatform(myPath,myLayout,this, displayLambda)
-            )
-        }
 
         initiateKamusiItemFragment() // -- if it doesn't exist
     }
@@ -145,12 +140,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             else {
                 // Permission request was denied.
                 Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
-                // only enable built-in test data?
-                // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
-                // finishAndRemoveTask()
+                 // initialize builtin kamusi for demo purposes
+                myViewModel.startNoFileBackend(
+                    AndroidPlatform(myPath,myLayout,this, displayLambda)
+                )
             }
         }
     }
+    // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
+    // finishAndRemoveTask()
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
     // setup a listener for keyboard-based SEARCH submit button
