@@ -34,9 +34,9 @@ class KamusiViewModel: ViewModel() {
 
             viewModelScope.launch {
                 MyEnvironment.setup(MYARGS, myPlatform)
-                // ASSUMPTION: No Kamusi/JSON file read errors!
-                // If errors do occur, we'll still come here and think the Backend is setup.
-                // FUTURE: if those errors occur, maybe put backend into TEST mode
+                    // if failed to get viable kasumi, run with internal default
+                if (MyEnvironment.isNotViable() ) MyEnvironment.nofileSetup(MYARGS, myPlatform)
+
                 if (DEBUG) Log.d(LOG_TAG, ">>> initializeBackend <<< ...ENDED")
             }  // launch
         }
@@ -64,6 +64,7 @@ class KamusiViewModel: ViewModel() {
     // ***************************************************************************************
     // ***************************************************************************************
 
+/*
     fun getKamusiFormatJson(
         f: String,
         onSuccess: (KamusiFormat) -> KamusiFormat,
@@ -101,5 +102,6 @@ class KamusiViewModel: ViewModel() {
 
         return result
     }
+*/
 
 }  // class KamusiViewModel

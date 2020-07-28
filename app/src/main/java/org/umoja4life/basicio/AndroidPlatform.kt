@@ -8,11 +8,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.umoja4life.fatashi.BuildConfig
 import org.umoja4life.fatashi.R
 import org.umoja4life.fatashi.stripANSI
 import org.umoja4life.fatashibackend.PlatformIO
 import java.io.File
 import java.io.IOException
+
 
 private const val DEBUG = false
 private const val LOG_TAG = "AndroidPlatform"
@@ -83,6 +85,9 @@ class AndroidPlatform(
 
         displayLambda(l, clearBuffer)  // will display view KamusiItemFragment & RecyclerViewHandler
     }
+
+    override fun getFrontVersion(): String =
+        "\nAndroid: ${BuildConfig.VERSION_NAME} [${BuildConfig.VERSION_CODE}] @ ${BuildConfig.BUILD_TIME}"
 
     // *********************************************************************************
     // ******************** NOT IMPLEMENTED IN ANDROID *********************************
