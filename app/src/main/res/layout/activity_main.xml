@@ -22,48 +22,51 @@
 
         <LinearLayout
             android:id="@+id/search_box_layout"
-            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_request_layout"
-                android:layout_width="355dp"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:layout_weight="1"
                 android:layout_marginStart="4dp"
                 android:clickable="true"
                 android:ems="10"
                 android:focusableInTouchMode="true"
                 android:hint="@string/edit_tafuta"
                 app:endIconMode="clear_text"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_toLeftOf="@+id/button">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/search_request_input"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="start"
                     android:imeOptions="actionSearch"
-                    android:inputType="textPersonName" />
+                    android:inputType="textPersonName"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+           <ImageButton
                 android:id="@+id/button"
-                android:layout_width="47dp"
+                android:src="@android:drawable/ic_menu_search"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"
                 android:layout_marginEnd="4dp"
                 android:background="@color/colorPrimary"
-                android:drawableEnd="@android:drawable/ic_menu_search"
                 android:drawableTint="@color/colorSecondary300"
                 android:onClick="searchRequest"
                 android:tooltipText="@string/button_tafuta"
-                app:iconGravity="end"
-                app:layout_constraintBaseline_toBaselineOf="@+id/search_request_input"
+                android:layout_gravity="end"
+                app:layout_constraintBaseline_toBaselineOf="@+id/search_request_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/search_request_input" />
+                app:layout_constraintStart_toEndOf="@+id/search_request_layout" />
+
         </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
