@@ -178,7 +178,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId" )
 
             // treat same as onClick button
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) searchRequest(view)
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE
+            ) searchRequest(view)
             true
         }
     }
