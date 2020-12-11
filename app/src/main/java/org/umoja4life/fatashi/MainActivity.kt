@@ -1,7 +1,9 @@
 package org.umoja4life.fatashi
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -240,6 +242,45 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         outState.putInt( KEY_POSITION, currentPosition )
     }
 
+    //  vvvvvvvvv V0.2 Document Tree support ===============================================
+    // onActivityResult -- callback for ACTION_OPEN_DOCUMENT_TREE
+    //
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            val directoryUri = data?.data ?: return
+
+            contentResolver.takePersistableUriPermission(
+                directoryUri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+            // **** SUCCESS comes here; do something *****************
+        }
+        // else FAILURE comes here; what to do?
+    }
+
+    // openDirectory  -- initiates ACTION_OPEN_DOCUMENT_TREE
+    // asynchronously returns
+    private fun openDirectory() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        startActivityForResult(intent, OPEN_DIRECTORY_REQUEST_CODE)
+    }
+
+    // isOpenDirectory()  -- returns Uri of a directory user has already chosen
+    // else returns null: no directory selected yet
+    // !! returns first Uri for UriPermission with ReadPermission; assumes correct
+    private fun getUriForOpenDirectory() : Uri?  {
+
+        for (urip in contentResolver.getPersistedUriPermissions( ) ) {
+            if ( urip.isReadPermission() ) return urip.getUri()
+        }
+
+        return null   // failure
+    }
+
+    //  ^^^^^^^^^ V0.2 Document Tree support ===============================================
+
+
 /*  FUTURE HOOK FOR FILE PICKER
     fun openFile(pickerInitialUri: URI) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -269,6 +310,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
     
 } // class MainActivity
+
+private const val OPEN_DIRECTORY_REQUEST_CODE = 0xf11e
+
 
 /*
 

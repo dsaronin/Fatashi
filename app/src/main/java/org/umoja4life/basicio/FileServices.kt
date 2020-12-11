@@ -28,6 +28,7 @@ class FileServices {
         // hasReadPermission -- returns TRUE if we have/got Read permission
         fun hasReadPermission(compatActivity: AppCompatActivity): Boolean {
 
+            // ----- V0_1 --------------------------------------------------------------
             if ( BuildConfig.FATASHI_MY_VERSION == BuildConfig.FATASHI_V0_1 ) {
 
                 if ( compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -41,9 +42,11 @@ class FileServices {
                         READ_PERMISSION_CODE)
                 }
             }
+            // ----- V0_2 --------------------------------------------------------------
             else {
 
             }
+            // -------------------------------------------------------------------------
 
             return readPermission
         }
