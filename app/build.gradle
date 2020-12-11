@@ -15,6 +15,10 @@ android {
         versionCode 5
         versionName 'v0.1.4-0.0.72'
 
+        buildConfigField("String", "FATASHI_MY_VERSION", '"V0.2"')
+        buildConfigField("String", "FATASHI_V0_1",       '"V0.1"')
+        buildConfigField("String", "FATASHI_V0_2",       '"V0.2"')
+
         buildConfigField("String", "BUILD_TIME", "\"$buildDateStamp\"")
         resValue("string", "build_time", "$buildDateStamp")
 

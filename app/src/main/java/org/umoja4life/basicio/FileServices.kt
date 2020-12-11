@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import org.umoja4life.fatashi.BuildConfig
 import org.umoja4life.fatashi.R
 
 
@@ -26,16 +27,24 @@ class FileServices {
 
         // hasReadPermission -- returns TRUE if we have/got Read permission
         fun hasReadPermission(compatActivity: AppCompatActivity): Boolean {
-            if ( compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_GRANTED ) {
-                readPermission = true
+
+            if ( BuildConfig.FATASHI_MY_VERSION == BuildConfig.FATASHI_V0_1 ) {
+
+                if ( compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED ) {
+                    readPermission = true
+                }
+                else {
+                    showWhyGetPermission(
+                        compatActivity,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        READ_PERMISSION_CODE)
+                }
             }
             else {
-                showWhyGetPermission(
-                    compatActivity,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    READ_PERMISSION_CODE)
+
             }
+
             return readPermission
         }
 
