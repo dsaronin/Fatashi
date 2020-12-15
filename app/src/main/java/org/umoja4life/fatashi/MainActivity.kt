@@ -2,7 +2,6 @@ package org.umoja4life.fatashi
 
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -16,9 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
-import org.umoja4life.basicio.FileServices
-import org.umoja4life.basicio.FileServices.Companion.getMyFilePath
-import org.umoja4life.basicio.READ_PERMISSION_CODE
 import org.umoja4life.kamusimodel.KamusiViewModel
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -200,10 +196,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 .setAction(R.string.retry) {
                     // Responds to click on the action ==>
                     // try again to get read permission, initializeBackEnd, then parseCommand
-                    if (FileServices.hasReadPermission(this)) {
-                        initializeFatashiBackend()
-                        myViewModel.parseCommand( maulizo )
-                    }
+                    openDirectory()  // onActivityResult
+                    myViewModel.parseCommand( maulizo )
                 }  // onClick RETRY
                 .show()
         }  // fi startedBackend ; else
