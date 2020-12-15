@@ -26,16 +26,15 @@ private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
-        // Request code for selecting a PDF document.
-        const val PICK_PDF_FILE = 2
+        const val DEFAULT_PATH = "/sdcard/Download/Fatashi"
 
-// MainActivity -- APP starting point
+// MainActivity -- APP starting point``````````````````````
 
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private lateinit var myLayout: View
     val myViewModel = KamusiViewModel()
-    var myPath = getMyFilePath(this)
+    var myPath = DEFAULT_PATH
     val isRepeat = AtomicBoolean(false)  // true if onResume not first time
 
     // onCreate callback -- when Activity is first created
@@ -52,8 +51,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
         }
-       // If have read permission, kicks off backend setup, asynchronously
-        if (FileServices.hasReadPermission(this)) initializeFatashiBackend()
+
+       // If have DIRECTORY read permission, kick off backend setup, asynchronously
+        if ( isDirectoryPermission() ) initializeFatashiBackend()
+        else openDirectory()  // processing will pick up from onActivityResult()
 
         initiateKamusiItemFragment() // -- if it doesn't exist
     }
@@ -144,34 +145,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         initiateKamusiItemFragment()
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        if (DEBUG) Log.d(LOG_TAG, ">>> onRequestPermissionsResult <<< ")
-
-        if (requestCode == READ_PERMISSION_CODE) {
-            // Request for read file storage permission.
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission has been granted. Start to do something
-                initializeFatashiBackend()  // asynchronously initialize backend
-                // returns here before completion of backend setup
-            }
-            else {
-                // Permission request was denied.
-                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
-                 // initialize builtin kamusi for demo purposes
-                initializeFallbackBackend()
-            }
-        }
-    }
-    // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
-    // finishAndRemoveTask()
-
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
     // setup a listener for keyboard-based SEARCH submit button
-
     private fun handleKeyboardSubmit( view: TextInputLayout )  {
         if (DEBUG) Log.d(LOG_TAG, ">>> kbd listen <<< (${view.editText != null})" )
 
@@ -206,7 +181,6 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // >>>>>> onClick response from the search icon: activity_main.xml <<<<<<<<<<<\
     // our job here is to grab the search-field-input text string, then
     // pass it on to the Fragment handling it.
-
     fun searchRequest(view: View) {
             // housekeeping stuff before refreshing search results
         hideKeyboard(view)  // vanish keyboard from the screen
@@ -243,20 +217,33 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     }
 
     //  vvvvvvvvv V0.2 Document Tree support ===============================================
+
     // onActivityResult -- callback for ACTION_OPEN_DOCUMENT_TREE
-    //
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == OPEN_DIRECTORY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            val directoryUri = data?.data ?: return
+        val directoryUri = data?.data
 
+        if (
+            requestCode == OPEN_DIRECTORY_REQUEST_CODE &&
+            resultCode == Activity.RESULT_OK &&
+            directoryUri != null
+        ) {  // **** SUCCESS comes here; do something *****************
+               // persist that we have directory read permission
             contentResolver.takePersistableUriPermission(
                 directoryUri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-            // **** SUCCESS comes here; do something *****************
+            setMyPath( directoryUri )
+            initializeFatashiBackend()  // asynchronously initialize backend
+            // returns here before completion of backend setup
+
         }
-        // else FAILURE comes here; what to do?
+        else {  // else FAILURE comes here; Permission request was denied.
+            Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
+            // initialize builtin kamusi for demo purposes
+            initializeFallbackBackend()
+        }
+
     }
 
     // openDirectory  -- initiates ACTION_OPEN_DOCUMENT_TREE
@@ -278,23 +265,22 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         return null   // failure
     }
 
+    // isDirectoryPermission -- checks if permission exists & sets myPath, if so
+    private fun isDirectoryPermission() : Boolean {
+        val directoryUri = getUriForOpenDirectory() ?: return false
+
+        setMyPath(directoryUri)  // convert Uri to String & set myPath
+        return true
+    }
+
+    // setMyPath -- convert Uri to String & set myPath
+    private fun setMyPath(directoryUri : Uri) {
+        Log.d(LOG_TAG, ">>> isDirectoryPermission <<<  ${directoryUri.getPath() ?: "PATH NULL"} ")
+        myPath = directoryUri.getPath() ?: DEFAULT_PATH
+    }
+
     //  ^^^^^^^^^ V0.2 Document Tree support ===============================================
 
-
-/*  FUTURE HOOK FOR FILE PICKER
-    fun openFile(pickerInitialUri: URI) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = "application/pdf"
-
-            // Optionally, specify a URI for the file that should appear in the
-            // system file picker when it loads.
-            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
-        }
-
-        startActivityForResult(intent, PICK_PDF_FILE)
-    }
-*/
 
     // ************************************************************************
     // ************************************************************************
@@ -314,32 +300,5 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 private const val OPEN_DIRECTORY_REQUEST_CODE = 0xf11e
 
 
-/*
-
-    override fun onStart() {
-        super.onStart()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ********************")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ********************")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onRestart <<< ********************")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
-    }
-*/
 
 

@@ -11,12 +11,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.umoja4life.fatashi.BuildConfig
 import org.umoja4life.fatashi.R
 
+//  ***** ENTIRE FILE IS DEPRECATED; DO NOT USE ************************************************
+//  ***** ENTIRE FILE IS DEPRECATED; DO NOT USE ************************************************
+//  ***** ENTIRE FILE IS DEPRECATED; DO NOT USE ************************************************
 
 const val READ_PERMISSION_CODE  =  9     // permission request code
 const val WRITE_PERMISSION_CODE = 10     // permission request code
-
-const val DEFAULT_PATH = "/sdcard/Download/"
-const val DOWNLOAD_DIR = "/Download/"
 
 class FileServices {
 
@@ -28,25 +28,16 @@ class FileServices {
         // hasReadPermission -- returns TRUE if we have/got Read permission
         fun hasReadPermission(compatActivity: AppCompatActivity): Boolean {
 
-            // ----- V0_1 --------------------------------------------------------------
-            if ( BuildConfig.FATASHI_MY_VERSION == BuildConfig.FATASHI_V0_1 ) {
-
-                if ( compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED ) {
-                    readPermission = true
-                }
-                else {
-                    showWhyGetPermission(
-                        compatActivity,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        READ_PERMISSION_CODE)
-                }
+            if ( compatActivity.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED ) {
+                readPermission = true
             }
-            // ----- V0_2 --------------------------------------------------------------
             else {
-
+                showWhyGetPermission(
+                    compatActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    READ_PERMISSION_CODE)
             }
-            // -------------------------------------------------------------------------
 
             return readPermission
         }
@@ -90,27 +81,6 @@ class FileServices {
         private fun getPermission(compatActivity: AppCompatActivity, pType: String, pCode: Int) {
             ActivityCompat.requestPermissions(compatActivity, arrayOf(pType), pCode)
         }
-
-
-        // try to determine external public storage path
-        fun dynamicExternalDownloadPath() : String? {
-            if ( System.getenv("EXTERNAL_STORAGE").isNullOrBlank() ) return null
-            return System.getenv("EXTERNAL_STORAGE")!! + DOWNLOAD_DIR
-        }
-
-        // Checks if a volume containing external storage is available to at least read.
-        fun isExternalStorageReadable(): Boolean {
-            return Environment.getExternalStorageState() in
-                    setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
-        }
-
-       /* fun listDir(myContext: Context) {
-            // val dynaPaths = Context.getExternalFilesDirs(Environment.DIRECTORY_DOWNLOADS)
-
-        }*/
-
-        fun getMyFilePath(myContext: Context) : String = dynamicExternalDownloadPath() ?: DEFAULT_PATH
-
 
     }  // companion object
 

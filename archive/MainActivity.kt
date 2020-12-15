@@ -118,4 +118,92 @@ how to replace a fragment
         (myfragment as KamusiItemFragment).updateFragmentResults( listResults )
     }
 
+/*  FUTURE HOOK FOR FILE PICKER
+        // Request code for selecting a PDF document.
+        const val PICK_PDF_FILE = 2
+    fun openFile(pickerInitialUri: URI) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
+
+            // Optionally, specify a URI for the file that should appear in the
+            // system file picker when it loads.
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+
+        startActivityForResult(intent, PICK_PDF_FILE)
+    }
+*/
+
+/*
+
+    override fun onStart() {
+        super.onStart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ********************")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ********************")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ********************")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRestart <<< ********************")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ********************")
+    }
+*/
+        // try to determine external public storage path
+        fun dynamicExternalDownloadPath() : String? {
+            if ( System.getenv("EXTERNAL_STORAGE").isNullOrBlank() ) return null
+            return System.getenv("EXTERNAL_STORAGE")!! + DOWNLOAD_DIR
+        }
+
+        // Checks if a volume containing external storage is available to at least read.
+        fun isExternalStorageReadable(): Boolean {
+            return Environment.getExternalStorageState() in
+                    setOf(Environment.MEDIA_MOUNTED, Environment.MEDIA_MOUNTED_READ_ONLY)
+        }
+
+       /* fun listDir(myContext: Context) {
+            // val dynaPaths = Context.getExternalFilesDirs(Environment.DIRECTORY_DOWNLOADS)
+
+        }*/
+
+        fun getMyFilePath(myContext: Context) : String = dynamicExternalDownloadPath() ?: DEFAULT_PATH
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (DEBUG) Log.d(LOG_TAG, ">>> onRequestPermissionsResult <<< ")
+
+        if (requestCode == READ_PERMISSION_CODE) {
+            // Request for read file storage permission.
+            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted. Start to do something
+                initializeFatashiBackend()  // asynchronously initialize backend
+                // returns here before completion of backend setup
+            }
+            else {
+                // Permission request was denied.
+                Snackbar.make(myLayout, R.string.read_permission_denied, Snackbar.LENGTH_LONG).show()
+                // initialize builtin kamusi for demo purposes
+                initializeFallbackBackend()
+            }
+        }
+    }
+    // Snackbar.make(myLayout, R.string.forced_exit, Snackbar.LENGTH_SHORT).show()
+    // finishAndRemoveTask()
 
