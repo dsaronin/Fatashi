@@ -22,7 +22,7 @@ private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
-        const val DEFAULT_PATH = "/sdcard/Download/Fatashi"
+        const val DEFAULT_PATH = "/sdcard/Download/fatashi"
 
 // MainActivity -- APP starting point``````````````````````
 
@@ -217,6 +217,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onActivityResult(requestCode, resultCode, data)
         val directoryUri = data?.data
 
+        Log.d(LOG_TAG, ">>> onActivityResult <<<  ${directoryUri?.getPath() ?: "PATH NULL"}  ")
+
         if (
             requestCode == OPEN_DIRECTORY_REQUEST_CODE &&
             resultCode == Activity.RESULT_OK &&
@@ -252,6 +254,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // !! returns first Uri for UriPermission with ReadPermission; assumes correct
     private fun getUriForOpenDirectory() : Uri?  {
 
+        Log.d(LOG_TAG, ">>> getUriForOpenDirectory <<<  ")
+
         for (urip in contentResolver.getPersistedUriPermissions( ) ) {
             if ( urip.isReadPermission() ) return urip.getUri()
         }
@@ -269,8 +273,9 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     // setMyPath -- convert Uri to String & set myPath
     private fun setMyPath(directoryUri : Uri) {
-        Log.d(LOG_TAG, ">>> isDirectoryPermission <<<  ${directoryUri.getPath() ?: "PATH NULL"} ")
-        myPath = directoryUri.getPath() ?: DEFAULT_PATH
+        Log.d(LOG_TAG, ">>> setMyPath <<<  ${directoryUri.getPath() ?: "PATH NULL"} ")
+        myPath = ( directoryUri.getPath() ?: DEFAULT_PATH ) + "/"
+           // add in trailing slash to precede filenames
     }
 
     //  ^^^^^^^^^ V0.2 Document Tree support ===============================================

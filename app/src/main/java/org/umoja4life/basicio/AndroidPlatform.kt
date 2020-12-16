@@ -36,10 +36,10 @@ class AndroidPlatform(
             try {
                 result = File(myPath + f).readText()
             } catch (ex: IOException) {
-                if (DEBUG) Log.e(LOG_TAG, "file: $f ex: $ex")
+                Log.e(LOG_TAG, "file:  ${myPath + f} ex: $ex")
             } // catch
         }
-        if (DEBUG) Log.d(LOG_TAG, ">>> getFile <<< f: $f, size: ${result.length}")
+        Log.d(LOG_TAG, ">>> getFile <<< f: ${myPath + f}, size: ${result.length}")
 
         return result
     }

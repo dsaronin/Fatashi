@@ -3,20 +3,11 @@ package org.umoja4life.kamusimodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
-import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.umoja4life.basicio.AndroidPlatform
-import org.umoja4life.basicio.DEFAULT_PATH
 import org.umoja4life.fatashi.MainActivity
 import org.umoja4life.fatashibackend.FatashiWork
-import org.umoja4life.fatashibackend.KamusiFormat
 import org.umoja4life.fatashibackend.MyEnvironment
-import java.io.File
-import java.io.IOException
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiViewModel"
