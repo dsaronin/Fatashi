@@ -50,29 +50,6 @@ class AndroidPlatform(
     }
 
     // *********************************************************************************
-    // getFile_v0_1 -- do File().readText() in a non-blocking way
-    // DEPRECATED due to Android 11 SAF
-    /***********
-    suspend fun getFile_v0_1(f: String): String {
-        var result = ""
-
-        withContext(Dispatchers.IO) {
-            try {
-                val uri = Uri.withAppendedPath(myPath.toUri(), f)
-                Log.d(LOG_TAG, ">>> appendedPath <<< f: ${uri.path}")
-
-                result = File(myPath + f).readText()
-            } catch (ex: IOException) {
-                Log.e(LOG_TAG, "file:  ${myPath + f} ex: $ex")
-            } // catch
-        }
-        Log.d(LOG_TAG, ">>> getFile <<< f: ${myPath + f}, size: ${result.length}")
-
-        return result
-    }
-    ******************/
-
-    // *********************************************************************************
     // note difference between path for Uri.withAppendedPath(myPath.toUri()).path
     // and that of the path by finding the file in the list of files in given directory
     // ex: content://com.android.externalstorage.documents/tree/primary%3ADownload%2Ffatashi
@@ -130,6 +107,29 @@ class AndroidPlatform(
     }
 
     // *********************************************************************************
+    // *********************************************************************************
+    // getFile_v0_1 -- do File().readText() in a non-blocking way
+    // DEPRECATED due to Android 11 SAF
+    /***********
+    suspend fun getFile_v0_1(f: String): String {
+    var result = ""
+
+    withContext(Dispatchers.IO) {
+    try {
+    val uri = Uri.withAppendedPath(myPath.toUri(), f)
+    Log.d(LOG_TAG, ">>> appendedPath <<< f: ${uri.path}")
+
+    result = File(myPath + f).readText()
+    } catch (ex: IOException) {
+    Log.e(LOG_TAG, "file:  ${myPath + f} ex: $ex")
+    } // catch
+    }
+    Log.d(LOG_TAG, ">>> getFile <<< f: ${myPath + f}, size: ${result.length}")
+
+    return result
+    }
+     ******************/
+
     // *********************************************************************************
     // *********************************************************************************
     // output to an Alert-style modal box some brief information/status

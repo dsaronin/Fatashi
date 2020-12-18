@@ -11,10 +11,12 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
+import org.umoja4life.basicio.FileServices
 import org.umoja4life.kamusimodel.KamusiViewModel
 import java.io.BufferedReader
 import java.io.InputStream
@@ -54,7 +56,20 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
        // If have DIRECTORY read permission, kick off backend setup, asynchronously
         if ( isDirectoryPermission() ) initializeFatashiBackend()
-        else openDirectory()  // processing will pick up from onActivityResult()
+        else {  // FIRST TIME: User needs to choose a directory for Fatashi data files
+            MaterialAlertDialogBuilder(this)
+                .setTitle( this.getString(R.string.choose_directory_rationale) )
+                .setMessage( this.getString(R.string.choose_directory_reason) )
+                .setNegativeButton(this.getString(R.string.no_default)){ dialog, _ ->
+                    dialog.dismiss()
+                    initializeFallbackBackend()  // user chose built-in database
+                }
+                .setPositiveButton(this.getString(R.string.yes_proceed)) { dialog, _ ->
+                    dialog.dismiss()
+                    openDirectory()  // processing will pick up from onActivityResult()
+                }
+                .show()
+        }
 
         initiateKamusiItemFragment() // -- if it doesn't exist
     }

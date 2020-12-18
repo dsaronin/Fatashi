@@ -12,8 +12,8 @@ android {
         applicationId "org.umoja4life.fatashi"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 5
-        versionName 'v0.1.4-0.0.72'
+        versionCode 6
+        versionName 'v0.2.1-0.0.72'
 
         buildConfigField("String", "FATASHI_MY_VERSION", '"V0.2"')
         buildConfigField("String", "FATASHI_V0_1",       '"V0.1"')
