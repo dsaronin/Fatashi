@@ -16,6 +16,9 @@ import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
 import org.umoja4life.kamusimodel.KamusiViewModel
+import java.io.BufferedReader
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val DEBUG = false
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private lateinit var myLayout: View
     val myViewModel = KamusiViewModel()
     var myPath = DEFAULT_PATH
+    var myDirectoryUri: Uri? = null
     val isRepeat = AtomicBoolean(false)  // true if onResume not first time
 
     // onCreate callback -- when Activity is first created
@@ -41,11 +45,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         setContentView(R.layout.activity_main)  // Inflate the contentView
         myLayout = fragment_container   // id for the main layout section
 
-        setSupportActionBar( toolbar )  // Inflate the ActionBar: findViewById(R.id.toolbar)
-        handleKeyboardSubmit( search_request_layout ) // findViewById( R.id.search_request_layout )
+        setSupportActionBar(toolbar)  // Inflate the ActionBar: findViewById(R.id.toolbar)
+        handleKeyboardSubmit(search_request_layout) // findViewById( R.id.search_request_layout )
 
         if (savedInstanceState != null ) {  // means changing orientation
-            currentPosition = savedInstanceState.getInt( KEY_POSITION, DEFAULT_POSITION )
+            currentPosition = savedInstanceState.getInt(KEY_POSITION, DEFAULT_POSITION)
         }
 
        // If have DIRECTORY read permission, kick off backend setup, asynchronously
@@ -85,12 +89,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // now get the fragment supporting that view
             myfragment  = supportFragmentManager.findFragmentById(R.id.fragment_container)
         }
-        (myfragment as KamusiItemFragment).updateFragmentResults( listResults, clearBuffer )
+        (myfragment as KamusiItemFragment).updateFragmentResults(listResults, clearBuffer)
     }
 
         // startupLambda  -- callback for mock command as first display for user
     private val startupLambda : ( ) -> Unit = {
-        myViewModel.parseCommand( "l" )  // does list command
+        myViewModel.parseCommand("l")  // does list command
     }
 
     // initializeFatashiBackend -- convenience function to hold backend initialization
@@ -102,7 +106,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
 
         myViewModel.initializeBackend(
-            AndroidPlatform(myPath,myLayout,this, displayLambda),
+            AndroidPlatform(myPath, myLayout, this, myDirectoryUri, displayLambda),
             startupLambda
         )
     }
@@ -114,7 +118,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (DEBUG) Log.d(LOG_TAG, ">>> initBFallback <<< path: $myPath")
 
         myViewModel.startNoFileBackend(
-            AndroidPlatform(myPath,myLayout,this, displayLambda),
+            AndroidPlatform(myPath, myLayout, this, myDirectoryUri, displayLambda),
             startupLambda
         )
 
@@ -135,7 +139,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< repeat")
 
             myViewModel.replacePlatform(
-                AndroidPlatform(myPath, myLayout, this, displayLambda)
+                AndroidPlatform(myPath, myLayout, this, myDirectoryUri, displayLambda)
             )
         }
         initiateKamusiItemFragment()
@@ -143,22 +147,22 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     // handleKeyboardSubmit -- setup the listener for keyboard SEARCH-submits
     // setup a listener for keyboard-based SEARCH submit button
-    private fun handleKeyboardSubmit( view: TextInputLayout )  {
-        if (DEBUG) Log.d(LOG_TAG, ">>> kbd listen <<< (${view.editText != null})" )
+    private fun handleKeyboardSubmit(view: TextInputLayout)  {
+        if (DEBUG) Log.d(LOG_TAG, ">>> kbd listen <<< (${view.editText != null})")
 
         view.editText?.setOnEditorActionListener { _, actionId, _ ->
 
-            if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId" )
+            if (DEBUG) Log.d(LOG_TAG, ">>> kbd TRIGGER <<< $actionId")
 
             // treat same as onClick button
             when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH,
                 EditorInfo.IME_ACTION_DONE,
                 EditorInfo.IME_ACTION_NEXT,
-                EditorInfo.IME_NULL              -> {
-                                                        searchRequest(view)
-                                                        true
-                                                    }
+                EditorInfo.IME_NULL -> {
+                    searchRequest(view)
+                    true
+                }
                 else                             -> false
             }
 
@@ -188,7 +192,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // skip unless the backend has been authorized and started
         if (startedBackend.get())  {
             if (DEBUG) Log.d(LOG_TAG, ">>> VM.parseCommand <<<  ")
-            myViewModel.parseCommand( maulizo )
+            myViewModel.parseCommand(maulizo)
             // asynch return here possibly BEFORE backend has processed!
         }
         else {  // tell the user we can't do anything without read permissions
@@ -197,7 +201,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                     // Responds to click on the action ==>
                     // try again to get read permission, initializeBackEnd, then parseCommand
                     openDirectory()  // onActivityResult
-                    myViewModel.parseCommand( maulizo )
+                    myViewModel.parseCommand(maulizo)
                 }  // onClick RETRY
                 .show()
         }  // fi startedBackend ; else
@@ -207,7 +211,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
 
-        outState.putInt( KEY_POSITION, currentPosition )
+        outState.putInt(KEY_POSITION, currentPosition)
     }
 
     //  vvvvvvvvv V0.2 Document Tree support ===============================================
@@ -217,7 +221,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onActivityResult(requestCode, resultCode, data)
         val directoryUri = data?.data
 
-        Log.d(LOG_TAG, ">>> onActivityResult <<<  ${directoryUri?.getPath() ?: "PATH NULL"}  ")
+        if (DEBUG) Log.d(LOG_TAG, ">>> onActivityResult <<<  ${directoryUri?.getPath() ?: "PATH NULL"}  ")
 
         if (
             requestCode == OPEN_DIRECTORY_REQUEST_CODE &&
@@ -229,7 +233,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
                 directoryUri,
                 Intent.FLAG_GRANT_READ_URI_PERMISSION
             )
-            setMyPath( directoryUri )
+            setMyPath(directoryUri)
             initializeFatashiBackend()  // asynchronously initialize backend
             // returns here before completion of backend setup
 
@@ -254,7 +258,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // !! returns first Uri for UriPermission with ReadPermission; assumes correct
     private fun getUriForOpenDirectory() : Uri?  {
 
-        Log.d(LOG_TAG, ">>> getUriForOpenDirectory <<<  ")
+        if (DEBUG) Log.d(LOG_TAG, ">>> getUriForOpenDirectory <<<  ")
 
         for (urip in contentResolver.getPersistedUriPermissions( ) ) {
             if ( urip.isReadPermission() ) return urip.getUri()
@@ -271,14 +275,15 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         return true
     }
 
-    // setMyPath -- convert Uri to String & set myPath
-    private fun setMyPath(directoryUri : Uri) {
-        Log.d(LOG_TAG, ">>> setMyPath <<<  ${directoryUri.getPath() ?: "PATH NULL"} ")
-        myPath = ( directoryUri.getPath() ?: DEFAULT_PATH ) + "/"
-           // add in trailing slash to precede filenames
+    // setMyPath -- convert Uri to String & set myPath, myDirectoryUri
+    private fun setMyPath(directoryUri: Uri) {
+        myDirectoryUri = directoryUri
+        myPath = directoryUri.toString()
+        if (DEBUG) Log.d(LOG_TAG, ">>> setMyPath <<<  $myPath")
     }
 
     //  ^^^^^^^^^ V0.2 Document Tree support ===============================================
+
 
 
     // ************************************************************************
