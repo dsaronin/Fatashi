@@ -17,9 +17,9 @@
     <string name="okay">okay</string>
     <string name="app_alert">Status Alert</string>
     <string name="forced_exit">Without READ permission; Fatashi exits.</string>
-    <string name="cannot_search">Kamusi not initialized yet; Cannot search without READ PERMISSION Click RETRY to try to get read permission again.</string>
+    <string name="cannot_search">Kamusi not initialized yet; Cannot search PERMISSION to access Fatashi dictionaries; Click RETRY to browse to a directory with Fatashi dictionaries.</string>
     <string name="retry">retry</string>
-    <string name="choose_directory_rationale">Designate fatashi directory</string>
+    <string name="choose_directory_rationale">Designate Fatashi directory</string>
     <string name="choose_directory_reason">Fatashi requires all of its dictionary database and configuration files to be in a single directory. Click yes to proceed to browse and grant permission access. Click no to use the limited builtin sample data.</string>
     <string name="no_default">NO, use default</string>
 

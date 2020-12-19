@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+// versionCode  versionName   notes
+// 6  -- v0.1.4-0.0.72  production prior to TZ 2020 trip
+// 7  -- v0.2.1-0.0.72  upgrade for DirectoryTree Android 11 SAF handling
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
@@ -12,8 +16,8 @@ android {
         applicationId "org.umoja4life.fatashi"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 6
-        versionName 'v0.2.1-0.0.72'
+        versionCode 8
+        versionName 'v0.2.2-0.0.72'
 
         buildConfigField("String", "FATASHI_MY_VERSION", '"V0.2"')
         buildConfigField("String", "FATASHI_V0_1",       '"V0.1"')

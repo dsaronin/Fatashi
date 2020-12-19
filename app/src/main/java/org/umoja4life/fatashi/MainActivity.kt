@@ -27,7 +27,7 @@ private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
-        const val DEFAULT_PATH = "/sdcard/Download/fatashi"
+        const val DEFAULT_PATH = "/sdcard/Download/fatashi"  // deprecated
 
 // MainActivity -- APP starting point``````````````````````
 
