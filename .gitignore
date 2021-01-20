@@ -28,6 +28,8 @@ hs_err_pid*
 dsa_dictionary.txt
 methali_kamusi.txt
 tuki_kamusi.txt
+tuki_english.txt
+swahili-etymology.txt
 
 # vim
 *~
@@ -57,8 +59,16 @@ local.properties
 
 # Android Studio
 .gradle
-.idea/modules/app/app.iml
+*.app.iml
+.idea/caches/
 .idea/caches/build_file_checksums.ser
+.idea/compiler.xml
+.idea/assetWizardSettings.xml
+.idea/gradle.xml
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+
 
 #NDK
 obj/
