@@ -16,11 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
-import org.umoja4life.basicio.FileServices
+import org.umoja4life.fatashibackend.FatashiWork
 import org.umoja4life.kamusimodel.KamusiViewModel
-import java.io.BufferedReader
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.util.concurrent.atomic.AtomicBoolean
 
 private const val DEBUG = false
@@ -34,10 +31,10 @@ private const val LOG_TAG = "MainActivity"
 class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsResultCallback  {
 
     private lateinit var myLayout: View
-    val myViewModel = KamusiViewModel()
-    var myPath = DEFAULT_PATH
-    var myDirectoryUri: Uri? = null
-    val isRepeat = AtomicBoolean(false)  // true if onResume not first time
+    private val myViewModel = KamusiViewModel()
+    private var myPath = DEFAULT_PATH
+    private var myDirectoryUri: Uri? = null
+    private val isRepeat = AtomicBoolean(false)  // true if onResume not first time
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,8 +113,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     // kicks off Backend initialization but doesn't wait for completion
     // DEPENDING UPON where Read Permission is detected/granted, this can be called
     // from onCreate() above, or onRequestPermissionResult (click action)
+    // deprecated: val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
     private fun initializeFatashiBackend() {
-        // val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
         if (DEBUG) Log.d(LOG_TAG, ">>> initBackend <<< path: $myPath")
 
         myViewModel.initializeBackend(
@@ -128,8 +125,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
     // initializeFallbackBackend  -- fallback if can't get read permission or access files
     // will use small built-in kamusi for demo purposes
+    // DEPRECATED: val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
     private fun initializeFallbackBackend() {
-        // val myPath = getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.path ?: DEFAULT_PATH
         if (DEBUG) Log.d(LOG_TAG, ">>> initBFallback <<< path: $myPath")
 
         myViewModel.startNoFileBackend(
@@ -152,6 +149,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             myLayout = fragment_container   // id for the main layout section
 
             if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< repeat")
+
+            search_request_layout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
 
             myViewModel.replacePlatform(
                 AndroidPlatform(myPath, myLayout, this, myDirectoryUri, displayLambda)
@@ -208,6 +207,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         if (startedBackend.get())  {
             if (DEBUG) Log.d(LOG_TAG, ">>> VM.parseCommand <<<  ")
             myViewModel.parseCommand(maulizo)
+            search_request_layout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
+
             // asynch return here possibly BEFORE backend has processed!
         }
         else {  // tell the user we can't do anything without read permissions
@@ -236,7 +237,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onActivityResult(requestCode, resultCode, data)
         val directoryUri = data?.data
 
-        if (DEBUG) Log.d(LOG_TAG, ">>> onActivityResult <<<  ${directoryUri?.getPath() ?: "PATH NULL"}  ")
+        if (DEBUG) Log.d(LOG_TAG, ">>> onActivityResult <<<  ${directoryUri?.path ?: "PATH NULL"}  ")
 
         if (
             requestCode == OPEN_DIRECTORY_REQUEST_CODE &&
@@ -275,8 +276,8 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
 
         if (DEBUG) Log.d(LOG_TAG, ">>> getUriForOpenDirectory <<<  ")
 
-        for (urip in contentResolver.getPersistedUriPermissions( ) ) {
-            if ( urip.isReadPermission() ) return urip.getUri()
+        for (urip in contentResolver.persistedUriPermissions) {
+            if ( urip.isReadPermission) return urip.uri
         }
 
         return null   // failure
