@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import org.umoja4life.fatashi.databinding.ResultDetailPagerBinding
 
 private const val DEBUG = false
 private const val LOG_TAG = "VPShellFragment"
@@ -27,7 +27,7 @@ class VPShellFragment : Fragment(), LifecycleOwner {
     }
 
     // replacing deprecated kotlin-android-extensions
-    private var _binding: ResultProfileBinding? = null
+    private var _binding: ResultDetailPagerBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -65,25 +65,25 @@ class VPShellFragment : Fragment(), LifecycleOwner {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // added for deprecation
         _binding = ResultDetailPagerBinding.inflate(inflater, container, false)
         val viewPager = binding.root as ViewPager2
         // deprecated  viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
 
-        viewPager?.adapter = ResultItemDetailAdapter(
+        viewPager.adapter = ResultItemDetailAdapter(
             childFragmentManager,
             lifecycle,
             ResultsContent.itemsCount()
         )
 
-        if (DEBUG) Log.d(LOG_TAG, ">>>>> onCreateView <<<<<  +++++++++++++ ${viewPager?.adapter}  ++++ $this" )
+        if (DEBUG) Log.d(LOG_TAG, ">>>>> onCreateView <<<<<  +++++++++++++ ${viewPager.adapter}  ++++ $this" )
 
         // turn off smooth scroll to jump to desired page
-        viewPager?.setCurrentItem(MainActivity.currentPosition, false)
-        viewPager?.orientation = ViewPager2.ORIENTATION_VERTICAL
-        viewPager?.registerOnPageChangeCallback(( detailPageChangeCallback ))
+        viewPager.setCurrentItem(MainActivity.currentPosition, false)
+        viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
+        viewPager.registerOnPageChangeCallback(( detailPageChangeCallback ))
 
         targetPosition = arguments?.getInt("FATASHI_TARGET") ?: DEFAULT_POSITION
 

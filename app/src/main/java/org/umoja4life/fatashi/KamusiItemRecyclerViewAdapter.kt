@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewpager2.widget.ViewPager2
 import org.umoja4life.fatashi.ResultsContent.ResultItem
+import org.umoja4life.fatashi.databinding.ResultListItemBinding
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemRecyclerView"
@@ -23,7 +24,7 @@ class KamusiItemRecyclerViewAdapter(
 
 
     // replacing deprecated kotlin-android-extensions
-    private var _binding: ResultProfileBinding? = null
+    private var _binding: ResultListItemBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!

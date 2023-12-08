@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.umoja4life.fatashi.databinding.SearchResultListBinding
 
 private const val DEBUG = false
 private const val LOG_TAG = "KamusiItemFragment"
@@ -24,7 +25,7 @@ class KamusiItemFragment : Fragment() {
     private var recyclerView: RecyclerView? = null
 
     // replacing deprecated kotlin-android-extensions
-    private var _binding: ResultProfileBinding? = null
+    private var _binding: SearchResultListBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -35,19 +36,19 @@ class KamusiItemFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // added for deprecation
         _binding = SearchResultListBinding.inflate(inflater, container, false)
         val recyclerView = binding.root as RecyclerView
         // deprecated  recyclerView = inflater.inflate(R.layout.search_result_list, container, false) as RecyclerView
 
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = LinearLayoutManager(context)
         myAdapter = KamusiItemRecyclerViewAdapter(
             this,
             ResultsContent.RESULT_ITEMS
         ) { searchItem : ResultsContent.ResultItem, itemEntryView: TextView -> searchItemClicked(searchItem,itemEntryView) }
-        recyclerView?.adapter = myAdapter     // remember for later update usage
+        recyclerView.adapter = myAdapter     // remember for later update usage
 
         return recyclerView
     }

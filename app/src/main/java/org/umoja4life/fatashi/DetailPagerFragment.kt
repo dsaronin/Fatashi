@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import org.umoja4life.fatashi.databinding.ResultItemDetailBinding
 
 private const val DEBUG = false
 private const val LOG_TAG = "DetailPagerFragment"
@@ -29,7 +30,7 @@ class DetailPagerFragment : Fragment() {
     }
 
     // replacing deprecated kotlin-android-extensions
-    private var _binding: ResultProfileBinding? = null
+    private var _binding: ResultItemDetailBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -40,13 +41,15 @@ class DetailPagerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if (DEBUG) Log.d(LOG_TAG, ">>> onCreateView <<< ============ [${ResultsContent.RESULT_ITEMS.size}]===== $this ======== ")
+    ): View {
+        if (DEBUG) Log.d(
+            LOG_TAG,
+            ">>> onCreateView <<< ============ [${ResultsContent.RESULT_ITEMS.size}]===== $this ======== "
+        )
 
         // added for deprecation
         _binding = ResultItemDetailBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
 
         // deprecated: return inflater.inflate(R.layout.result_item_detail, container, false)
     }

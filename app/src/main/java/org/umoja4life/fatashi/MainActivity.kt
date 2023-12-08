@@ -25,7 +25,7 @@ private const val DEBUG = false
 private const val LOG_TAG = "MainActivity"
 
         const val DEFAULT_POSITION = 0  // default/starting position in list of kamusi results
-        const val DEFAULT_PATH = "/sdcard/Download/fatashi"  // deprecated
+        const val DEFAULT_PATH = "/sdcard/Download/fatashi"  // deprecated for  Environment.getExternalStorageDirectory().getPath()
 
 // MainActivity -- APP starting point``````````````````````
 
@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
     private var myPath = DEFAULT_PATH
     private var myDirectoryUri: Uri? = null
     private val isRepeat = AtomicBoolean(false)  // true if onResume not first time
+    private lateinit var binding: ActivityMainBinding
 
     // onCreate callback -- when Activity is first created
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,10 +49,10 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         setContentView(view)   // Inflate the contentView
         // deprecated: setContentView(R.layout.activity_main)  // Inflate the contentView
 
-        myLayout = fragment_container   // id for the main layout section
+        myLayout = binding.fragmentContainer   // id for the main layout section
 
-        setSupportActionBar(toolbar)  // Inflate the ActionBar: findViewById(R.id.toolbar)
-        handleKeyboardSubmit(search_request_layout) // findViewById( R.id.search_request_layout )
+        setSupportActionBar(binding.toolbar)  // Inflate the ActionBar: findViewById(R.id.toolbar)
+        handleKeyboardSubmit(binding.searchRequestLayout) // findViewById( R.id.search_request_layout )
 
         if (savedInstanceState != null ) {  // means changing orientation
             currentPosition = savedInstanceState.getInt(KEY_POSITION, DEFAULT_POSITION)
@@ -152,11 +153,11 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
             // first time thru, AndroidPlatform & MyEnvironment have already
             // been started in onCreate, so skip the refresh here
         if (isRepeat.getAndSet(true)) {
-            myLayout = fragment_container   // id for the main layout section
+            myLayout = binding.fragmentContainer   // id for the main layout section
 
             if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< repeat")
 
-            search_request_layout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
+            binding.searchRequestLayout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
 
             myViewModel.replacePlatform(
                 AndroidPlatform(myPath, myLayout, this, myDirectoryUri, displayLambda)
@@ -206,14 +207,14 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         hideKeyboard(view)  // vanish keyboard from the screen
         currentPosition = DEFAULT_POSITION      // reset current position
 
-        val maulizo  = search_request_input.text.toString()  // R.id.search_request_input
+        val maulizo  = binding.searchRequestInput.text.toString()  // R.id.search_request_input
         if (DEBUG) Log.d(LOG_TAG, ">>> SearchRequest <<<  $maulizo")
 
             // skip unless the backend has been authorized and started
         if (startedBackend.get())  {
             if (DEBUG) Log.d(LOG_TAG, ">>> VM.parseCommand <<<  ")
             myViewModel.parseCommand(maulizo)
-            search_request_layout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
+            binding.searchRequestLayout.hint = FatashiWork.getPrompt()  // dynamically show prompt [lang]
 
             // asynch return here possibly BEFORE backend has processed!
         }
