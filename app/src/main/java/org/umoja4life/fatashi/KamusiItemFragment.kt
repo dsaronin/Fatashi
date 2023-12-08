@@ -23,6 +23,12 @@ class KamusiItemFragment : Fragment() {
     var myAdapter : KamusiItemRecyclerViewAdapter? = null
     private var recyclerView: RecyclerView? = null
 
+    // replacing deprecated kotlin-android-extensions
+    private var _binding: ResultProfileBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     // onCreateView callback -- for when view is created
     // remember the RV.Adapter for later usage to refresh screen with new data
     override fun onCreateView(
@@ -30,7 +36,12 @@ class KamusiItemFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        recyclerView = inflater.inflate(R.layout.search_result_list, container, false) as RecyclerView
+
+        // added for deprecation
+        _binding = SearchResultListBinding.inflate(inflater, container, false)
+        val recyclerView = binding.root as RecyclerView
+        // deprecated  recyclerView = inflater.inflate(R.layout.search_result_list, container, false) as RecyclerView
+
         recyclerView?.layoutManager = LinearLayoutManager(context)
         myAdapter = KamusiItemRecyclerViewAdapter(
             this,
@@ -39,6 +50,12 @@ class KamusiItemFragment : Fragment() {
         recyclerView?.adapter = myAdapter     // remember for later update usage
 
         return recyclerView
+    }
+
+    // added due to kotlin-android-extensions deprecation
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     // >>>>> THIS IS THE KEY POINT TO ACCESS THE KAMUSI BACKEND SEARCH ENGINE <<<<<<<<

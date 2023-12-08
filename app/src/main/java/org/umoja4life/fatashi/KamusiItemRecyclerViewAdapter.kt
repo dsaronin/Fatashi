@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.viewpager2.widget.ViewPager2
 import org.umoja4life.fatashi.ResultsContent.ResultItem
 
 private const val DEBUG = false
@@ -20,10 +21,19 @@ class KamusiItemRecyclerViewAdapter(
 
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.KIViewHolder>() {
 
+
+    // replacing deprecated kotlin-android-extensions
+    private var _binding: ResultProfileBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KIViewHolder {
-        val view = LayoutInflater
-                    .from(parent.context)
-                   .inflate(R.layout.result_list_item, parent, false)
+
+        // added for deprecation
+        _binding = ResultListItemBinding.inflate(inflater, container, false)
+        val view = binding.root
+        // deprecated:  val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
 
        return KIViewHolder(view)
     }
@@ -33,6 +43,13 @@ class KamusiItemRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = resultList.size
+
+    // added due to kotlin-android-extensions deprecation
+    override fun onDestroyViewHolder() {
+        super.onDestroyViewHolder()
+        _binding = null
+    }
+
 
     //**********************************************************************************
     //**********************************************************************************

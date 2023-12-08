@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 
 private const val DEBUG = false
@@ -24,6 +25,13 @@ class VPShellFragment : Fragment(), LifecycleOwner {
             MainActivity.currentPosition = position  // update currentPosition
         }
     }
+
+    // replacing deprecated kotlin-android-extensions
+    private var _binding: ResultProfileBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +66,12 @@ class VPShellFragment : Fragment(), LifecycleOwner {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
+
+        // added for deprecation
+        _binding = ResultDetailPagerBinding.inflate(inflater, container, false)
+        val viewPager = binding.root as ViewPager2
+        // deprecated  viewPager = inflater.inflate(R.layout.result_detail_pager, container, false) as ViewPager2
+
         viewPager?.adapter = ResultItemDetailAdapter(
             childFragmentManager,
             lifecycle,
@@ -76,6 +89,14 @@ class VPShellFragment : Fragment(), LifecycleOwner {
 
         return viewPager
     }
+
+    // added due to kotlin-android-extensions deprecation
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
 
     // ***********************************************************************************
     // ***********************************************************************************

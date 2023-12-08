@@ -14,8 +14,9 @@ import androidx.core.app.ActivityCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_main.*
+// import kotlinx.android.synthetic.main.activity_main.*
 import org.umoja4life.basicio.AndroidPlatform
+import org.umoja4life.fatashi.databinding.ActivityMainBinding
 import org.umoja4life.fatashibackend.FatashiWork
 import org.umoja4life.kamusimodel.KamusiViewModel
 import java.util.concurrent.atomic.AtomicBoolean
@@ -41,7 +42,12 @@ class MainActivity : AppCompatActivity(), ActivityCompat.OnRequestPermissionsRes
         super.onCreate(savedInstanceState)
         if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ******************* $myPath")
 
-        setContentView(R.layout.activity_main)  // Inflate the contentView
+        // changes necessitated by removal of deprecated kotlin-android-extension
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)   // Inflate the contentView
+        // deprecated: setContentView(R.layout.activity_main)  // Inflate the contentView
+
         myLayout = fragment_container   // id for the main layout section
 
         setSupportActionBar(toolbar)  // Inflate the ActionBar: findViewById(R.id.toolbar)

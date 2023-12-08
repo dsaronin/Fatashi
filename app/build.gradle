@@ -1,23 +1,25 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+// apply plugin: 'kotlin-android-extensions'
 
 // versionCode  versionName   notes
 // 6  -- v0.1.4-0.0.72  production prior to TZ 2020 trip
 // 7  -- v0.2.1-0.0.72  upgrade for DirectoryTree Android 11 SAF handling
 // 9  -- v0.2.3-0.0.82  upgrade for multi-language/sw/tr support
+//10  -- v0.2.3-0.0.85  upgrade req Java 11, Android 33 by G Play Store
 
 android {
-    compileSdkVersion 30
+    //noinspection GrDeprecatedAPIUsage
+    compileSdkVersion 34
 
     defaultConfig {
         def buildDateStamp = new Date().format("yyyyMMdd").toInteger()
 
         applicationId "org.umoja4life.fatashi"
         minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 9
-        versionName 'v0.2.3-0.0.83'
+        targetSdkVersion 34
+        versionCode 10
+        versionName 'v0.2.3-0.0.85'
 
         buildConfigField("String", "FATASHI_MY_VERSION", '"V0.2"')
         buildConfigField("String", "FATASHI_V0_1",       '"V0.1"')
@@ -46,34 +48,38 @@ android {
 
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding = true
+    }
+    namespace 'org.umoja4life.fatashi'
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.1'
-    implementation "androidx.collection:collection-ktx:1.1.0"           // added
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"   // added
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "androidx.collection:collection-ktx:1.3.0"           // added
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.5'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2"   // added
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.10.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.code.gson:gson:2.8.6'
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     apply plugin: 'com.android.application'
     apply plugin: 'kotlin-android'
-    apply plugin: 'kotlin-android-extensions'
+//    apply plugin: 'kotlin-android-extensions'
     implementation files("/home/daudi/IdeaProjects/FatashiBackend/out/artifacts/BackendModule/BackendModule.jar")
 }
 

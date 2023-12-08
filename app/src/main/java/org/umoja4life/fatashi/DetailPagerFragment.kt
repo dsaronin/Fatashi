@@ -28,6 +28,13 @@ class DetailPagerFragment : Fragment() {
         }
     }
 
+    // replacing deprecated kotlin-android-extensions
+    private var _binding: ResultProfileBinding? = null
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
+
+
     // onCreateView -- inflate the result_item_detail layout
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +43,12 @@ class DetailPagerFragment : Fragment() {
     ): View? {
         if (DEBUG) Log.d(LOG_TAG, ">>> onCreateView <<< ============ [${ResultsContent.RESULT_ITEMS.size}]===== $this ======== ")
 
-        return inflater.inflate(R.layout.result_item_detail, container, false)
+        // added for deprecation
+        _binding = ResultItemDetailBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+
+        // deprecated: return inflater.inflate(R.layout.result_item_detail, container, false)
     }
 
     // TODO: saving/restoring current position information
@@ -58,56 +70,59 @@ class DetailPagerFragment : Fragment() {
             findViewById<TextView>(R.id.itemUsage).text = myDataItem.usage.rewrapANSI()
         }
     }
-/*
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (DEBUG) Log.d(LOG_TAG, ">>> onAttach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (DEBUG) Log.d(LOG_TAG, ">>> onActivityCreated <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onDetach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-
+    // added due to kotlin-android-extensions deprecation
     override fun onDestroyView() {
         super.onDestroyView()
         if (DEBUG) Log.d(LOG_TAG, ">>> onDestroyView <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        _binding = null
     }
 
-    override fun onStop() {
-        super.onStop()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
+    /*
 
-    override fun onDestroy() {
-        super.onDestroy()
-        if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
-    }
-*/
+        override fun onAttach(context: Context) {
+            super.onAttach(context)
+            if (DEBUG) Log.d(LOG_TAG, ">>> onAttach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onPause() {
+            super.onPause()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onPause <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onActivityCreated(savedInstanceState: Bundle?) {
+            super.onActivityCreated(savedInstanceState)
+            if (DEBUG) Log.d(LOG_TAG, ">>> onActivityCreated <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            if (DEBUG) Log.d(LOG_TAG, ">>> onCreate <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onStart() {
+            super.onStart()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onStart <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onResume() {
+            super.onResume()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onResume <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onDetach() {
+            super.onDetach()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onDetach <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onStop() {
+            super.onStop()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onStop <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            if (DEBUG) Log.d(LOG_TAG, ">>> onDestroy <<< ========================= [${ResultsContent.RESULT_ITEMS.size}]===== $this")
+        }
+    */
 }
