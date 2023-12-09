@@ -1,11 +1,9 @@
 package org.umoja4life.fatashi
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.RecyclerView
 import org.umoja4life.fatashi.ResultsContent.ResultItem
 import org.umoja4life.fatashi.databinding.ResultListItemBinding
 
@@ -16,27 +14,19 @@ private const val LOG_TAG = "KamusiItemRecyclerView"
 
 class KamusiItemRecyclerViewAdapter(
 
-    private val fragment: KamusiItemFragment,
+    // unused: private val fragment: KamusiItemFragment,
     private val resultList: List<ResultItem>,
     private val clickListener: (ResultItem, TextView) -> Unit
 
 ) : RecyclerView.Adapter<KamusiItemRecyclerViewAdapter.KIViewHolder>() {
 
-
-    // replacing deprecated kotlin-android-extensions
-    private var _binding: ResultListItemBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KIViewHolder {
-
         // added for deprecation
-        _binding = ResultListItemBinding.inflate(inflater, container, false)
-        val view = binding.root
+        return KIViewHolder(
+            ResultListItemBinding.inflate( LayoutInflater.from(parent.context), parent, false)
+        )
         // deprecated:  val view = LayoutInflater.from(parent.context).inflate(R.layout.result_list_item, parent, false)
-
-       return KIViewHolder(view)
+       // return KIViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: KIViewHolder, position: Int) {
@@ -45,24 +35,19 @@ class KamusiItemRecyclerViewAdapter(
 
     override fun getItemCount(): Int = resultList.size
 
-    // added due to kotlin-android-extensions deprecation
-    override fun onDestroyViewHolder() {
-        super.onDestroyViewHolder()
-        _binding = null
-    }
-
-
     //**********************************************************************************
     //**********************************************************************************
     //**********************************************************************************
-    inner class KIViewHolder(itemView: View ) : RecyclerView.ViewHolder(itemView) {
+    inner class KIViewHolder(binding: ResultListItemBinding ) : RecyclerView.ViewHolder(binding.root) {
 
-        private val itemEntryView: TextView =
-            itemView.findViewById(R.id.result_item_content_entry)
-        private val itemDefinitionView: TextView =
-            itemView.findViewById(R.id.result_item_content_definition)
-        private val itemUsageView: TextView =
-            itemView.findViewById(R.id.result_item_content_usage)
+        private val itemEntryView: TextView = binding.resultItemContentEntry
+        private val itemDefinitionView: TextView = binding.resultItemContentDefinition
+        private val itemUsageView: TextView = binding.resultItemContentUsage
+
+        // deprecated items replaced (corresponding to above three assignments)
+        // itemView.findViewById(R.id.result_item_content_entry)
+        // itemView.findViewById(R.id.result_item_content_definition)
+        // itemView.findViewById(R.id.result_item_content_usage)
 
         // bind -- binds data to display view for an item
 
