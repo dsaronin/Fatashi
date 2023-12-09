@@ -14,7 +14,7 @@ private const val LOG_TAG = "KamusiItemRecyclerView"
 
 class KamusiItemRecyclerViewAdapter(
 
-    // unused: private val fragment: KamusiItemFragment,
+    private val fragment: KamusiItemFragment,
     private val resultList: List<ResultItem>,
     private val clickListener: (ResultItem, TextView) -> Unit
 
