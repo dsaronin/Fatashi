@@ -1,11 +1,12 @@
 package org.umoja4life.fatashi
 
 import android.text.SpannableStringBuilder
+import android.util.Log
 import androidx.core.text.bold
 import androidx.core.text.scale
 import org.umoja4life.fatashibackend.AnsiColor
 
-private const val DEBUG = false
+private const val DEBUG = true
 private const val LOG_TAG = "ResultsContent"
 
     // stripANSI -- simply removes ANSI codes from a string
@@ -52,8 +53,11 @@ object ResultsContent {
 
     // An array of kamusi result items from search
     val RESULT_ITEMS: MutableList<ResultItem> = mutableListOf()
+    // TODO: move this into the project configuration file
+    private val itemRegex = Regex("""^([^\t]+)\t-* ?([^\t]+)\t?-* ?([^\t]*)$""")
 
     init {
+        if (DEBUG) Log.d(LOG_TAG, ">>> ResultsContent Init <<< ******************* $sampleResult >> ${itemRegex.toPattern()}")
         buildResultItems( sampleResult)  // REEVALUATE and maybe remove from initial showing
    }
 
@@ -75,14 +79,11 @@ object ResultsContent {
         return index - 1  // additions were added after this index
     }
 
-    // TODO: move this into the project configuration file
-    private val itemRegex = "^([^\\t]+)\\t-* ?([^\\t]+)\\t?-* ?([^\\t]*)\$"
-
     // parseFields  -- split a search result line into three fields
     // TODO: needs to be taken over by Kamusi Class functions
-
     fun parseFields(rawItem: String) : ItemDetail {
-        val keyfrag = itemRegex.toRegex().find(rawItem)
+        if (DEBUG) Log.d(LOG_TAG, ">>> parseFields regex <<< ******************* $rawItem")
+        val keyfrag = itemRegex.find(rawItem)
 
             // if there was an issue matching/splitting to fields, at least
             // return the entire search result line as the entry default!
