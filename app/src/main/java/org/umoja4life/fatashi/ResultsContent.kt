@@ -6,7 +6,7 @@ import androidx.core.text.bold
 import androidx.core.text.scale
 import org.umoja4life.fatashibackend.AnsiColor
 
-private const val DEBUG = true
+private const val DEBUG = false
 private const val LOG_TAG = "ResultsContent"
 
     // stripANSI -- simply removes ANSI codes from a string
