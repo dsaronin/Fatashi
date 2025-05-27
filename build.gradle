@@ -3,11 +3,10 @@ buildscript {
     ext.kotlin_version = '1.9.21'
     repositories {
         google()
-        jcenter()
-        // maven {             url = uri("https://plugins.gradle.org/m2/")         }
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.0'
+        classpath 'com.android.tools.build:gradle:8.9.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21")
 
@@ -19,10 +18,10 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete layout.buildDirectory.get().asFile
 }
