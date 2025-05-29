@@ -1,14 +1,18 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    ext.kotlin_version = '1.9.21'
+    ext.kotlin_version = '2.1.20'   // was 1.9.24
     repositories {
-        google()
+        gradlePluginPortal() // for Ben Manes Gradle Versions plugin
         mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.9.2'
+        classpath 'com.android.tools.build:gradle:8.10.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.21")
+
+        // Ben Manes Gradle Versions Plugin
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.52.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -20,6 +24,7 @@ allprojects {
         google()
         mavenCentral()
     }
+    apply plugin: 'com.github.ben-manes.versions'
 }
 
 tasks.register('clean', Delete) {
