@@ -56,6 +56,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     namespace 'org.umoja4life.fatashi'
 }
